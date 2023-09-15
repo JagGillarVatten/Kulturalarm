@@ -40,7 +40,7 @@ p {
   font-size: 4.1rem;
   color: #ffffff;
   text-align: center;
-  font-weight: ;
+  font-weight:;
 }
 
 .progress-bar {
@@ -64,7 +64,9 @@ p {
   border-radius: 0.9rem;
   background-color: #bbeb97;
   position: absolute;
-  transition: width 0.4s, background-color 2s ease;
+  transition:
+    width 0.4s,
+    background-color 2s ease;
   /* add a transition to the width property */
 }
 
@@ -166,7 +168,7 @@ div#rss-container {
   border-radius: 5px;
   box-shadow: 2px 2px 5px rgba(255, 246, 246, 0.1);
   padding: 1px;
-  align-self: ;
+  align-self:;
 }
 
 @media screen and (max-width: 768px) {
@@ -185,7 +187,7 @@ div#rss-container {
 body {
   --s: 30px; /* control the size */
   --c1: #772222;
-  --c2: #9e5c3e;
+  --c2: #8b3b37;
 
   --_s: 37.5% 12.5% at 62.5%;
   --_g: 34% 99%, #0000 101%;
@@ -193,8 +195,11 @@ body {
   --g2: radial-gradient(var(--_s) 0, #0000 32%, var(--c1) var(--_g));
   --g3: radial-gradient(var(--_s) 100%, #0000 32%, var(--c2) var(--_g));
   --g4: radial-gradient(var(--_s) 0, #0000 32%, var(--c2) var(--_g));
-  background: var(--g1), var(--g2) 0 calc(3 * var(--s)),
-    var(--g3) var(--s) calc(3 * var(--s)), var(--g4) var(--s) calc(6 * var(--s)),
+  background:
+    var(--g1),
+    var(--g2) 0 calc(3 * var(--s)),
+    var(--g3) var(--s) calc(3 * var(--s)),
+    var(--g4) var(--s) calc(6 * var(--s)),
     var(--g1) calc(2 * var(--s)) calc(6 * var(--s)),
     var(--g2) calc(2 * var(--s)) calc(9 * var(--s)),
     var(--g3) calc(3 * var(--s)) calc(9 * var(--s)),
