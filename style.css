@@ -2,18 +2,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap");
 body {
-  background-color: #682d23;
+  background-color: #f07863;
   margin: 0;
-  background-image: linear-gradient(
-    45deg,
-    rgba(0, 0, 0, 0.432) 55%,
-    transparent 15%,
-    transparent 20%,
-    rgb(0, 0, 0) 50%,
-    rgba(0, 0, 0, 0.925) 50%,
-    transparent 55%,
-    transparent
-  ); /* Subtle diagonal stripes for texture */
   padding: 0;
   font-family: "Luckiest-Guy", cursive;
   display: flex;

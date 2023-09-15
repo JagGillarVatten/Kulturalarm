@@ -5,12 +5,12 @@ let eventDuration = 0;
 const eventFiles = [
   {
     name: "MP1-23",
-    url: "MP1.json"
+    url: "MP1.json",
   },
   {
     name: "AM1-23",
-    url: "AM1.json"
-  }
+    url: "AM1.json",
+  },
 ];
 
 function loadJSON(callback, url) {
@@ -37,7 +37,7 @@ function getNextEvent() {
   const todaysEvents = getTodaysEvents();
   for (let i = 0; i < todaysEvents.length; i++) {
     const start = new Date(
-      `${today.toDateString()} ${todaysEvents[i].startTime}`
+      `${today.toDateString()} ${todaysEvents[i].startTime}`,
     );
     const end = new Date(`${today.toDateString()} ${todaysEvents[i].endTime}`);
     if (now >= start && now < end) {
@@ -45,14 +45,14 @@ function getNextEvent() {
       return {
         name: todaysEvents[i].name,
         start: start,
-        end: end
+        end: end,
       };
     } else if (now < start) {
       // This event hasn't started yet
       return {
         name: todaysEvents[i].name,
         start: start,
-        end: end
+        end: end,
       };
     }
   }
@@ -88,7 +88,7 @@ function updateCountdown() {
     const timeUntilStartFormatted = formatSeconds(timeUntilStart);
     document.title = `${timeUntilStartFormatted} tills | ${eventName}`;
     const countdown = ` ${eventName} börjar om: <br> ${formatSeconds(
-      timeUntilStart
+      timeUntilStart,
     )} `;
     document.getElementById("countdown").innerHTML = countdown;
     document.getElementById("countdown").style.color = "#ffff";
@@ -131,7 +131,7 @@ function updateCountdown() {
   }
 
   const countdown = `Tid kvar för ${eventName}:<br> ${formatSeconds(
-    timeRemaining
+    timeRemaining,
   )}`;
   document.getElementById("countdown").innerHTML = countdown;
   const timeRemainingFormatted = formatSeconds(timeRemaining);
@@ -191,8 +191,8 @@ function parseRSS(rss) {
 
   for (let i = 0; i < items.length; i++) {
     const title = items[i].getElementsByTagName("title")[0].textContent;
-    const description = items[i].getElementsByTagName("description")[0]
-      .textContent;
+    const description =
+      items[i].getElementsByTagName("description")[0].textContent;
 
     html += `<li><strong>${title}</strong>: ${description}</li>`;
   }
