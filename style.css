@@ -1,6 +1,7 @@
 /* CSS for a cute and soft UI */
 @import url("https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap");
+
 body {
   background-color: #f07863;
   margin: 0;
@@ -113,6 +114,7 @@ p {
   display: block;
   border-radius: 20px;
 }
+
 @keyframes shake {
   10%,
   90% {
@@ -139,6 +141,7 @@ p {
 .apply-shake {
   animation: shake infinite cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
+
 /* Media queries */
 ul {
   list-style: none;
