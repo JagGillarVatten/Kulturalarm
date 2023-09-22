@@ -1,12 +1,10 @@
 /* CSS for a cute and soft UI */
-@import url("https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=Skranji&display=swap");
 body {
   background-color: #f07863;
   margin: 0;
   padding: 0;
-  font-family: "Luckiest-Guy", cursive;
+  font-family: "Skranji", cursive;
   display: flex;
   flex-direction: column;
   transition: background-color, 0.4s;
@@ -18,7 +16,7 @@ h1 {
   font-weight: bold;
   margin-top: 1%;
   color: #ffffff;
-  font-family: "Luckiest Guy", cursive;
+  font-family: "Skranji", cursive;
   text-align: center;
   letter-spacing: 0.1rem;
 }
@@ -26,7 +24,7 @@ h1 {
 p {
   margin: 5%;
   letter-spacing: 0.3rem;
-  font-family: "Luckiest Guy", cursive;
+  font-family: "Skranji", cursive;
   padding: 0%;
   font-size: 4.1rem;
   color: #ffffff;
@@ -70,7 +68,7 @@ p {
   text-align: center;
   align-self: center;
   margin: 2px;
-  font-family: "short stack", cursive;
+  font-family: "Skranji", cursive;
   transition: background-color 0.8s ease;
 }
 
@@ -99,7 +97,7 @@ p {
 .dropdown-content a {
   color: #ffffff;
   text-align: center;
-  font-family: "short stack", cursive;
+  font-family: "Skranji", cursive;
   padding: 0px 0px;
   text-decoration: none;
   display: block;
@@ -114,7 +112,6 @@ p {
   display: block;
   border-radius: 20px;
 }
-
 @keyframes shake {
   10%,
   90% {
@@ -141,7 +138,6 @@ p {
 .apply-shake {
   animation: shake infinite cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
-
 /* Media queries */
 ul {
   list-style: none;
