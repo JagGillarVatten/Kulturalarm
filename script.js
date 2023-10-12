@@ -1,16 +1,3 @@
-/**
- * Global variables to store event data and duration.
- * eventFiles contains the schema options to load.
- * loadJSON loads JSON data from a URL.
- * getTodaysEvents filters events to only today's.
- * getNextEvent gets the next upcoming event.
- * updateCountdown calculates and displays the countdown UI.
- * formatSeconds and pad format time strings.
- * loadEventFile loads a schema's JSON data.
- * init sets up the schema dropdown UI.
- * parseRSS parses an RSS feed into HTML.
- */
-
 let events = [];
 
 let eventDuration = 0;
@@ -50,7 +37,7 @@ function getNextEvent() {
   const todaysEvents = getTodaysEvents();
   for (let i = 0; i < todaysEvents.length; i++) {
     const start = new Date(
-      `${today.toDateString()} ${todaysEvents[i].startTime}`
+      `${today.toDateString()} ${todaysEvents[i].startTime}`,
     );
     const end = new Date(`${today.toDateString()} ${todaysEvents[i].endTime}`);
     if (now >= start && now < end) {
@@ -102,7 +89,7 @@ function updateCountdown() {
     const timeUntilStartFormatted = formatSeconds(timeUntilStart);
     document.title = `${timeUntilStartFormatted} tills | ${eventName}`;
     const countdown = ` ${eventName} börjar om: <br> ${formatSeconds(
-      timeUntilStart
+      timeUntilStart,
     )} `;
     document.getElementById("countdown").innerHTML = countdown;
     document.getElementById("countdown").style.color = "#ffff";
@@ -113,6 +100,7 @@ function updateCountdown() {
   }
 
   // Event is ongoing or already finished
+  const totalDuration = (end - start) / 1000; // Convert to seconds
   const timeElapsed = (now - start) / 1000; // Convert to seconds
   const timeRemaining = (end - now) / 1000; // Convert to seconds
   const eventDuration = (end - start) / 1000; // convert to seconds
@@ -145,7 +133,7 @@ function updateCountdown() {
   }
 
   const countdown = `Tid kvar för ${eventName}:<br> ${formatSeconds(
-    timeRemaining
+    timeRemaining,
   )}`;
   document.getElementById("countdown").innerHTML = countdown;
   const timeRemainingFormatted = formatSeconds(timeRemaining);
@@ -182,6 +170,7 @@ function loadEventFile(url) {
 
 function init() {
   const dropdownContent = document.querySelector(".dropdown-content");
+  const dropdownButton = document.querySelector(".dropdown-button");
   eventFiles.forEach((eventFile) => {
     const eventButton = document.createElement("a");
     eventButton.innerText = eventFile.name;
