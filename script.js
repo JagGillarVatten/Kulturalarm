@@ -79,7 +79,6 @@ function updateCountdown() {
   }
 
   const eventName = nextEvent.name;
-  const eventLocation = 
   const start = nextEvent.start;
   const end = nextEvent.end;
 
@@ -113,8 +112,7 @@ function updateCountdown() {
     document.getElementById("progress").style.backgroundColor = "#f7d26f";
   } else if (timeRemaining < 60) {
     // Change color to red when there's less than 1 minute left
-    document.getElementById("countdown").style.color = "#ffb094";
-    
+    document.getElementById("countdown").style.color = "#f36868";
     document.getElementById("progress").style.backgroundColor = "#f36868";
 
     document.getElementById("countdown").style.animation = "shake";
@@ -207,3 +205,7 @@ function parseRSS(rss) {
   const body = document.getElementsByTagName("body")[0];
   body.insertBefore(rssContainer, body.firstChild);
 }
+
+loadJSON(function (response) {
+  parseRSS(response);
+}, "https://skolmaten.se/hammarbyskolan/rss/days/");
