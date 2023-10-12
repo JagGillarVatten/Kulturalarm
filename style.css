@@ -3,6 +3,7 @@
 body {
   background-color: #f07863;
   margin: 0;
+
   padding: 0;
   font-family: "Skranji", cursive;
   display: flex;
@@ -10,6 +11,7 @@ body {
   transition: background-color, 0.4s;
   align-items: center;
 }
+
 
 h1 {
   font-size: 6.5rem;
