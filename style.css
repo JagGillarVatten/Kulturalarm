@@ -1,5 +1,6 @@
 /* CSS for a cute and soft UI */
 @import url("https://fonts.googleapis.com/css2?family=Skranji&display=swap");
+
 body {
   background-color: #ff8833;
   margin: 0;
@@ -9,6 +10,8 @@ body {
   flex-direction: column;
   transition: background-color, 0.4s;
   align-items: center;
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
 }
 
 h1 {
@@ -61,64 +64,59 @@ p {
 
 /* Button styles */
 .button {
-  
+  display: block;
+  margin: 0 auto;
+  text-align: center;
   position: center;
   color: rgb(90, 63, 63);
   font-size: 1.5em;
-  
-  
   font-family: "Skranji", cursive;
   transition: 0.1s ease;
 }
 
 .button:hover {
   background-color: #d2c2c2;
-  
   font-size: 1.6em;
-  
 }
 
 /* Dropdown styles */
 .dropdown {
-  position: center;
-
-  
+  position: relative;
 }
 
 .dropdown-content {
   display: none;
-
-  position: center;
-
+  position: absolute;
+  top: 100%;
+  left: 0;
   z-index: 1;
   background-color: #6a4646;
-
   font-size: 1.2em;
- 
+  border-radius: 0.5rem;
+  overflow: hidden;
+  transition: all 0.2s ease-in-out;
 }
 
 .dropdown-content a {
+  display: block;
+  padding: 1rem 2rem;
   color: #b77f7f;
-   transition: 0.2s;
   text-align: center;
   font-family: "Skranji", cursive;
-
   text-decoration: none;
-  display: block;
+  transition: all 0.2s ease-in-out;
 }
 
 .dropdown-content a:hover {
   background-color: #dfc4c4;
-
-  font-size:  1.8em;
-
+  color: #fff;
+  font-size: 1.8em;
 }
 
 .dropdown:hover .dropdown-content {
   display: block;
-  
-
 }
+
 @keyframes shake {
   10%,
   90% {
@@ -145,6 +143,7 @@ p {
 .apply-shake {
   animation: shake infinite cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
+
 /* Media queries */
 ul {
   list-style: none;
@@ -162,7 +161,172 @@ strong {
 
 div#rss-container {
   border-radius: 5px;
-  box-shadow: 2px 2px 5px rgba(255, 246, 246, 0.1);
+  box-s/* CSS for a load-in animation */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+
+body {
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 0;
+  font-family: "Montserrat", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(50%);
+  transition: all 0.5s ease-in-out;
+}
+
+body.loaded {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+h1 {
+  font-size: 4rem;
+  font-weight: 700;
+  margin-top: 2rem;
+  color: #333;
+  text-align: center;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(50%);
+  transition: all 0.5s ease-in-out;
+}
+
+h1.loaded {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+p {
+  margin: 2rem;
+  letter-spacing: 0.1rem;
+  padding: 0%;
+  font-size: 2rem;
+  color: #333;
+  text-align: center;
+  font-weight: 400;
+  opacity: 0;
+  transform: translateY(50%);
+  transition: all 0.5s ease-in-out;
+}
+
+p.loaded {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.progress-bar {
+  margin: 2rem;
+  width: 80%;
+  height: 1rem;
+  border-radius: 0.5rem;
+  background-color: #eee;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(50%);
+  transition: all 0.5s ease-in-out;
+}
+
+.progress-bar.loaded {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.progress-bar span {
+  display: block;
+  height: 100%;
+  border-radius: 0.5rem;
+  background-color: #333;
+  position: absolute;
+  animation: progress 2s ease-in-out infinite;
+}
+
+@keyframes progress {
+  0% {
+    width: 0%;
+  }
+  50% {
+    width: 50%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.button {
+  margin: 2rem;
+  padding: 1rem 2rem;
+  color: #fff;
+  font-size: 1.5rem;
+  background-color: #333;
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease-in-out;
+  opacity: 0;
+  transform: translateY(50%);
+  transition: all 0.5s ease-in-out;
+}
+
+.button.loaded {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.button:hover {
+  background-color: #666;
+  transform: translateY(-0.1rem);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.4);
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1;
+  background-color: #fff;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  transition: all 0.2s ease-in-out;
+  opacity: 0;
+  transform: translateY(50%);
+  transition: all 0.5s ease-in-out;
+}
+
+.dropdown-content.loaded {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+  transform: translateY(0.5rem);
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 1rem 2rem;
+  color: #333;
+  font-size: 1.5rem;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.dropdown-content a:hover {
+  background-color: #eee;
+  color: #666;
+}hadow: 2px 2px 5px rgba(255, 246, 246, 0.1);
   padding: 1px;
   align-self:;
 }
