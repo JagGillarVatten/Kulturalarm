@@ -126,7 +126,7 @@ function updateCountdown() {
   document.getElementById("countdown").innerHTML = countdown;
 
   const timeRemainingFormatted = formatSeconds(timeRemaining);
-  document.title = `${timeRemainingFormatted} remaining | ${eventName}`;
+  document.title = `${timeRemainingFormatted} kvar | ${eventName}`;
 
   const percentElapsed = (timeElapsed / eventDuration) * 100;
   const width = (percentElapsed / 100) * document.getElementById("progress-bar").offsetWidth;
