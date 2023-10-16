@@ -118,7 +118,8 @@
     "name": "Idrott (Teoretisk)",
     "startDay": 5,
     "startTime": "09:45",
-    "endTime": "10:50"
+    "endTime": "10:50",
+    "plats": "705"
   },
   {
     "name": "Matematik",
