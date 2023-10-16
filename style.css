@@ -15,7 +15,7 @@ h1 {
   font-size: 6.5rem;
   font-weight: bold;
   margin-top: 1%;
-  color: #ff80ab;
+  color: #b86a84;
   font-family: "Skranji", cursive;
   text-align: center;
   letter-spacing: 0.1rem;
@@ -23,7 +23,8 @@ h1 {
 }
 
 h1:hover {
-  color: #ff4081;
+  color: #a76178;
+  
 }
 
 p {
