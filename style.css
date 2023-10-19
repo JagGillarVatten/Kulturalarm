@@ -1,5 +1,6 @@
-/* CSS for a cute and soft UI */
+/* CSS for a modern and mobile-friendly UI */
 @import url("https://fonts.googleapis.com/css2?family=Skranji&display=swap");
+
 body {
   background-color: #ff8833;
   margin: 0;
@@ -7,12 +8,12 @@ body {
   font-family: "Skranji", cursive;
   display: flex;
   flex-direction: column;
-  transition: background-color, 0.4s;
   align-items: center;
+  transition: background-color 0.4s;
 }
 
 h1 {
-  font-size: 6.5rem;
+  font-size: 3.5rem;
   font-weight: bold;
   margin-top: 1%;
   color: #ffffff;
@@ -23,121 +24,90 @@ h1 {
 
 p {
   margin: 5%;
-  letter-spacing: 0.3rem;
+  letter-spacing: 0.1rem;
   font-family: "Skranji", cursive;
   padding: 0%;
-  font-size: 4.1rem;
+  font-size: 2.1rem;
   color: #ffffff;
   text-align: center;
-  font-weight:;
 }
 
 .progress-bar {
   margin: 10px;
   width: 80%;
-  animation: none;
-  border-style: none;
-  height: 4rem;
-  border-radius: 0.1rem;
+  height: 2rem;
+  border-radius: 0.2rem;
   background-color: #0000007a;
   position: relative;
-  transition: 0.4s;
+  transition: width 0.4s, background-color 2s ease;
   overflow: hidden;
-  /* hide the overflow of the progress bar */
 }
 
 .progress-bar span {
   display: block;
   height: 100%;
-  animation: shake infinite;
-  border-radius: 0.1rem;
+  border-radius: 0.2rem;
   background-color: #bbeb97;
   position: absolute;
-  transition:
-    width 0.4s,
-    background-color 2s ease;
-  /* add a transition to the width property */
+  transition: width 0.4s, background-color 2s ease;
 }
 
 /* Button styles */
 .button {
-  
   position: center;
   color: rgb(90, 63, 63);
-  font-size: 1.5em;
-  
-  
+  font-size: 1.6em;
   font-family: "Skranji", cursive;
-  transition: 0.1s ease;
+  transition: 0.2s ease;
 }
 
 .button:hover {
   background-color: #d2c2c2;
-  
-  font-size: 1.6em;
-  
+  font-size: 1.8em;
 }
 
 /* Dropdown styles */
 .dropdown {
-  position: center;
-
-  
+  text-align: center;
 }
 
 .dropdown-content {
   display: none;
-
-  position: center;
-
+  position: absolute;
   z-index: 1;
   background-color: #6a4646;
-
-  font-size: 1.2em;
- 
+  font-size: 1.4em;
 }
 
 .dropdown-content a {
   color: #b77f7f;
-   transition: 0.2s;
+  transition: 0.2s;
   text-align: center;
   font-family: "Skranji", cursive;
-
   text-decoration: none;
   display: block;
 }
 
 .dropdown-content a:hover {
   background-color: #dfc4c4;
-
-  font-size:  1.8em;
-
+  font-size: 1.8em;
 }
 
 .dropdown:hover .dropdown-content {
   display: block;
-  
-
 }
+
 @keyframes shake {
-  10%,
-  90% {
+  10%, 90% {
     transform: translate3d(-1px, 0, 0);
   }
-
-  20%,
-  80% {
+  20%, 80% {
     transform: translate3d(2px, 0, 0);
   }
-
-  30%,
-  50%,
-  70% {
+  30%, 50%, 70% {
     transform: translate3d(-4px, 0, 0);
   }
-
-  40%,
-  60% {
+  40%, 60% {
     transform: translate3d(4px, 0, 0);
   }
 }
@@ -145,6 +115,7 @@ p {
 .apply-shake {
   animation: shake infinite cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
+
 /* Media queries */
 ul {
   list-style: none;
@@ -164,18 +135,15 @@ div#rss-container {
   border-radius: 5px;
   box-shadow: 2px 2px 5px rgba(255, 246, 246, 0.1);
   padding: 1px;
-  align-self:;
 }
 
 @media screen and (max-width: 768px) {
   h1 {
-    font-size: 3.5em;
+    font-size: 2.5em;
   }
-
   p {
-    font-size: 2.1em;
+    font-size: 1.6em;
   }
-
   .progress-bar {
     width: 80%;
   }
