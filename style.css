@@ -1,86 +1,114 @@
-/* CSS for a modern and mobile-friendly UI */
+/* CSS for a cute and soft UI */
 @import url("https://fonts.googleapis.com/css2?family=Skranji&display=swap");
-
 body {
-  background-color: #ff8833;
+  background-color: #f9d5e5;
   margin: 0;
   padding: 0;
   font-family: "Skranji", cursive;
   display: flex;
   flex-direction: column;
+  transition: background-color, 0.4s;
   align-items: center;
-  transition: background-color 0.4s;
 }
 
 h1 {
-  font-size: 3.5rem;
+  font-size: 6.5rem;
   font-weight: bold;
   margin-top: 1%;
-  color: #ffffff;
+  color: #b86a84;
   font-family: "Skranji", cursive;
   text-align: center;
   letter-spacing: 0.1rem;
+  transition: color 0.4s;
+}
+
+h1:hover {
+  color: #a76178;
 }
 
 p {
   margin: 5%;
-  letter-spacing: 0.1rem;
+  letter-spacing: 0.3rem;
   font-family: "Skranji", cursive;
   padding: 0%;
-  font-size: 2.1rem;
-  color: #ffffff;
+  font-size: 4.1rem;
+  color: #ff80ab;
   text-align: center;
+  transition: 0.4s;
+}
+
+p:hover {
+  color: #ff4081;
 }
 
 .progress-bar {
   margin: 10px;
   width: 80%;
-  height: 2rem;
-  border-radius: 0.2rem;
-  background-color: #0000007a;
+  animation: none;
+  border-style: none;
+  height: 4rem;
+  border-radius: 0.1rem;
+  background-color: #ffffff;
   position: relative;
-  transition: width 0.4s, background-color 2s ease;
+  transition: 0.4s;
   overflow: hidden;
+  /* hide the overflow of the progress bar */
 }
 
 .progress-bar span {
   display: block;
   height: 100%;
-  border-radius: 0.2rem;
-  background-color: #bbeb97;
+  animation: shake infinite;
+  border-radius: 0.1rem;
+  background-color: #ff80ab;
   position: absolute;
-  transition: width 0.4s, background-color 2s ease;
+  transition:
+    width 0.4s,
+    background-color 2s ease;
+  /* add a transition to the width property */
+}
+
+.progress-bar:hover span {
+  background-color: #ff4081;
 }
 
 /* Button styles */
 .button {
   position: center;
-  color: rgb(90, 63, 63);
-  font-size: 1.6em;
+  color: #ffffff;
+  font-size: 1.8em;
   font-family: "Skranji", cursive;
-  transition: 0.2s ease;
+  transition: 0.1s ease;
+  background-color: #ff80ab;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
 }
 
 .button:hover {
-  background-color: #d2c2c2;
-  font-size: 1.8em;
+  background-color: #ff4081;
+  font-size: 1.6em;
+  cursor: pointer;
 }
 
 /* Dropdown styles */
 .dropdown {
-  text-align: center;
+  position: center;
 }
 
 .dropdown-content {
   display: none;
-  position: absolute;
+  position: center;
   z-index: 1;
-  background-color: #6a4646;
-  font-size: 1.4em;
+  background-color: #ffffff;
+  font-size: 1.2em;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .dropdown-content a {
-  color: #b77f7f;
+  color: #ff80ab;
   transition: 0.2s;
   text-align: center;
   font-family: "Skranji", cursive;
@@ -89,8 +117,9 @@ p {
 }
 
 .dropdown-content a:hover {
-  background-color: #dfc4c4;
+  background-color: #ff4081;
   font-size: 1.8em;
+  color: #ffffff;
 }
 
 .dropdown:hover .dropdown-content {
@@ -98,16 +127,24 @@ p {
 }
 
 @keyframes shake {
-  10%, 90% {
+  10%,
+  90% {
     transform: translate3d(-1px, 0, 0);
   }
-  20%, 80% {
+
+  20%,
+  80% {
     transform: translate3d(2px, 0, 0);
   }
-  30%, 50%, 70% {
+
+  30%,
+  50%,
+  70% {
     transform: translate3d(-4px, 0, 0);
   }
-  40%, 60% {
+
+  40%,
+  60% {
     transform: translate3d(4px, 0, 0);
   }
 }
@@ -135,15 +172,18 @@ div#rss-container {
   border-radius: 5px;
   box-shadow: 2px 2px 5px rgba(255, 246, 246, 0.1);
   padding: 1px;
+  align-self: center;
 }
 
 @media screen and (max-width: 768px) {
   h1 {
-    font-size: 2.5em;
+    font-size: 3.5em;
   }
+
   p {
-    font-size: 1.6em;
+    font-size: 2.1em;
   }
+
   .progress-bar {
     width: 80%;
   }
