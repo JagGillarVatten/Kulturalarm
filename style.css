@@ -87,7 +87,7 @@ p:hover {
 
 .button:hover {
   background-color: #ff4081;
-  font-size: 1.6em;
+  font-size: 1.85em;
   cursor: pointer;
 }
 
@@ -101,7 +101,7 @@ p:hover {
   position: center;
   z-index: 1;
   background-color: #ffffff;
-  font-size: 1.2em;
+  font-size: 1.5em;
   border-radius: 0.5rem;
   padding: 0.5rem;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
@@ -118,7 +118,7 @@ p:hover {
 
 .dropdown-content a:hover {
   background-color: #ff4081;
-  font-size: 1.8em;
+  font-size: 1.6em;
   color: #ffffff;
 }
 
