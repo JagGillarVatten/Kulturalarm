@@ -142,7 +142,7 @@ function getNextEvent() {
         document.getElementById("countdown").style.color = "#fdd5d5";
         break;
       default:
-        setProgressBarColor("#a3d47a");
+        setProgressBarColor("#a3d47a");a
         document.getElementById("countdown").style.color = "#fdd25";
         break;
     }
