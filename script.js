@@ -138,12 +138,12 @@ function getNextEvent() {
         document.getElementById("countdown").style.color = "#fffff";
         break;
       case timeRemaining < 600:
-        setProgressBarColor("#d3ff42");
-        document.getElementById("countdown").style.color = "#fdd5d5";
+        setProgressBarColor("#e33314");
+        document.getElementById("countdown").style.color = "#e33314";
         break;
       default:
-        setProgressBarColor("#a3d47a");a
-        document.getElementById("countdown").style.color = "#fdd25";
+        setProgressBarColor("#aed47a");a
+        document.getElementById("countdown").style.color = "#fd25";
         break;
     }
 
