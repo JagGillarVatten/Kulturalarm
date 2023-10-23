@@ -1,7 +1,7 @@
 /* CSS for a cute and soft UI */
 @import url("https://fonts.googleapis.com/css2?family=Skranji&display=swap");
 body {
-  background-color: #c65355;
+  background-color: #792d4f;
   margin: 0;
   padding: 0;
   font-family: "Skranji", cursive;
@@ -15,7 +15,7 @@ h1 {
   font-size: 6.5rem;
   font-weight: bold;
   margin-top: 1%;
-  color: hsl(43, 100%, 72%);
+  color: #ff6b6b; /* changed to a pastel red */
   font-family: "Skranji", cursive;
   text-align: center;
   letter-spacing: 0.1rem;
@@ -23,7 +23,7 @@ h1 {
 }
 
 h1:hover {
-  color: #fff8f8b2;
+  color: #ff5252; /* changed to a brighter red */
 }
 
 p {
@@ -32,13 +32,13 @@ p {
   font-family: "Skranji", cursive;
   padding: 0%;
   font-size: 4.1rem;
-  color: #ffffff;
+  color: #ffb74d; /* changed to a pastel orange */
   text-align: center;
   transition: 0.4s;
 }
 
 p:hover {
-  color: #ff4081;
+  color: #ff9800; /* changed to a brighter orange */
 }
 
 .progress-bar {
@@ -48,7 +48,7 @@ p:hover {
   border-style: none;
   height: 4rem;
   border-radius: 0.1rem;
-  background-color: #00000067;
+  background-color: #ffffff;
   position: relative;
   transition: 0.4s;
   overflow: hidden;
@@ -60,7 +60,7 @@ p:hover {
   height: 100%;
   animation: shake infinite;
   border-radius: 0.1rem;
-  background-color: #ffffff;
+  background-color: #ffb74d; /* changed to a pastel orange */
   position: absolute;
   transition:
     width 0.4s,
@@ -69,24 +69,24 @@ p:hover {
 }
 
 .progress-bar:hover span {
-  background-color: #ffffff;
+  background-color: #ff9800; /* changed to a brighter orange */
 }
 
 /* Button styles */
 .button {
   position: center;
-  color: #7e5050;
+  color: #ffffff;
   font-size: 1.8em;
   font-family: "Skranji", cursive;
   transition: 0.1s ease;
-  background-color: #f5e1a7;
+  background-color: #ff6b6b; /* changed to a pastel red */
   border: none;
   border-radius: 0.5rem;
   padding: 0.5rem 1rem;
 }
 
 .button:hover {
-  background-color: #e1edbb;
+  background-color: #ff5252; /* changed to a brighter red */
   font-size: 1.85em;
   cursor: pointer;
 }
@@ -108,7 +108,7 @@ p:hover {
 }
 
 .dropdown-content a {
-  color: #ff80ab;
+  color: #ffb74d; /* changed to a pastel orange */
   transition: 0.2s;
   text-align: center;
   font-family: "Skranji", cursive;
@@ -117,7 +117,7 @@ p:hover {
 }
 
 .dropdown-content a:hover {
-  background-color: #ff4081;
+  background-color: #ff9800; /* changed to a brighter orange */
   font-size: 1.6em;
   color: #ffffff;
 }
