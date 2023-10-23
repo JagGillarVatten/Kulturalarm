@@ -32,13 +32,13 @@ p {
   font-family: "Skranji", cursive;
   padding: 0%;
   font-size: 4.1rem;
-  color: #f2ae54;
+  color: #ffffff;
   text-align: center;
   transition: 0.4s;
 }
 
 p:hover {
-  color: #ffffff;
+  color: #ff4081;
 }
 
 .progress-bar {
@@ -48,7 +48,7 @@ p:hover {
   border-style: none;
   height: 4rem;
   border-radius: 0.1rem;
-  background-color: #ff70f367;
+  background-color: #00000067;
   position: relative;
   transition: 0.4s;
   overflow: hidden;
@@ -60,7 +60,7 @@ p:hover {
   height: 100%;
   animation: shake infinite;
   border-radius: 0.1rem;
-  background-color: #d666da;
+  background-color: #ffffff;
   position: absolute;
   transition:
     width 0.4s,
@@ -100,7 +100,7 @@ p:hover {
   display: none;
   position: center;
   z-index: 1;
-  background-color: #ffffff66;
+  background-color: #ffffff;
   font-size: 1.5em;
   border-radius: 0.5rem;
   padding: 0.5rem;
@@ -108,7 +108,7 @@ p:hover {
 }
 
 .dropdown-content a {
-  color: #ffffff;
+  color: #ff80ab;
   transition: 0.2s;
   text-align: center;
   font-family: "Skranji", cursive;
