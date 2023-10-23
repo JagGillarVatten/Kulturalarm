@@ -31,7 +31,4 @@ Vi välkomnar alla bidrag till Kulturalarm. För att bidra, följ dessa steg:
 5. Skapa en pull request för dina ändringar
 
 ## Licens
-
-Kulturalarm är licensierad under MIT-licensen. Se LICENSE-filen för mer information.
-# Kulturalarm
-Created with CodeSandbox
+Jag är äger varken varumärket/företaget/gymnasiumets logga och jag representerar ICKE verksamheten. Detta projekt är inte styrt av Kulturama eller dess verksamhet.
