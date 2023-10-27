@@ -1,7 +1,7 @@
-/* CSS for a cute and soft UI */
 @import url("https://fonts.googleapis.com/css2?family=Skranji&display=swap");
+
 body {
-  background-color: #792d4f;
+  background-color: #9b4e49;
   margin: 0;
   padding: 0;
   font-family: "Skranji", cursive;
@@ -15,16 +15,14 @@ h1 {
   font-size: 6.5rem;
   font-weight: bold;
   margin-top: 1%;
-  color: #ff6b6b; /* changed to a pastel red */
+  color: #fff9f9;
+  /* changed to a pastel red */
   font-family: "Skranji", cursive;
   text-align: center;
   letter-spacing: 0.1rem;
   transition: color 0.4s;
 }
 
-h1:hover {
-  color: #ff5252; /* changed to a brighter red */
-}
 
 p {
   margin: 5%;
@@ -32,13 +30,10 @@ p {
   font-family: "Skranji", cursive;
   padding: 0%;
   font-size: 4.1rem;
-  color: #ffb74d; /* changed to a pastel orange */
+  color: #fffffe;
+  /* changed to a pastel orange */
   text-align: center;
   transition: 0.4s;
-}
-
-p:hover {
-  color: #ff9800; /* changed to a brighter orange */
 }
 
 .progress-bar {
@@ -58,9 +53,9 @@ p:hover {
 .progress-bar span {
   display: block;
   height: 100%;
-  animation: shake infinite;
   border-radius: 0.1rem;
-  background-color: #ffb74d; /* changed to a pastel orange */
+  background-color: #ffb74d;
+  /* changed to a pastel orange */
   position: absolute;
   transition:
     width 0.4s,
@@ -68,39 +63,38 @@ p:hover {
   /* add a transition to the width property */
 }
 
-.progress-bar:hover span {
-  background-color: #ff9800; /* changed to a brighter orange */
-}
-
 /* Button styles */
 .button {
   position: center;
+  z-index: 2;
   color: #ffffff;
   font-size: 1.8em;
   font-family: "Skranji", cursive;
   transition: 0.1s ease;
-  background-color: #ff6b6b; /* changed to a pastel red */
+  background-color: #03030383;
+  /* changed to a pastel red */
   border: none;
   border-radius: 0.5rem;
   padding: 0.5rem 1rem;
 }
 
 .button:hover {
-  background-color: #ff5252; /* changed to a brighter red */
-  font-size: 1.85em;
-  cursor: pointer;
+  background-color: #ffffff75;
+  border-radius: 0.2rem;
 }
 
 /* Dropdown styles */
 .dropdown {
   position: center;
+  z-index: 1;
+
 }
 
 .dropdown-content {
   display: none;
   position: center;
   z-index: 1;
-  background-color: #ffffff;
+  background-color: #0000004b;
   font-size: 1.5em;
   border-radius: 0.5rem;
   padding: 0.5rem;
@@ -108,8 +102,9 @@ p:hover {
 }
 
 .dropdown-content a {
-  color: #ffb74d; /* changed to a pastel orange */
-  transition: 0.2s;
+  color: #ffffff;
+  /* changed to a pastel orange */
+  transition: 0.4s;
   text-align: center;
   font-family: "Skranji", cursive;
   text-decoration: none;
@@ -117,40 +112,13 @@ p:hover {
 }
 
 .dropdown-content a:hover {
-  background-color: #ff9800; /* changed to a brighter orange */
-  font-size: 1.6em;
+  background-color: #ffffff3b;
+  border-radius: 1rem;
   color: #ffffff;
 }
 
 .dropdown:hover .dropdown-content {
   display: block;
-}
-
-@keyframes shake {
-  10%,
-  90% {
-    transform: translate3d(-1px, 0, 0);
-  }
-
-  20%,
-  80% {
-    transform: translate3d(2px, 0, 0);
-  }
-
-  30%,
-  50%,
-  70% {
-    transform: translate3d(-4px, 0, 0);
-  }
-
-  40%,
-  60% {
-    transform: translate3d(4px, 0, 0);
-  }
-}
-
-.apply-shake {
-  animation: shake infinite cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 
 /* Media queries */
@@ -185,16 +153,6 @@ div#rss-container {
   }
 
   .progress-bar {
-    width: 100%;
-  }
-  
-  .button {
-    font-size: 1.5em;
-    padding: 0.3rem 0.7rem;
-  }
-  
-  .dropdown-content {
-    font-size: 1.2em;
-    padding: 0.3rem;
+    width: 80%;
   }
 }
