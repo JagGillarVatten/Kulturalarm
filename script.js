@@ -1,16 +1,3 @@
-/**
- * Global variables to store event data and duration.
- * eventFiles contains the schema options to load.
- * loadJSON loads JSON data from a URL.
- * getTodaysEvents filters events to only today's.
- * getNextEvent gets the next upcoming event.
- * updateCountdown calculates and displays the countdown UI.
- * formatSeconds and pad format time strings.
- * loadEventFile loads a schema's JSON data.
- * init sets up the schema dropdown UI.
- * parseRSS parses an RSS feed into HTML.
- */
-
 let events = [];
 
 let eventDuration = 0;
@@ -125,36 +112,8 @@ function getNextEvent() {
       (percentElapsed / 100) *
       document.getElementById("progress-bar").offsetWidth;
     document.getElementById("progress").style.width = `${width}px`;
-
-    switch (true) {
-      case timeRemaining < 60:
-        setCountdownAnimation("Shake", null, "infinite");
-        setProgressBarColor("#f36868");
-        document.getElementById("countdown").style.color = "#f36868";
-        break;
-      case timeRemaining < 300:
-        setCountdownAnimation("Shake", 0.1, 100);
-        setProgressBarColor("#f7d26f");
-        document.getElementById("countdown").style.color = "#fffff";
-        break;
-      case timeRemaining < 600:
-        setProgressBarColor("#e33314");
-        document.getElementById("countdown").style.color = "#e33314";
-        break;
-      default:
-        setProgressBarColor("#aed47a");a
-        document.getElementById("countdown").style.color = "#fd25";
-        break;
-    }
-
     document.getElementById("progress-bar").style.display = "block";
   }
-
-  function setCountdownAnimation(animationName, animationDuration, iterationCount) {
-    const countdown = document.getElementById("countdown");
-    countdown.style.animationName = animationName;
-    countdown.style.animationDuration = animationDuration ? `${animationDuration}s` : null;
-    countdown.style.animationIterationCount = iterationCount;
   }
 
   function setProgressBarColor(color) {
