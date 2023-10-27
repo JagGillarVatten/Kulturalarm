@@ -185,6 +185,16 @@ div#rss-container {
   }
 
   .progress-bar {
-    width: 80%;
+    width: 100%;
+  }
+  
+  .button {
+    font-size: 1.5em;
+    padding: 0.3rem 0.7rem;
+  }
+  
+  .dropdown-content {
+    font-size: 1.2em;
+    padding: 0.3rem;
   }
 }
