@@ -43,7 +43,7 @@ function loadJSON(url, callback) {
 /**
  * Gets the events for the current day of the week.
  * @returns {array} - The events for the current day of the week.
- */
+*/
 function getTodaysEvents() {
   const today = new Date();
   const dayOfWeek = today.getDay();
@@ -184,7 +184,7 @@ function pad(num, size) {
  * @returns {void}
  */
 function loadEventFile(url) {
-  loadJSON(url, (data) => {
+  loadJSON(`Scheman/${url}`, (data) => {
     events = data;
     updateCountdown();
   });
