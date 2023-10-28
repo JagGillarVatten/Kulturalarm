@@ -1,60 +1,81 @@
+// Global variables
 let events = [];
-let eventDuration = 0;
 let sentNotifications = [];
 
+// Event files
 const eventFiles = [
   {
-    name: "MP1-23",
+    name: "MP1",
     url: "MP1.json",
   },
   {
-    name: "AM1-23",
+    name: "AM1",
     url: "AM1.json",
+  },
+  {
+    name: "MP2",
+    url: "MP2.json",
+  },
+  {
+    name: "AM2",
+    url: "AM2.json",
   },
 ];
 
-function loadJSON(callback, url) {
+/**
+ * Loads a JSON file and calls a callback function with the parsed data.
+ * @param {string} url - The URL of the JSON file.
+ * @param {function} callback - The function to call with the parsed data.
+ * @returns {void}
+ */
+function loadJSON(url, callback) {
   const xhr = new XMLHttpRequest();
   xhr.overrideMimeType("application/json");
   xhr.open("GET", url, true);
   xhr.onreadystatechange = function () {
-    if (xhr.readyState == 4 && xhr.status == "200") {
-      callback(xhr.responseText);
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      callback(JSON.parse(xhr.responseText));
     }
   };
   xhr.send(null);
 }
 
+/**
+ * Gets the events for the current day of the week.
+ * @returns {array} - The events for the current day of the week.
+ */
 function getTodaysEvents() {
   const today = new Date();
   const dayOfWeek = today.getDay();
   return events.filter((event) => event.startDay === dayOfWeek);
 }
 
+/**
+ * Gets the next event.
+ * @returns {object} - The next event or null if there are no more events today.
+ */
 function getNextEvent() {
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const todaysEvents = getTodaysEvents();
-  for (let i = 0; i < todaysEvents.length; i++) {
-    const start = new Date(
-      `${today.toDateString()} ${todaysEvents[i].startTime}`,
-    );
-    const end = new Date(`${today.toDateString()} ${todaysEvents[i].endTime}`);
+  for (const event of todaysEvents) {
+    const start = new Date(`${today.toDateString()} ${event.startTime}`);
+    const end = new Date(`${today.toDateString()} ${event.endTime}`);
     if (now >= start && now < end) {
       // We're currently in this event
       return {
-        name: todaysEvents[i].name,
-        start: start,
-        location: todaysEvents[i].location,
-        end: end,
+        name: event.name,
+        start,
+        location: event.location,
+        end,
       };
     } else if (now < start) {
       // This event hasn't started yet
       return {
-        name: todaysEvents[i].name,
-        start: start,
-        end: end,
-        location: todaysEvents[i].location,
+        name: event.name,
+        start,
+        end,
+        location: event.location,
       };
     }
   }
@@ -64,7 +85,6 @@ function getNextEvent() {
 
 /**
  * Updates the countdown timer and progress bar for the next event.
- * @function
  * @returns {void}
  */
 function updateCountdown() {
@@ -85,19 +105,14 @@ function updateCountdown() {
     return;
   }
 
-  const eventName = nextEvent.name;
-  const eventLocation = nextEvent.location;
-  const start = nextEvent.start;
-  const end = nextEvent.end;
+  const { name, location, start, end } = nextEvent;
 
   if (now < start) {
     // Event hasn't started yet
     const timeUntilStart = (start - now) / 1000; // Convert to seconds
     const timeUntilStartFormatted = formatSeconds(timeUntilStart);
-    document.title = `${timeUntilStartFormatted} tills | ${eventName}`;
-    const countdown = ` ${eventName} börjar om: <br> ${formatSeconds(
-      timeUntilStart,
-    )} `;
+    document.title = `${timeUntilStartFormatted} tills | ${name}`;
+    const countdown = ` ${name} börjar om: <br> ${timeUntilStartFormatted} `;
     document.getElementById("countdown").innerHTML = countdown;
     document.getElementById("countdown").style.color = "#ffff";
     document.getElementById("progress").style.width = "0";
@@ -105,13 +120,13 @@ function updateCountdown() {
     document.getElementById("progress-bar").style.display = "block";
 
     // Check if notification has already been sent for this event
-    if (!sentNotifications.includes(eventName)) {
+    if (!sentNotifications.includes(name)) {
       // Create new notification
-      const notification = new Notification(eventName, {
-        body: `Börjar om ${formatSeconds(timeUntilStart)} i ${eventLocation}`,
+      const notification = new Notification(name, {
+        body: `Börjar om ${timeUntilStartFormatted} i ${location}`,
       });
       // Add event name to sentNotifications array
-      sentNotifications.push(eventName);
+      sentNotifications.push(name);
     }
 
     return;
@@ -121,16 +136,15 @@ function updateCountdown() {
   const totalDuration = (end - start) / 1000; // Convert to seconds
   const timeElapsed = (now - start) / 1000; // Convert to seconds
   const timeRemaining = (end - now) / 1000; // Convert to seconds
-  const eventDuration = (end - start) / 1000; // convert to seconds
 
-  const countdown = `Tid kvar för ${eventName}:<br> ${formatSeconds(timeRemaining)}`;
-  const location = `Rum: ${eventLocation}`;
+  const countdown = `Tid kvar för ${name}:<br> ${formatSeconds(timeRemaining)}`;
+  const locationText = `Rum: ${location}`;
   document.getElementById("countdown").innerHTML = countdown;
-  document.getElementById("location").innerHTML = location;
+  document.getElementById("location").innerHTML = locationText;
   document.getElementById("countdown").innerHTML = countdown;
   const timeRemainingFormatted = formatSeconds(timeRemaining);
-  document.title = `${timeRemainingFormatted} kvar | ${eventName}`;
-  const percentElapsed = (timeElapsed / eventDuration) * 100;
+  document.title = `${timeRemainingFormatted} kvar | ${name}`;
+  const percentElapsed = (timeElapsed / totalDuration) * 100;
   const width =
     (percentElapsed / 100) *
     document.getElementById("progress-bar").offsetWidth;
@@ -139,6 +153,11 @@ function updateCountdown() {
   document.getElementById("progress-bar").style.display = "block";
 }
 
+/**
+ * Formats a number of seconds as a string in the format HH:MM:SS.
+ * @param {number} seconds - The number of seconds to format.
+ * @returns {string} - The formatted string.
+ */
 function formatSeconds(seconds) {
   const minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);
@@ -149,30 +168,48 @@ function formatSeconds(seconds) {
   return `${pad(minutes, 2)}:${paddedSeconds}`;
 }
 
+/**
+ * Pads a number with leading zeros to a specified length.
+ * @param {number} num - The number to pad.
+ * @param {number} size - The desired length of the padded string.
+ * @returns {string} - The padded string.
+ */
 function pad(num, size) {
   return ("000000000" + num).substr(-size);
 }
 
+/**
+ * Loads an event file and updates the countdown.
+ * @param {string} url - The URL of the event file.
+ * @returns {void}
+ */
 function loadEventFile(url) {
-  loadJSON(function (response) {
-    events = JSON.parse(response);
+  loadJSON(url, (data) => {
+    events = data;
     updateCountdown();
-  }, url);
+  });
 }
 
+/**
+ * Initializes the dropdown menu and loads the first event file.
+ * @returns {void}
+ */
 function init() {
   const dropdownContent = document.querySelector(".dropdown-content");
   const dropdownButton = document.querySelector(".dropdown-button");
-  eventFiles.forEach((eventFile) => {
+  eventFiles.forEach(({ name, url }) => {
     const eventButton = document.createElement("a");
-    eventButton.innerText = eventFile.name;
+    eventButton.innerText = name;
     eventButton.onclick = () => {
-      loadEventFile(eventFile.url);
+      loadEventFile(url);
     };
     dropdownContent.appendChild(eventButton);
   });
   loadEventFile(eventFiles[0].url);
 }
 
+// Call the init function when the page loads
+window.onload = init;
+
+// Update the countdown every 100 milliseconds
 setInterval(updateCountdown, 100);
-init();
