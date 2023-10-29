@@ -154,7 +154,7 @@ div#rss-container {
   align-self: center;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 378px) {
   h1 {
     font-size: 3.5em;
   }
