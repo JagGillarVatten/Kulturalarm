@@ -184,7 +184,7 @@ function pad(num, size) {
  * @returns {void}
  */
 function loadEventFile(url) {
-  loadJSON(`Scheman/${url}`, (data) => {
+  loadJSON(`scheman/${url}`, (data) => {
     events = data;
     updateCountdown();
   });
