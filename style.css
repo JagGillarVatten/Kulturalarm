@@ -3,10 +3,10 @@ body {
   background-color: #554054;
   color: #ffffff;
   margin: 0;
-  padding: 2rem;
+  padding: rem;
 font-family: chewy;
 animation: intro-bounce 0.35s ease-out;
-  font-size: 1.6rem;
+  font-size: 1.2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -15,7 +15,7 @@ animation: intro-bounce 0.35s ease-out;
 h1 {
   font-size: 6.5rem;
   font-weight: bold;
-  margin-top: 1%;
+  margin-top: 0%;
 font-family: chewy;
   text-align: center;
   letter-spacing: 0.1rem;
@@ -54,10 +54,10 @@ name {
 }
 
 p {
-  margin: 5%;
+  margin: 1%;
   letter-spacing: 0.3rem;
 font-family: chewy;
-  padding: 0%;
+
   font-size: 4.1rem;
   color: #fffcfa;
   text-align: center;
@@ -66,10 +66,31 @@ font-family: chewy;
 .progress-bar {
   margin: 10px;
   width: 80%;
+  animation: none;
+  border-style: none;
   height: 4rem;
   border-radius: 0.1rem;
-  background-color: #222222;
+  background-color: #ffffff1c;
+  position: relative;
+  transition: 0.4s;
+  overflow: hidden;
+  /* hide the overflow of the progress bar */
 }
+
+.progress-bar span {
+  display: block;
+  height: 100%;
+  animation: shake infinite;
+  border-radius: 0.1rem;
+  background-color: #d49b44; /* changed to a pastel orange */
+  position: absolute;
+  transition:
+    width 0.1s,
+    background-color 2s ease;
+  /* add a transition to the width property */
+}
+
+
 
 /* Button styles */
 .button {

@@ -213,3 +213,32 @@ window.onload = init;
 
 // Update the countdown every 100 milliseconds
 setInterval(updateCountdown, 100);
+function getNextEvent() {
+  const now = new Date();
+  const today = new Date(now.toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" }));
+  const dayOfWeek = today.getDay();
+  const todaysEvents = events.filter((event) => event.startDay === dayOfWeek);
+  for (const event of todaysEvents) {
+    const start = new Date(`${today.toDateString()} ${event.startTime}`);
+    const end = new Date(`${today.toDateString()} ${event.endTime}`);
+    if (now >= start && now < end) {
+      // We're currently in this event
+      return {
+        name: event.name,
+        start,
+        location: event.location,
+        end,
+      };
+    } else if (now < start) {
+      // This event hasn't started yet
+      return {
+        name: event.name,
+        start,
+        end,
+        location: event.location,
+      };
+    }
+  }
+  // There are no events left today
+  return null;
+}
