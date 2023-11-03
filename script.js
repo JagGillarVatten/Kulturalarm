@@ -242,3 +242,56 @@ function getNextEvent() {
   // There are no events left today
   return null;
 }
+/**
+ * Loads an event file and updates the countdown.
+ * @param {string} url - The URL of the event file.
+ * @returns {void}
+ */
+function loadEventFile(url) {
+  loadJSON(`scheman/${url}`, (data) => {
+    events = data;
+    updateCountdown();
+  });
+
+  // Add event listener to play click sound when button is clicked
+  const button = document.querySelector(".dropdown-button");
+  button.addEventListener("click", () => {
+    const audio = new Audio("click.mp3");
+    audio.play();
+  });
+}
+function init() {
+  const dropdownContent = document.querySelector(".dropdown-content");
+  const dropdownButton = document.querySelector(".dropdown-button");
+  eventFiles.forEach(({ name, url }) => {
+    const eventButton = document.createElement("a");
+    eventButton.innerText = name;
+    eventButton.onclick = () => {
+      loadEventFile(url);
+    };
+    eventButton.addEventListener("mouseover", () => {
+      const audio = new Audio("click.mp3");
+      audio.play();
+    });
+    dropdownContent.appendChild(eventButton);
+  });
+  loadEventFile(eventFiles[0].url);
+}
+// Define an array of sound file names
+const soundFiles = ["bird.mp3", "bird.mp3", "sound3.mp3"];
+
+// Function to play a random sound from the sounds folder
+function playRandomSound() {
+  // Choose a random sound file from the array
+  const soundFile = soundFiles[Math.floor(Math.random() * soundFiles.length)];
+  // Create a new Audio object with the chosen sound file
+  const audio = new Audio(`sounds/${soundFile}`);
+  // Set the volume to a very low level
+  audio.volume = 2.1;
+  // Play the sound
+  audio.play();
+}
+
+// Add event listener to the page title
+const title = document.querySelector("title");
+title.addEventListener("click", playRandomSound);
