@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Chewy&display=swap');
 body {
-  background-color: #554054;
+  background-color: #ff8c00; /* changed to orange */
   color: #ffffff;
   margin: 0;
   padding: rem;
@@ -70,7 +70,7 @@ font-family: chewy;
   border-style: none;
   height: 4rem;
   border-radius: 0.1rem;
-  background-color: #ffffff1c;
+  background-color: #3e1a1a1c;
   position: relative;
   transition: 0.4s;
   overflow: hidden;
@@ -82,7 +82,7 @@ font-family: chewy;
   height: 100%;
   animation: shake infinite;
   border-radius: 0.1rem;
-  background-color: #d49b44; /* changed to a pastel orange */
+  background-color: #fec296; /* changed to orange */
   position: absolute;
   transition:
     width 0.1s,
@@ -97,7 +97,7 @@ font-family: chewy;
   color: #ffffff;
   font-size: 2rem;
 font-family: chewy;
-  background-color: #000000;
+  background-color: #ba8a84;
   border: none;
   padding: 1rem 2rem;
   transition: 0.5s ease;
@@ -131,7 +131,7 @@ font-family: chewy;
 .dropdown-content a {
   color: #daa8a8;
   font-size-adjust: none;
-  background-color: #00000041;
+  background-color: #2b597441;
   transition: 0.1s;
   text-align: center;
 font-family: chewy;
@@ -142,7 +142,7 @@ font-family: chewy;
 }
 
 .dropdown-content a:hover {
-  background-color: #000000cb;
+  background-color: #47c19fcb;
   font-size: 1.1em;
   letter-spacing: 0.2rem;
   color: #e4c1c1;
