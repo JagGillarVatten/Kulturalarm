@@ -295,3 +295,13 @@ function playRandomSound() {
 // Add event listener to the page title
 const title = document.querySelector("title");
 title.addEventListener("click", playRandomSound);
+// Add event listener to play click sound and pop animation when button is clicked
+const button = document.querySelector(".dropdown-button");
+button.addEventListener("click", () => {
+  const audio = new Audio("sounds/click.mp3");
+  audio.play();
+  button.classList.add("pop");
+  setTimeout(() => {
+    button.classList.remove("pop");
+  }, 500);
+});

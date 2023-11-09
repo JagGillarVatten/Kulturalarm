@@ -1,4 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap');
+.pop {
+  animation: pop 0.1s linear;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.90);
+  }
+ 
+  100% {
+    transform: scale(1);
+  }
+}
 body {
   background-color: #ff7f50; /* changed to orange-red */
   color: #ffffff;
