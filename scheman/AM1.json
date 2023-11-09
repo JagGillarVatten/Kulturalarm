@@ -17,7 +17,8 @@
       "name": "Lunch",
       "startDay": 1,
       "startTime": "12:25",
-      "endTime": "12:55"
+      "endTime": "12:55",
+      "location": "Matsal plan 2"
     },
     {
       "name": "Engelska",
@@ -37,7 +38,8 @@
       "name": "Idrott (Praktisk)",
       "startDay": 1,
       "startTime": "15:30",
-      "endTime": "17:00"
+      "endTime": "17:00",
+      "location": "240"
     },
     {
       "name": "Musikimprovisation",
@@ -49,7 +51,8 @@
       "name": "Lunch",
       "startDay": 2,
       "startTime": "12:20",
-      "endTime": "12:50"
+      "endTime": "12:50",
+      "location": "Matsal plan 2"
     },
     {
       "name": "Ensemble med körsång",
@@ -87,7 +90,8 @@
       "name": "Lunch",
       "startDay": 3,
       "startTime": "12:30",
-      "endTime": "13:00"
+      "endTime": "13:00",
+      "location": "Matsal plan 2"
     },
    
     {
@@ -115,7 +119,8 @@
       "name": "Lunch",
       "startDay": 4,
       "startTime": "12:15",
-      "endTime": "12:45"
+      "endTime": "12:45",
+      "location": "Matsal plan 2"
     },
     {
       "name": "Gehörs- och musiklära",
@@ -149,7 +154,8 @@
       "name": "Lunch",
       "startDay": 5,
       "startTime": "12:00",
-      "endTime": "12:30"
+      "endTime": "12:30",
+      "location": "Matsal plan 2"
     },
     {
       "name": "Ensemble med körsång",
