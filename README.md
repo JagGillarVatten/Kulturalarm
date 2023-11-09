@@ -60,3 +60,7 @@ För att anpassa Kulturalarm för dina egna scheman, följ dessa steg:
 
 3. Ersätt de befintliga JSON-filerna i rotmappen med dina anpassade JSON-filer.
 4. Gå till script.js och lägg till JSON-data till arrayen. Denna array håller koll på vilka alternativ som är tillgängliga att välja från:
+## To-do
+- Lägg till alla kulturama kursers scheman.
+- Lägg till en funktion som gör att man kan göra att specifika datum har undantag och har ett unikt schema som överskrider det regelbunda schemat.
+- Lägg till ett mer interaktivt och intressant utseende med unika ikoner för olika ämnen och andra dekorationer för att göra appen mer attraktiv.
