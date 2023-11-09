@@ -269,8 +269,8 @@ function init() {
     eventButton.onclick = () => {
       loadEventFile(url);
     };
-    eventButton.addEventListener("mouseover", () => {
-      const audio = new Audio("click.mp3");
+    eventButton.addEventListener("click", () => {
+      const audio = new Audio("sounds/click.mp3");
       audio.play();
     });
     dropdownContent.appendChild(eventButton);
@@ -287,7 +287,7 @@ function playRandomSound() {
   // Create a new Audio object with the chosen sound file
   const audio = new Audio(`sounds/${soundFile}`);
   // Set the volume to a very low level
-  audio.volume = 2.1;
+  audio.volume = 100.1;
   // Play the sound
   audio.play();
 }
