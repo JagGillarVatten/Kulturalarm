@@ -159,13 +159,6 @@ function getNextEvent() {
     t = new Date(e.toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" })),
     n = t.getDay(),
     o = events.filter((e) => e.startDay === n);
-
-  // Add time zone offset
-  let timezoneOffset = t.getTimezoneOffset() / 60;
-  if (timezoneOffset != 1) {
-    t.setHours(t.getHours() + timezoneOffset);
-  }
-
   for (let r of o) {
     let l = new Date(`${t.toDateString()} ${r.startTime}`),
       i = new Date(`${t.toDateString()} ${r.endTime}`);
@@ -175,7 +168,6 @@ function getNextEvent() {
   }
   return null;
 }
-
 function loadEventFile(e) {
   loadJSON(`scheman/${e}`, (e) => {
     (events = e), updateCountdown();
@@ -186,7 +178,6 @@ function loadEventFile(e) {
     e.play();
   });
 }
-
 function init() {
   let e = document.querySelector(".dropdown-content");
   document.querySelector(".dropdown-button"),
@@ -194,8 +185,7 @@ function init() {
       let o = document.createElement("a");
       (o.innerText = t),
         (o.onclick = () => {
-          loadEventFi;
-          le(n);
+          loadEventFile(n);
         }),
         o.addEventListener("click", () => {
           let e = new Audio("sounds/click.mp3");
