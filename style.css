@@ -19,7 +19,7 @@ body {
   margin: 0;
   padding: rem;
   font-family: 'Quicksand', sans-serif; /* changed to Quicksand font */
-  animation: intro-bounce 0.5s ease-out;
+  animation: intro-bounce 0.95s ease-out;
   font-size: 1.2rem;
   display: flex;
   flex-direction: column;
@@ -44,19 +44,17 @@ name{
   font-family: 'Quicksand', sans-serif; /* changed to Quicksand font */
   text-align: center;
   letter-spacing: 0.1rem;
-  animation: intro-bounce 0.5s ease-out;
+  animation: intro-bounce 0.97s ease-out;
 }
 
 #countdown-text {
   font-size: 24px;
   font-weight: bold;
-  animation: intro-bounce 0.5s ease-out;
   text-align: center;
 
 }
 #countdown-number{
 position:relative;
-animation: intro-bounce 0.5s ease-out;
 text-align:center;
 text-anchor: left;  
   font-size: 6em;
@@ -65,18 +63,17 @@ text-anchor: left;
 
 @keyframes intro-bounce {
   0% {
-    transform: translateY(0.2rem);
-    opacity: 0.9;
- 
-    transform: scaleY(1.00);
+    transform: translateY(-4.5rem);
+    opacity: 0;
+    rotate: 2deg;
+    scale: 1.01;
   }
   30% {
-    transform: translateY(12rem);
-    transform: scalex(1.02);
+    transform: translateY(0.9rem);
   }
   50% {
     transform: translateY(0.2rem);
-
+    rotate: -2deg;
   }
   100% {
     transform: translateY(0rem);
@@ -215,4 +212,3 @@ div#rss-container {
     width: 70%;
   }
 }
-
