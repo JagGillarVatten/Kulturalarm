@@ -1,0 +1,1 @@
+Make so the unchanged text doesn't update to make the website compatiable with website translation apps. Currently it doesn't work properly since the text always changes and thus resuts in it all being jittery and constantly changing. Only the numbers need to update for the countdown.
