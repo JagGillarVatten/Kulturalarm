@@ -12,14 +12,6 @@
     transform: scale(1);
   }
 }
-@keyframes bop{
-  0% {
-    transform: translateX(20px);
-  }
-  100% {
-    transform: translateX(-20px);
-  }
-}
 
 body {
   background-color: #ff7f50; /* changed to orange-red */
@@ -65,7 +57,7 @@ name{
 }
 #countdown-number{
 position:relative;
-animation:none;
+animation: intro-bounce 0.5s ease-out;
 text-align:center;
 text-anchor: left;  
   font-size: 6em;
