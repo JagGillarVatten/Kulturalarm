@@ -49,6 +49,7 @@ name{
   font-size: 6.5rem;
   font-weight: bold;
   margin-top: 1%;
+  background-color: rgba(100, 35, 95, 0.371);
   font-family: 'Quicksand', sans-serif; /* changed to Quicksand font */
   text-align: center;
   letter-spacing: 0.1rem;
