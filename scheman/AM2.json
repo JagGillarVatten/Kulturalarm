@@ -1,0 +1,161 @@
+[
+    {
+      "name": "Matematik", 
+      "startDay": 1,
+      "startTime": "08:45",
+      "endTime": "10:00",
+      "location": "516"
+    },
+    {
+      "name": "Engelska",
+      "startDay": 1,
+      "startTime": "10:05",
+      "endTime": "11:20",
+      "location": "516"
+    },
+    {
+      "name": "Lunch",
+      "startDay": 1,
+      "startTime": "11:45",
+      "endTime": "12:15"
+    },
+    {
+      "name": "Fysik",
+      "startDay": 1,
+      "startTime": "12:30",
+      "endTime": "13:45",
+      "location": "516"
+    },
+    {
+      "name": "Kemi",
+      "startDay": 1,
+      "startTime": "14:00",
+      "endTime": "15:15",
+      "location": "516"
+    },
+    {
+      "name": "Engelska",
+      "startDay": 1,
+      "startTime": "08:45",
+      "endTime": "10:00",
+      "location": "516"
+    },
+    {
+      "name": "Matematik",
+      "startDay": 1,
+      "startTime": "10:05",
+      "endTime": "11:20",
+      "location": "516"
+    },
+    {
+      "name": "Lunch",
+      "startDay": 1,
+      "startTime": "11:45",
+      "endTime": "12:15"
+    },
+    {
+      "name": "Fysik",
+      "startDay": 1,
+      "startTime": "12:30",
+      "endTime": "13:45",
+      "location": "516"
+    },
+    {
+      "name": "Historia",
+      "startDay": 2,
+      "startTime": "14:00",
+      "endTime": "15:15",
+      "location": "516"
+    },
+    {
+      "name": "Matematik",
+      "startDay": 3,
+      "startTime": "08:45",
+      "endTime": "10:00",
+      "location": "516"
+    },
+    {
+      "name": "Naturkunskap",
+      "startDay": 3,
+      "startTime": "10:05",
+      "endTime": "11:20",
+      "location": "516"
+    },
+    {
+      "name": "Lunch",
+      "startDay": 3,
+      "startTime": "11:45",
+      "endTime": "12:15"
+    },
+    {
+      "name": "Estetisk kommunikation",
+      "startDay": 3,
+      "startTime": "12:30",
+      "endTime": "13:45",
+      "location": "308"
+      
+    },
+    {
+      "name": "Gehörs- och musiklära",
+      "startDay": 3,
+      "startTime": "14:00",
+      "endTime": "15:15",
+      "location": [
+        "405",
+        "414"
+      ]
+    },
+    {
+      "name": "Historia",
+      "startDay": 4,
+      "startTime": "13:00",
+      "endTime": "14:15",
+      "location": "705"
+    },
+    {
+      "name": "Engelska",
+      "startDay": 4,
+      "startTime": "14:25",
+      "endTime": "15:40",
+      "location": "709"
+    },
+    {
+      "name": "Stuga",
+      "startDay": 4,
+      "startTime": "15:45",
+      "endTime": "17:00",
+      "location": [
+        "405",
+        "414",
+        "606",
+        "610",
+        "611",
+        "616",
+        "617",
+        "705",
+        "709",
+        "715",
+        "716",
+        "723",
+        "724"
+      ]
+    },
+    {
+      "name": "Musikproduktion",
+      "startDay": 5,
+      "startTime": "08:45",
+      "endTime": "10:00",
+      "location": "614",
+      "rooms": [
+        "304",
+        "304a",
+        "304b",
+        "305",
+        "305a",
+        "305b",
+        "305c",
+        "306"
+      ]
+    }
+
+]
