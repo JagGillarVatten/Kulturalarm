@@ -136,11 +136,6 @@ function formatSeconds(e) {
 function pad(e, t) {
   return ("000000000" + e).substr(-t);
 }
-function loadEventFile(e) {
-  loadJSON(`scheman/${e}`, (e) => {
-    (events = e), updateCountdown();
-  });
-}
 function init() {
   let e = document.querySelector(".dropdown-content");
   document.querySelector(".dropdown-button"),
