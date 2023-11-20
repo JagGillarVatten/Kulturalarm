@@ -186,8 +186,7 @@ function init() {
     };
 
     anchor.addEventListener("click", () => {
-      let clickSound = new Audio("sounds/click.mp3");
-      clickSound.play();
+
     });
 
     dropdownContent.appendChild(anchor);
@@ -221,22 +220,23 @@ const soundFiles = ["bird.mp3", "bird.mp3", "sound3.mp3"];
 function playRandomSound() {
   let randomSound = soundFiles[Math.floor(Math.random() * soundFiles.length)];
   let audio = new Audio(`sounds/${randomSound}`);
-  audio.volume = 100.1;
+  audio.volume = 0.1;
   audio.play();
 }
 
 const title = document.querySelector("title");
 title.addEventListener("click", playRandomSound);
-
 const button = document.querySelector(".dropdown-button");
 button.addEventListener("click", () => {
   let clickSound = new Audio("sounds/click.mp3");
+  clickSound.volume = 0.01; // Adjust the volume level as needed (0.2 is 20% of the maximum volume)
   clickSound.play();
   button.classList.add("pop");
   setTimeout(() => {
     button.classList.remove("pop");
-  }, 500);
+  }, 30);
 });
+
 let userTimeZoneOffset = new Date().getTimezoneOffset() / 60; // Get user's timezone offset in hours
 
 function adjustTimezone(date) {

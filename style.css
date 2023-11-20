@@ -146,7 +146,7 @@ p {
 .dropdown-content {
   display: none;
   border-radius: 1rem;
-  position: absolute; /* Adjusted to absolute */
+  position: relative; /* Adjusted to absolute */
   z-index: 1;
   font-size: 1.5em;
   top: 100%; /* Added to position below the button */
@@ -218,12 +218,3 @@ div#rss-container {
   }
 }
 
-
-#page-visit-count {
-  position: absolute;
-  bottom: 30px;
-  background-color: rgba(255, 255, 255, 0);
-  padding: 10px;
-  color: rgb(51, 37, 37);
-  font-size: 16px;
-}
