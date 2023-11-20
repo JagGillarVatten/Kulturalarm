@@ -146,7 +146,7 @@ p {
 .dropdown-content {
   display: none;
   border-radius: 1rem;
-  position: center; /* Adjusted to absolute */
+  position: absolute; /* Adjusted to absolute */
   z-index: 1;
   font-size: 1.5em;
   top: 100%; /* Added to position below the button */
@@ -163,7 +163,7 @@ p {
   text-decoration: none;
   display: block;
   height: 3rem;
-
+  position: center;
   padding: 0.01;
 }
 
@@ -177,7 +177,6 @@ p {
 
 /* Removed .dropdown:hover .dropdown-content */
 .dropdown-content.show {
-  
   display: block; /* Added to show the dropdown when .show is present */
 }
 
@@ -219,31 +218,6 @@ div#rss-container {
   }
 }
 
-#sidebar {
-  display: none;
-  margin-top: 20px;
-}
-
-#tabs {
-  display: flex;
-  margin-top: 10px;
-}
-
-.tab {
-  padding: 10px;
-  background-color: #4caf50;
-  color: white;
-  cursor: pointer;
-  margin-right: 5px;
-}
-
-.tab:hover {
-  background-color: #45a049;
-}
-
-#sidebar-content {
-  margin-top: 10px;
-}
 
 #page-visit-count {
   position: absolute;

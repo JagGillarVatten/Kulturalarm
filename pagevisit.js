@@ -54,7 +54,3 @@ setTimeout(function () {
     }
   }, 50);
 }, 5000);
-
-// Make the element stay at the bottom
-document.getElementById("page-visit-count").style.position = "relative";
-document.getElementById("page-visit-count").style.bottom = "0";
