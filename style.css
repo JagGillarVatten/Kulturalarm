@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap');
+
 .pop {
   animation: pop 0.1s linear;
 }
@@ -7,18 +8,17 @@
   0% {
     transform: scale(0.90);
   }
- 
   100% {
     transform: scale(1);
   }
 }
 
 body {
-  background-color: #ff7f50; /* changed to orange-red */
+  background-color: #ff7f50;
   color: #ffffff;
   margin: 0;
-  padding: rem;
-  font-family: 'Quicksand', sans-serif; /* changed to Quicksand font */
+  padding: 1rem;
+  font-family: 'Quicksand', sans-serif;
   animation: intro-bounce 0.5s ease-out;
   font-size: 1.2rem;
   display: flex;
@@ -26,22 +26,11 @@ body {
   align-items: center;
 }
 
-
-
-h1 {
+h1, name {
   font-size: 6.5rem;
   font-weight: bold;
-  margin-top: 0%;
-  font-family: 'Quicksand', sans-serif; /* changed to Quicksand font */
-  text-align: center;
-  letter-spacing: 0.1rem;
-}
-
-name{
-  font-size: 6.5rem;
-  font-weight: bold;
-  margin-top: 1%;
-  font-family: 'Quicksand', sans-serif; /* changed to Quicksand font */
+  margin-top: 0;
+  font-family: 'Quicksand', sans-serif;
   text-align: center;
   letter-spacing: 0.1rem;
   animation: intro-bounce 0.5s ease-out;
@@ -52,34 +41,30 @@ name{
   font-weight: bold;
   animation: intro-bounce 0.5s ease-out;
   text-align: center;
-
 }
-#countdown-number{
-position:relative;
-animation: intro-bounce 0.5s ease-out;
-text-align:center;
-text-anchor: left;  
+
+#countdown-number {
+  position: relative;
+  animation: intro-bounce 0.5s ease-out;
+  text-align: center;
   font-size: 6em;
-  }
-  
+}
 
 @keyframes intro-bounce {
   0% {
     transform: translateY(0.2rem);
     opacity: 0.9;
- 
     transform: scaleY(1.00);
   }
   30% {
     transform: translateY(12rem);
-    transform: scalex(1.02);
+    transform: scaleX(1.02);
   }
   50% {
     transform: translateY(0.2rem);
-
   }
   100% {
-    transform: translateY(0rem);
+    transform: translateY(0);
     opacity: 1;
   }
 }
@@ -87,7 +72,7 @@ text-anchor: left;
 p {
   margin: 1%;
   letter-spacing: 0.3rem;
-  font-family: 'Quicksand', sans-serif; /* changed to Quicksand font */
+  font-family: 'Quicksand', sans-serif;
   font-size: 4.1rem;
   color: #fffcfa;
   text-align: center;
@@ -100,11 +85,10 @@ p {
   border-style: none;
   height: 4rem;
   border-radius: 0.1rem;
-  background-color: #d9aaa257; /* changed to pastel orange */
+  background-color: #d9aaa257;
   position: relative;
   transition: 0.4s;
   overflow: hidden;
-  /* hide the overflow of the progress bar */
 }
 
 .progress-bar span {
@@ -112,19 +96,15 @@ p {
   height: 100%;
   animation: shake infinite;
   border-radius: 0.1rem;
-  background-color: #ddffb4; /* changed to pastel blue */
+  background-color: #ddffb4;
   position: absolute;
-  transition:
-    width 0.1s,
-    background-color 2s ease;
-  /* add a transition to the width property */
+  transition: width 0.1s, background-color 2s ease;
 }
 
-/* Button styles */
 .button {
   color: #ffffff;
   font-size: 2rem;
-  font-family: 'Quicksand', sans-serif; /* changed to Quicksand font */
+  font-family: 'Quicksand', sans-serif;
   background-color: #452b276f;
   border: none;
   padding: 1rem 2rem;
@@ -132,55 +112,46 @@ p {
   transition: 0.1s ease;
 }
 
-.button:hover {
-  font-size: 2.05rem;
-  background-color: #b9a5a5;
-}
 /* Dropdown styles */
 .dropdown {
-  position: relative; /* Adjusted to relative */
+  position: relative;
   z-index: 1;
   margin-top: 2rem;
 }
 
 .dropdown-content {
   display: none;
-  border-radius: 1rem;
-  position: relative; /* Adjusted to absolute */
+  position: absolute;
   z-index: 1;
-  font-size: 1.5em;
-  top: 100%; /* Added to position below the button */
+  width: 100%;
+  text-align: center;
 }
 
 .dropdown-content a {
   color: #d9a4a4;
-  font-size-adjust: none;
+  font-size: 1.5em;
   border-radius: 0.5rem;
   background-color: #72473fbe;
   transition: 0.1s;
-  text-align: center;
   font-family: 'Quicksand', sans-serif;
   text-decoration: none;
   display: block;
-  height: 3rem;
-  position: center;
-  padding: 0.01;
+  padding: 0.1rem;
+  margin-top: 0.3rem; /* Adjusted margin for spacing */
 }
 
 .dropdown-content a:hover {
   background-color: #fffaf938;
-  font-size: 1.1em;
+
   border-radius: 0.5rem;
   letter-spacing: 0.2rem;
   color: #ff7f50;
 }
 
-/* Removed .dropdown:hover .dropdown-content */
 .dropdown-content.show {
-  display: block; /* Added to show the dropdown when .show is present */
+  display: block;
 }
 
-/* Media queries */
 ul {
   list-style: none;
   margin: 0;
@@ -203,18 +174,16 @@ div#rss-container {
 }
 
 @media screen and (max-width: 632px) {
-  body, name,h1 {
+  body, name, h1 {
     font-size: 1.5em;
   }
-#countdown-number {
-  font-size: 2rem;
-}
+  #countdown-number {
+    font-size: 2rem;
+  }
   p {
     font-size: 2.1em;
   }
-
   .progress-bar {
     width: 70%;
   }
 }
-

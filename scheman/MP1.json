@@ -47,7 +47,10 @@
     "startTime": "10:25",
     "endTime": "11:55",
     "location": "314"
+    
   },
+
+
   {
     "name": "Lunch",
     "startDay": 2,
@@ -171,4 +174,5 @@
     "endTime": "15:40",
     "location": "705"
   }
+
 ]
