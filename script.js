@@ -85,7 +85,7 @@ function updateCountdown() {
   }
 
   const now = adjustTimezone(new Date());
-  console.log('Adjusted Current Date:', now);
+
 
   const nextEvent = getNextEvent();
 
