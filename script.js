@@ -84,8 +84,8 @@ function updateCountdown() {
     setTimeout(updateCountdown, 1000);
     return;
   }
-  let now = adjustTimezone(new Date());
 
+  let now = adjustTimezone(new Date());
   let nextEvent;
   let specialDates;  // Define specialDates array locally
 
@@ -96,7 +96,9 @@ function updateCountdown() {
     // Use default events if today is not a special date
     nextEvent = getNextEvent();
   }
+
   if (nextEvent === null) {
+    // Code for when there are no more events
     currentEventName = "";
     currentEventStart = null;
     currentEventLocation = "";
@@ -112,10 +114,9 @@ function updateCountdown() {
   let { name, location, start, end } = nextEvent;
   let countdownElement = document.getElementById("countdown");
   let progressElement = document.getElementById("progress");
-
+  
   if (now < start) {
     let remainingTime = formatSeconds((start - now) / 1000);
-
 
     if (
       currentEventName !== name ||
@@ -144,11 +145,18 @@ function updateCountdown() {
         sentNotifications.push(name);
         currentEventSentNotification = true;
       }
-    }
+    
+    let progressWidth =
+    (((start - now) / 1000 / (start - (start - 60 * 1000))) * 100) /
+    100 *
+    document.getElementById("progress-bar").offsetWidth;
 
-    return;
+  progressWidth = Math.max(0, progressWidth); // Ensure progressWidth is not negative
+
+  progressElement.style.width = `${progressWidth}px`;
+  return;
+}
   }
-
   let remainingTime = formatSeconds((end - now) / 1000);
 
   if (
@@ -181,6 +189,7 @@ function updateCountdown() {
     currentEventSentNotification = true;
   }
 
+  // Calculate progress width for the ongoing event
   let progressWidth =
     (((now - start) / 1000 / ((end - start) / 1000)) * 100) /
     100 *
@@ -346,5 +355,5 @@ function createSnowflake() {
 // Create snowflakes if it's the snowfall period
 if (isSnowfallPeriod()) {
   // Create snowflakes periodically
-  setInterval(createSnowflake, 15);
+  setInterval(createSnowflake, 405);
 }
