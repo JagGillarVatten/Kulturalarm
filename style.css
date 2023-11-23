@@ -14,38 +14,49 @@
 }
 
 body {
-  background-color: #ff7f50;
+background-color: #ff7f50;
   color: #ffffff;
   margin: 0;
+  position:static;
   padding: 1rem;
   font-family: 'Quicksand', sans-serif;
-  animation: intro-bounce 0.5s ease-out;
+ z-index: 1;
+
+
+ overflow: hidden;
   font-size: 1.2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-h1, name {
+.name {
   font-size: 6.5rem;
   font-weight: bold;
   margin-top: 0;
+  position: static;
+
+  animation: fadeInUp 0.5s ease-in-out;
   font-family: 'Quicksand', sans-serif;
   text-align: center;
   letter-spacing: 0.1rem;
-  animation: intro-bounce 0.5s ease-out;
-}
 
+} 
 #countdown-text {
+
+  animation: fadeInUp 1.5s ;
+
   font-size: 24px;
   font-weight: bold;
-  animation: intro-bounce 0.5s ease-out;
+  z-index: 0;
+ease-out;
   text-align: center;
 }
 
 #countdown-number {
-  position: relative;
-  animation: intro-bounce 0.5s ease-out;
+  position: static;
+  animation: fadeInUp 1.5s ;
+
   text-align: center;
   font-size: 6em;
 }
@@ -54,6 +65,7 @@ h1, name {
   0% {
     transform: translateY(0.2rem);
     opacity: 0.9;
+    position: fiúxed;
     transform: scaleY(1.00);
   }
   30% {
@@ -71,6 +83,8 @@ h1, name {
 
 p {
   margin: 1%;
+  animation: fadeInUp 0.5s ease-in-out;
+  z-index: 0;
   letter-spacing: 0.3rem;
   font-family: 'Quicksand', sans-serif;
   font-size: 4.1rem;
@@ -84,6 +98,7 @@ p {
   animation: none;
   border-style: none;
   height: 4rem;
+  animation: fadeInUp 0.5s ease-in-out;
   border-radius: 0.1rem;
   background-color: #d9aaa257;
   position: relative;
@@ -116,6 +131,7 @@ p {
 .dropdown {
   position: relative;
   z-index: 1;
+  animation: fadeInUp 1s cubic-bezier(0.275, 0.885, 0.32, 1.275);
   margin-top: 2rem;
 }
 
@@ -136,8 +152,9 @@ p {
   font-family: 'Quicksand', sans-serif;
   text-decoration: none;
   display: block;
+  position: static;
   padding: 0.1rem;
-  margin-top: 0.3rem; /* Adjusted margin for spacing */
+  margin-top: 0.rem; /* Adjusted margin for spacing */
 }
 
 .dropdown-content a:hover {
@@ -185,5 +202,45 @@ div#rss-container {
   }
   .progress-bar {
     width: 70%;
+  }
+}
+
+
+.snowflake {
+  position: absolute;
+  width: 0.75rem;
+  height: 0.7rem;
+  background-color: #ffffffa8;
+
+  border-radius: 50%;
+  pointer-events: none;
+  user-select: none;
+  filter: blur(2px);
+  z-index: 0;
+  animation: snowfall  cubic-bezier(0.06, 0.05, 0.095, 0.035) 5s;
+}
+
+@keyframes snowfall {
+  0% {
+    transform: translateY(-10vh) rotate(0deg);
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

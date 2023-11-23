@@ -85,7 +85,7 @@ function updateCountdown() {
     return;
   }
   let now = adjustTimezone(new Date());
-  console.log('Adjusted Current Date:', now);
+
   let nextEvent;
   let specialDates;  // Define specialDates array locally
 
@@ -323,4 +323,28 @@ let today = new Date();
 let isBST = today.getTimezoneOffset() === 60; // Check if it's British Summer Time (BST)
 if (isBST) {
   ukTimeZoneOffset = 1; // Adjust for BST offset (1 hour ahead of GMT)
+} function isSnowfallPeriod() {
+  let currentDate = new Date();
+  let startDate = new Date(currentDate.getFullYear(), 10, 23); // November is month 10
+  let endDate = new Date(currentDate.getFullYear(), 11, 31); // December is month 11
+
+  return currentDate >= startDate && currentDate <= endDate;
+}
+
+// Function to create a snowflake element
+function createSnowflake() {
+  let snowflake = document.createElement('div');
+  snowflake.className = 'snowflake';
+  snowflake.style.left = `${Math.random() * window.innerWidth}px`;
+  document.body.appendChild(snowflake);
+  // Remove snowflake after animation completes
+  snowflake.addEventListener('animationend', () => {
+    document.body.removeChild(snowflake);
+  });
+}
+
+// Create snowflakes if it's the snowfall period
+if (isSnowfallPeriod()) {
+  // Create snowflakes periodically
+  setInterval(createSnowflake, 15);
 }
