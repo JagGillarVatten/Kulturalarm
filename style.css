@@ -64,7 +64,7 @@ body {
   border-style: none;
   height: 4rem;
   border-radius: 0.1rem;
-  background-color: #b4f0c1; /* Updated background color */
+  background-color: rgba(13, 19, 14, 0.418); /* Updated background color */
   position: relative;
   transition: 0.4s;
   overflow: hidden;
