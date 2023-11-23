@@ -1,33 +1,20 @@
-/**
- * This script is responsible for managing events and displaying countdowns for upcoming events.
- * It includes functions for loading event data from JSON files, calculating countdowns, and updating the UI.
- * @returns None
- */
-/**
- * This code contains functions related to managing events and countdowns on a webpage.
- * It includes functions for loading event data from JSON files, calculating the next event,
- * updating the countdown display, and playing sounds.
- * 
- * Functions:
- * - loadJSON(url, callback): Loads JSON data from the specified URL and calls the callback function with the parsed data.
- * - getTodaysEvents(): Returns an array of events that occur on the current day of the week.
- * - getNextEvent(): Returns the next event based on the current time.
- * - updateCountdown(): Updates the countdown display based on the current event.
- * - formatSeconds(seconds): Formats the given number of seconds into a string representation of hours, minutes, and
- */
-/**
- * Manages the countdown and display of events.
- * @param {string} url - The URL of the JSON file containing the events data.
- * @returns None
- */
 let events = [];
 let sentNotifications = [];
-const eventFiles = [
-  { name: "MP1", url: "MP1.json" },
-  { name: "AM1", url: "AM1.json" },
-  { name: "MP2", url: "MP2.json" },
-  { name: "AM2", url: "AM2.json" },
-];
+let specialDates = [];
+
+const eventFiles = [{
+  name: "MP1",
+  url: "MP1.json"
+}, {
+  name: "AM1",
+  url: "AM1.json"
+}, {
+  name: "MP2",
+  url: "MP2.json"
+}, {
+  name: "AM2",
+  url: "AM2.json"
+},];
 let currentEventName = "";
 let currentEventStart = null;
 let currentEventLocation = "";
@@ -37,11 +24,17 @@ function loadJSON(url, callback) {
   let xhr = new XMLHttpRequest();
   xhr.overrideMimeType("application/json");
   xhr.open("GET", url, true);
+
   xhr.onreadystatechange = function () {
-    if (xhr.readyState === 4 && xhr.status === 200) {
-      callback(JSON.parse(xhr.responseText));
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        callback(JSON.parse(xhr.responseText));
+      } else {
+        console.error(`Error loading JSON from ${url}. Status: ${xhr.status}`);
+      }
     }
   };
+
   xhr.send(null);
 }
 
@@ -62,11 +55,21 @@ function getNextEvent() {
     let endTime = adjustTimezone(new Date(`${today.toDateString()} ${event.endTime}`));
 
     if (now >= startTime && now < endTime) {
-      return { name: event.name, start: startTime, location: event.location, end: endTime };
+      return {
+        name: event.name,
+        start: startTime,
+        location: event.location,
+        end: endTime
+      };
     }
 
     if (now < startTime) {
-      return { name: event.name, start: startTime, end: endTime, location: event.location };
+      return {
+        name: event.name,
+        start: startTime,
+        end: endTime,
+        location: event.location
+      };
     }
   }
 
@@ -74,11 +77,6 @@ function getNextEvent() {
 }
 
 
-/**
- * Updates the countdown timer and displays the next event information.
- * If there are no more events, displays a message indicating the end of the day.
- * @returns None
- */
 function updateCountdown() {
   if (events.length === 0) {
     setTimeout(updateCountdown, 1000);
@@ -87,18 +85,15 @@ function updateCountdown() {
 
   let now = adjustTimezone(new Date());
   let nextEvent;
-  let specialDates;  // Define specialDates array locally
+  let specialDates;
 
   if (isSpecialDate(now)) {
-    // Use special date events if today is a special date
     nextEvent = getSpecialDate(now);
   } else {
-    // Use default events if today is not a special date
     nextEvent = getNextEvent();
   }
 
   if (nextEvent === null) {
-    // Code for when there are no more events
     currentEventName = "";
     currentEventStart = null;
     currentEventLocation = "";
@@ -111,10 +106,15 @@ function updateCountdown() {
 
     return;
   }
-  let { name, location, start, end } = nextEvent;
+  let {
+    name,
+    location,
+    start,
+    end
+  } = nextEvent;
   let countdownElement = document.getElementById("countdown");
   let progressElement = document.getElementById("progress");
-  
+
   if (now < start) {
     let remainingTime = formatSeconds((start - now) / 1000);
 
@@ -141,21 +141,23 @@ function updateCountdown() {
       document.getElementById("progress-bar").style.display = "block";
 
       if (!sentNotifications.includes(name)) {
-        new Notification(name, { body: `Börjar om ${remainingTime} i ${location}` });
+        new Notification(name, {
+          body: `Börjar om ${remainingTime} i ${location}`
+        });
         sentNotifications.push(name);
         currentEventSentNotification = true;
       }
-    
-    let progressWidth =
-    (((start - now) / 1000 / (start - (start - 60 * 1000))) * 100) /
-    100 *
-    document.getElementById("progress-bar").offsetWidth;
 
-  progressWidth = Math.max(0, progressWidth); // Ensure progressWidth is not negative
+      let progressWidth =
+        (((start - now) / 1000 / (start - (start - 60 * 1000))) * 100) /
+        100 *
+        document.getElementById("progress-bar").offsetWidth;
 
-  progressElement.style.width = `${progressWidth}px`;
-  return;
-}
+      progressWidth = Math.max(0, progressWidth);
+
+      progressElement.style.width = `${progressWidth}px`;
+      return;
+    }
   }
   let remainingTime = formatSeconds((end - now) / 1000);
 
@@ -179,12 +181,13 @@ function updateCountdown() {
     document.title = `${remainingTime} kvar | ${name}`;
   }
 
-  if (
-    !currentEventSentNotification &&
+  if (!currentEventSentNotification &&
     now >= start &&
     !sentNotifications.includes(name)
   ) {
-    new Notification(name, { body: `Pågår nu i ${location}` });
+    new Notification(name, {
+      body: `Pågår nu i ${location}`
+    });
     sentNotifications.push(name);
     currentEventSentNotification = true;
   }
@@ -235,26 +238,19 @@ function loadEventFile(filename) {
     updateCountdown();
   });
 }
-/**
- * Initializes the dropdown menu and event files.
- * - Finds the dropdown content and button elements.
- * - Creates anchor elements for each event file and adds them to the dropdown content.
- * - Sets the click event for each anchor element to load the event file and update the countdown.
- * - Sets the click event for the dropdown button to toggle the dropdown menu.
- * @returns None
- */
 function init() {
   let dropdownContent = document.querySelector(".dropdown-content");
   let dropdownButton = document.querySelector(".dropdown-button");
 
-  eventFiles.forEach(({ name, url }) => {
+  eventFiles.forEach(({
+    name,
+    url
+  }) => {
     let anchor = document.createElement("a");
     anchor.innerText = name;
     anchor.onclick = () => {
       loadEventFile(url, () => {
-        // After loading regular events, load special dates
         loadEventFile('specialDates.json', () => {
-          // Both regular events and special dates are loaded, update countdown
           updateCountdown();
         });
       });
@@ -266,10 +262,8 @@ function init() {
     dropdownContent.appendChild(anchor);
   });
 
-  // Load regular events
   loadEventFile(eventFiles[0].url);
 
-  // Toggle the dropdown content when the button is clicked
   dropdownButton.addEventListener("click", () => {
     toggleDropdown();
   });
@@ -312,18 +306,19 @@ button.addEventListener("click", () => {
   }, 30);
 });
 
-let ukTimeZoneOffset = 0; // This is the initial offset for GMT, adjust it accordingly for BST if needed
+let ukTimeZoneOffset = 0;
 
 let userTimeZoneOffset = new Date().getTimezoneOffset() / 60;
 
 function adjustTimezone(date) {
   return new Date(date.getTime() + (userTimeZoneOffset + ukTimeZoneOffset) * 60 * 60 * 1000);
 }
-let specialDates = []; // Array to store special date entries
+
 function isSpecialDate(date) {
   const dateString = date.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
   return specialDates.some(entry => entry.date === dateString);
 }
+
 function getSpecialDate(date) {
   const dateString = date.toISOString().split('T')[0];
   return specialDates.find(entry => entry.date === dateString);
@@ -332,7 +327,9 @@ let today = new Date();
 let isBST = today.getTimezoneOffset() === 60; // Check if it's British Summer Time (BST)
 if (isBST) {
   ukTimeZoneOffset = 1; // Adjust for BST offset (1 hour ahead of GMT)
-} function isSnowfallPeriod() {
+}
+
+function isSnowfallPeriod() {
   let currentDate = new Date();
   let startDate = new Date(currentDate.getFullYear(), 10, 23); // November is month 10
   let endDate = new Date(currentDate.getFullYear(), 11, 31); // December is month 11
