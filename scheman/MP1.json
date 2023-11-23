@@ -82,6 +82,7 @@
     "name": "Instrument",
     "startDay": 2,
     "startTime": "09:00",
+    "location":"414",
     "endTime": "10:00"
   },
   {
