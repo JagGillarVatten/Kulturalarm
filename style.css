@@ -14,10 +14,10 @@
 }
 
 body {
-  background-color: #6e9493; /* Updated background color */
+  background-color: #6e9493;
   color: #ffffff;
   margin: 0;
-  position: relative; /* Updated position */
+  position: relative;
   padding: 1rem;
   font-family: 'Quicksand', sans-serif;
   z-index: 1;
@@ -31,7 +31,7 @@ body {
 .name {
   font-size: 6.5rem;
   font-weight: bold;
-  margin-top: 0;
+  margin-top: 1rem; /* Adjusted margin for spacing */
   position: static;
   animation: fadeInUp 0.5s ease-in-out;
   font-family: 'Quicksand', sans-serif;
@@ -40,9 +40,11 @@ body {
 }
 
 #countdown-text,
-#countdown-number {
+#countdown-number,
+#location {
   animation: fadeInUp 1.5s;
   text-align: center;
+  margin: 1rem 0; /* Adjusted margin for spacing */
 }
 
 #countdown-text {
@@ -58,13 +60,13 @@ body {
 }
 
 .progress-bar {
-  margin: 10px;
+  margin: 1.5rem 0; /* Adjusted margin for spacing */
   width: 80%;
   animation: fadeInUp 0.5s ease-in-out;
   border-style: none;
   height: 4rem;
   border-radius: 0.1rem;
-  background-color: rgba(13, 19, 14, 0.418); /* Updated background color */
+  background-color: rgba(13, 19, 14, 0.418);
   position: relative;
   transition: 0.4s;
   overflow: hidden;
@@ -89,6 +91,7 @@ body {
   padding: 1rem 2rem;
   border-radius: 1rem;
   transition: 0.1s ease;
+  margin-top: 1.5rem; /* Adjusted margin for spacing */
 }
 
 /* Dropdown styles */
@@ -117,8 +120,8 @@ body {
   text-decoration: none;
   display: block;
   position: static;
-  padding: 0.1rem;
-  margin-top: 0.5rem; /* Adjusted margin for spacing */
+  padding: 0.5rem; /* Adjusted padding for spacing */
+  margin-top: 0.5rem;
 }
 
 .dropdown-content a:hover {
@@ -151,22 +154,29 @@ div#rss-container {
   box-shadow: 2px 2px 5px rgba(255, 246, 246, 0.1);
   padding: 1px;
   align-self: center;
+  margin-top: 2rem; /* Adjusted margin for spacing */
 }
 
 @media screen and (max-width: 632px) {
   body,
-  name,
-  h1 {
+  .name,
+  h1,
+  #countdown-number,
+  p,
+  .progress-bar {
     font-size: 1.5em;
   }
+
+  .progress-bar {
+    width: 70%;
+  }
+
   #countdown-number {
     font-size: 2rem;
   }
+
   p {
     font-size: 2.1em;
-  }
-  .progress-bar {
-    width: 70%;
   }
 }
 
