@@ -303,6 +303,12 @@ function formatSeconds(seconds) {
   const remainingSeconds = Math.floor(seconds % 60);
   return `${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
 }
+function isSnowfallPeriod() {
+  const currentDate = new Date();
+  const startDate = new Date(currentDate.getFullYear(), 10, 23);
+  const endDate = new Date(currentDate.getFullYear(), 11, 31);
+  return currentDate >= startDate && currentDate <= endDate;
+}
 
 function createSnowflake() {
   const snowflake = document.createElement('div');
@@ -313,4 +319,8 @@ function createSnowflake() {
   snowflake.addEventListener('animationend', () => {
     document.body.removeChild(snowflake);
   });
+}
+
+if (isSnowfallPeriod()) {
+  setInterval(createSnowflake, 405);
 }
