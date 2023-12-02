@@ -1,4 +1,3 @@
-// Define constants for color palettes
 const colorPalettes = {
   winter: {
     primaryBgColor: "#8BADC1",
@@ -54,7 +53,6 @@ const eventFiles = [
   { name: "AM2", url: "AM2.json" },
 ];
 
-// Use async/await for fetching JSON
 async function loadJSON(url) {
   try {
     const response = await fetch(url);
@@ -125,30 +123,44 @@ function updateCountdown() {
 function resetCountdown() {
   currentEvent = null;
 
-  document.getElementById("countdown-text").innerHTML = "Inga fler lektioner idag.";
-  document.getElementById("location").innerHTML = "";
-  document.getElementById("countdown-number").innerHTML = "Hejdå!";
-  document.getElementById("progress-bar").style.display = "none";
+  const countdownTextElement = document.getElementById("countdown-text");
+  countdownTextElement.textContent = "Inga fler lektioner idag.";
+
+  const locationElement = document.getElementById("location");
+  locationElement.textContent = "";
+
+  const countdownNumberElement = document.getElementById("countdown-number");
+  countdownNumberElement.textContent = "Hejdå!";
+
+  const progressBarElement = document.getElementById("progress-bar");
+  progressBarElement.style.display = "none";
 }
 
 function updateEventInfo(name, location, start) {
+  const now = new Date();
   currentEvent = { name, location, start, sentNotification: false };
 
+  const countdownTextElement = document.getElementById("countdown-text");
   const countdownText = now < start ? `${name} börjar om:` : `Tid kvar för ${name}:`;
-  const countdownNumber = formatSeconds((start - now) / 1000);
-  const locationText = now < start ? `Rum: ${location}` : `Rum: ${location}`;
+  countdownTextElement.textContent = countdownText;
 
-  document.getElementById("countdown-text").innerHTML = countdownText;
-  document.getElementById("countdown-number").innerHTML = countdownNumber;
-  document.getElementById("location").innerHTML = locationText;
+  const countdownNumberElement = document.getElementById("countdown-number");
+  const countdownNumber = formatSeconds((start - now) / 1000);
+  countdownNumberElement.textContent = countdownNumber;
+
+  const locationElement = document.getElementById("location");
+  const locationText = now < start ? `Rum: ${location}` : `Rum: ${location}`;
+  locationElement.textContent = locationText;
+
   document.title = now < start ? `${countdownNumber} tills | ${name}` : `${countdownNumber} kvar | ${name}`;
 }
 
 function notifyEventStart(name, location, isBeforeEvent) {
   if (!sentNotifications.includes(name)) {
-    new Notification(name, {
+    const notificationOptions = {
       body: isBeforeEvent ? `Börjar om ${formatSeconds((currentEvent.start - now) / 1000)} i ${location}` : `Pågår nu i ${location}`,
-    });
+    };
+    new Notification(name, notificationOptions);
     sentNotifications.push(name);
     currentEvent.sentNotification = true;
   }
@@ -156,9 +168,10 @@ function notifyEventStart(name, location, isBeforeEvent) {
 
 function notifyEventOngoing(name, location) {
   if (now >= currentEvent.start && now < currentEvent.end && !sentNotifications.includes(name)) {
-    new Notification(name, {
+    const notificationOptions = {
       body: `Pågår nu i ${location}`,
-    });
+    };
+    new Notification(name, notificationOptions);
     sentNotifications.push(name);
     currentEvent.sentNotification = true;
   }
@@ -167,9 +180,10 @@ function notifyEventOngoing(name, location) {
 function updateProgressBar(now, start, end) {
   const progressWidth = ((now - start) / (end - start)) * 100;
   const progressElement = document.getElementById("progress");
-
   progressElement.style.width = `${Math.max(0, progressWidth)}%`;
-  document.getElementById("progress-bar").style.display = "block";
+
+  const progressBarElement = document.getElementById("progress-bar");
+  progressBarElement.style.display = "block";
 }
 
 async function loadEventFile(filename) {
@@ -205,48 +219,36 @@ function init() {
     toggleDropdown();
   });
 
-  // Apply color palette based on the month
   applyColorPalette();
 }
 
-// Apply color palette based on the month
 function applyColorPalette() {
-  const currentDate = new Date();
-  const currentMonth = currentDate.getMonth();
-
-  if (currentMonth === 11 || currentMonth === 0 || currentMonth === 1) {
-    applyPalette(colorPalettes.winter);
-  } else if (currentMonth === 2 || currentMonth === 3 || currentMonth === 4) {
-    applyPalette(colorPalettes.spring);
-  } else if (currentMonth === 5 || currentMonth === 6 || currentMonth === 7) {
-    applyPalette(colorPalettes.summer);
-  } else {
-    applyPalette(colorPalettes.autumn);
-  }
-}
-
-// Apply color palette
-function applyPalette(palette) {
+  const month = new Date().getMonth();
+  const palette = colorPalettes[getPaletteName(month)];
   Object.entries(palette).forEach(([property, value]) => {
     document.body.style.setProperty(`--${property}`, value);
   });
 }
 
+function getPaletteName(month) {
+  if (month >= 0 && month <= 2) {
+    return "winter";
+  } else if (month >= 3 && month <= 5) {
+    return "spring";
+  } else if (month >= 6 && month <= 8) {
+    return "summer";
+  } else {
+    return "autumn";
+  }
+}
+
 function toggleDropdown() {
   const dropdownContent = document.querySelector(".dropdown-content");
   dropdownContent.classList.toggle("show");
-
-  // Change color palette based on the month when the dropdown is toggled
   applyColorPalette();
 }
 
-function closeDropdown() {
-  const dropdownContent = document.querySelector(".dropdown-content");
-  dropdownContent.classList.remove("show");
-}
-
 window.onload = init;
-
 setInterval(updateCountdown, 100);
 
 const soundFiles = ["bird.mp3", "bird.mp3", "sound3.mp3"];
@@ -273,7 +275,6 @@ button.addEventListener("click", () => {
 });
 
 let ukTimeZoneOffset = 0;
-
 const userTimeZoneOffset = new Date().getTimezoneOffset() / 60;
 
 function adjustTimezone(date) {
@@ -297,11 +298,10 @@ if (isBST) {
   ukTimeZoneOffset = 1;
 }
 
-function isSnowfallPeriod() {
-  const currentDate = new Date();
-  const startDate = new Date(currentDate.getFullYear(), 10, 23);
-  const endDate = new Date(currentDate.getFullYear(), 11, 31);
-  return currentDate >= startDate && currentDate <= endDate;
+function formatSeconds(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+  return `${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
 }
 
 function createSnowflake() {
@@ -313,8 +313,4 @@ function createSnowflake() {
   snowflake.addEventListener('animationend', () => {
     document.body.removeChild(snowflake);
   });
-}
-
-if (isSnowfallPeriod()) {
-  setInterval(createSnowflake, 405);
 }
