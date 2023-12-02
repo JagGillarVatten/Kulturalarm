@@ -1,81 +1,56 @@
 let events = [];
 let sentNotifications = [];
 let specialDates = [];
-
-const eventFiles = [{
-  name: "MP1",
-  url: "MP1.json"
-}, {
-  name: "AM1",
-  url: "AM1.json"
-}, {
-  name: "MP2",
-  url: "MP2.json"
-}, {
-  name: "AM2",
-  url: "AM2.json"
-},];
 let currentEventName = "";
 let currentEventStart = null;
 let currentEventLocation = "";
 let currentEventSentNotification = false;
 
+const eventFiles = [
+  { name: "MP1", url: "MP1.json" },
+  { name: "AM1", url: "AM1.json" },
+  { name: "MP2", url: "MP2.json" },
+  { name: "AM2", url: "AM2.json" },
+];
+
 function loadJSON(url, callback) {
-  let xhr = new XMLHttpRequest();
-  xhr.overrideMimeType("application/json");
-  xhr.open("GET", url, true);
-
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === 4) {
-      if (xhr.status === 200) {
-        callback(JSON.parse(xhr.responseText));
-      } else {
-        console.error(`Error loading JSON from ${url}. Status: ${xhr.status}`);
+  fetch(url)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Error loading JSON from ${url}. Status: ${response.status}`);
       }
-    }
-  };
-
-  xhr.send(null);
+      return response.json();
+    })
+    .then(callback)
+    .catch((error) => console.error(error));
 }
 
 function getTodaysEvents() {
-  let today = new Date();
-  let dayOfWeek = today.getDay();
+  const today = new Date();
+  const dayOfWeek = today.getDay();
   return events.filter((event) => event.startDay === dayOfWeek);
 }
 
-
 function getNextEvent() {
-  let now = adjustTimezone(new Date());
-  let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  let todaysEvents = getTodaysEvents();
+  const now = adjustTimezone(new Date());
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const todaysEvents = getTodaysEvents();
 
-  for (let event of todaysEvents) {
-    let startTime = adjustTimezone(new Date(`${today.toDateString()} ${event.startTime}`));
-    let endTime = adjustTimezone(new Date(`${today.toDateString()} ${event.endTime}`));
+  for (const event of todaysEvents) {
+    const startTime = adjustTimezone(new Date(`${today.toDateString()} ${event.startTime}`));
+    const endTime = adjustTimezone(new Date(`${today.toDateString()} ${event.endTime}`));
 
     if (now >= startTime && now < endTime) {
-      return {
-        name: event.name,
-        start: startTime,
-        location: event.location,
-        end: endTime
-      };
+      return { name: event.name, start: startTime, location: event.location, end: endTime };
     }
 
     if (now < startTime) {
-      return {
-        name: event.name,
-        start: startTime,
-        end: endTime,
-        location: event.location
-      };
+      return { name: event.name, start: startTime, end: endTime, location: event.location };
     }
   }
 
   return null;
 }
-
 
 function updateCountdown() {
   if (events.length === 0) {
@@ -83,9 +58,8 @@ function updateCountdown() {
     return;
   }
 
-  let now = adjustTimezone(new Date());
+  const now = adjustTimezone(new Date());
   let nextEvent;
-  let specialDates;
 
   if (isSpecialDate(now)) {
     nextEvent = getSpecialDate(now);
@@ -94,140 +68,118 @@ function updateCountdown() {
   }
 
   if (nextEvent === null) {
-    currentEventName = "";
-    currentEventStart = null;
-    currentEventLocation = "";
-    currentEventSentNotification = false;
-
-    document.getElementById("countdown-text").innerHTML = "Inga fler lektioner idag.";
-    document.getElementById("location").innerHTML = "";
-    document.getElementById("countdown-number").innerHTML = "Hejdå!";
-    document.getElementById("progress-bar").style.display = "none";
-
+    resetCountdown();
     return;
   }
-  let {
-    name,
-    location,
-    start,
-    end
-  } = nextEvent;
-  let countdownElement = document.getElementById("countdown");
-  let progressElement = document.getElementById("progress");
+
+  const { name, location, start, end } = nextEvent;
+  const countdownElement = document.getElementById("countdown");
+  const progressElement = document.getElementById("progress");
 
   if (now < start) {
-    let remainingTime = formatSeconds((start - now) / 1000);
-
-    if (
-      currentEventName !== name ||
-      currentEventStart !== start ||
-      currentEventLocation !== location
-    ) {
-      currentEventName = name;
-      currentEventStart = start;
-      currentEventLocation = location;
-      currentEventSentNotification = false;
-
-      document.title = `${remainingTime} tills | ${name}`;
-      let countdownText = ` ${name} börjar om: `;
-      let countdownNumber = `${remainingTime}`;
-
-      document.getElementById("countdown-text").innerHTML = countdownText;
-      document.getElementById("countdown-number").innerHTML = countdownNumber;
-      document.getElementById("location").innerHTML = "Rum: " + currentEventLocation;
-      document.getElementById("countdown").style.color = "#ffff";
-      document.getElementById("progress").style.width = "";
-      document.getElementById("progress").style.backgroundColor = "#a3d47a";
-      document.getElementById("progress-bar").style.display = "block";
-
-      if (!sentNotifications.includes(name)) {
-        new Notification(name, {
-          body: `Börjar om ${remainingTime} i ${location}`
-        });
-        sentNotifications.push(name);
-        currentEventSentNotification = true;
-      }
-
-      let progressWidth =
-        (((start - now) / 1000 / (start - (start - 60 * 1000))) * 100) /
-        100 *
-        document.getElementById("progress-bar").offsetWidth;
-
-      progressWidth = Math.max(0, progressWidth);
-
-      progressElement.style.width = `${progressWidth}px`;
-      return;
-    }
+    updateCountdownBeforeEvent(name, location, start);
+  } else {
+    updateCountdownDuringEvent(name, location, start, end, now);
   }
-  let remainingTime = formatSeconds((end - now) / 1000);
+}
 
-  if (
-    currentEventName !== name ||
-    currentEventStart !== start ||
-    currentEventLocation !== location
-  ) {
-    currentEventName = name;
-    currentEventStart = start;
-    currentEventLocation = location;
-    currentEventSentNotification = false;
+function resetCountdown() {
+  currentEventName = "";
+  currentEventStart = null;
+  currentEventLocation = "";
+  currentEventSentNotification = false;
 
-    let countdownText = `Tid kvar för ${name}:`;
-    let countdownNumber = `${remainingTime}`;
-    let locationText = `Rum: ${location}`;
+  document.getElementById("countdown-text").innerHTML = "Inga fler lektioner idag.";
+  document.getElementById("location").innerHTML = "";
+  document.getElementById("countdown-number").innerHTML = "Hejdå!";
+  document.getElementById("progress-bar").style.display = "none";
+}
 
-    document.getElementById("countdown-text").innerHTML = countdownText;
-    document.getElementById("countdown-number").innerHTML = countdownNumber;
-    document.getElementById("location").innerHTML = locationText;
-    document.title = `${remainingTime} kvar | ${name}`;
+function updateCountdownBeforeEvent(name, location, start) {
+  const remainingTime = formatSeconds((start - now) / 1000);
+
+  if (!isEventInfoSame(name, location, start)) {
+    updateEventInfo(name, location, start);
+    notifyEventStart(name, location, remainingTime);
+    updateProgressBar(start);
+  }
+}
+
+function updateCountdownDuringEvent(name, location, start, end, now) {
+  const remainingTime = formatSeconds((end - now) / 1000);
+
+  if (!isEventInfoSame(name, location, start)) {
+    updateEventInfo(name, location, start);
+    notifyEventOngoing(name, location);
   }
 
-  if (!currentEventSentNotification &&
-    now >= start &&
-    !sentNotifications.includes(name)
-  ) {
+  if (!currentEventSentNotification && now >= start && !sentNotifications.includes(name)) {
+    notifyEventStart(name, location, remainingTime);
+  }
+
+  updateProgressBar(now, start, end);
+}
+
+function isEventInfoSame(name, location, start) {
+  return (
+    currentEventName === name &&
+    currentEventLocation === location &&
+    currentEventStart === start
+  );
+}
+
+function updateEventInfo(name, location, start) {
+  currentEventName = name;
+  currentEventStart = start;
+  currentEventLocation = location;
+  currentEventSentNotification = false;
+
+  const countdownText = now < start ? `${name} börjar om:` : `Tid kvar för ${name}:`;
+  const countdownNumber = formatSeconds((start - now) / 1000);
+  const locationText = now < start ? `Rum: ${location}` : `Rum: ${location}`;
+
+  document.getElementById("countdown-text").innerHTML = countdownText;
+  document.getElementById("countdown-number").innerHTML = countdownNumber;
+  document.getElementById("location").innerHTML = locationText;
+  document.title = now < start ? `${countdownNumber} tills | ${name}` : `${countdownNumber} kvar | ${name}`;
+}
+
+function notifyEventStart(name, location, remainingTime) {
+  if (!sentNotifications.includes(name)) {
     new Notification(name, {
-      body: `Pågår nu i ${location}`
+      body: `Börjar om ${remainingTime} i ${location}`,
     });
     sentNotifications.push(name);
     currentEventSentNotification = true;
   }
+}
 
-  // Calculate progress width for the ongoing event
-  let progressWidth =
-    (((now - start) / 1000 / ((end - start) / 1000)) * 100) /
-    100 *
-    document.getElementById("progress-bar").offsetWidth;
+function notifyEventOngoing(name, location) {
+  if (!currentEventSentNotification && now >= currentEventStart && !sentNotifications.includes(name)) {
+    new Notification(name, {
+      body: `Pågår nu i ${location}`,
+    });
+    sentNotifications.push(name);
+    currentEventSentNotification = true;
+  }
+}
 
-  progressWidth = Math.max(0, progressWidth); // Ensure progressWidth is not negative
+function updateProgressBar(now, start, end) {
+  const progressWidth =
+    ((now - start) / (end - start)) * 100;
+  const progressElement = document.getElementById("progress");
 
-  progressElement.style.width = `${progressWidth}px`;
+  progressElement.style.width = `${Math.max(0, progressWidth)}%`;
   document.getElementById("progress-bar").style.display = "block";
 }
-/**
- * Formats a given number of seconds into a string representation of hours, minutes, and seconds.
- * @param {number} seconds - The number of seconds to format.
- * @returns {string} - The formatted time string in the format "hh:mm:ss".
- */
-function formatSeconds(seconds) {
-  let minutes = Math.floor(seconds / 60);
-  let hours = Math.floor(minutes / 60);
-  let paddedSeconds = pad(Math.floor(seconds) % 60, 2);
-
-  return hours > 0 ? `${hours}:${pad(minutes % 60, 2)}:${paddedSeconds}` : `${pad(minutes, 2)}:${paddedSeconds}`;
-}
-
-function pad(value, length) {
-  return ("000000000" + value).substr(-length);
-}
-
 
 function loadEventFile(filename) {
   loadJSON(`scheman/${filename}`, (data) => {
     console.log('Loaded data:', data);
 
     if (Array.isArray(data)) {
-      events = data.filter(entry => !entry.specialDate);
-      specialDates = data.filter(entry => entry.specialDate);
+      events = data.filter((entry) => !entry.specialDate);
+      specialDates = data.filter((entry) => entry.specialDate);
     } else {
       events = data;
       specialDates = [];
@@ -238,15 +190,13 @@ function loadEventFile(filename) {
     updateCountdown();
   });
 }
-function init() {
-  let dropdownContent = document.querySelector(".dropdown-content");
-  let dropdownButton = document.querySelector(".dropdown-button");
 
-  eventFiles.forEach(({
-    name,
-    url
-  }) => {
-    let anchor = document.createElement("a");
+function init() {
+  const dropdownContent = document.querySelector(".dropdown-content");
+  const dropdownButton = document.querySelector(".dropdown-button");
+
+  eventFiles.forEach(({ name, url }) => {
+    const anchor = document.createElement("a");
     anchor.innerText = name;
     anchor.onclick = () => {
       loadEventFile(url, () => {
@@ -270,35 +220,35 @@ function init() {
 }
 
 function toggleDropdown() {
-  let dropdownContent = document.querySelector(".dropdown-content");
+  const dropdownContent = document.querySelector(".dropdown-content");
   dropdownContent.classList.toggle("show");
 }
 
 function closeDropdown() {
-  let dropdownContent = document.querySelector(".dropdown-content");
+  const dropdownContent = document.querySelector(".dropdown-content");
   dropdownContent.classList.remove("show");
 }
 
 window.onload = init;
-
 
 setInterval(updateCountdown, 100);
 
 const soundFiles = ["bird.mp3", "bird.mp3", "sound3.mp3"];
 
 function playRandomSound() {
-  let randomSound = soundFiles[Math.floor(Math.random() * soundFiles.length)];
-  let audio = new Audio(`sounds/${randomSound}`);
+  const randomSound = soundFiles[Math.floor(Math.random() * soundFiles.length)];
+  const audio = new Audio(`sounds/${randomSound}`);
   audio.volume = 0.1;
   audio.play();
 }
 
 const title = document.querySelector("title");
 title.addEventListener("click", playRandomSound);
+
 const button = document.querySelector(".dropdown-button");
 button.addEventListener("click", () => {
-  let clickSound = new Audio("sounds/click.mp3");
-  clickSound.volume = 0.01; // Adjust the volume level as needed (0.2 is 20% of the maximum volume)
+  const clickSound = new Audio("sounds/click.mp3");
+  clickSound.volume = 0.01;
   clickSound.play();
   button.classList.add("pop");
   setTimeout(() => {
@@ -308,49 +258,47 @@ button.addEventListener("click", () => {
 
 let ukTimeZoneOffset = 0;
 
-let userTimeZoneOffset = new Date().getTimezoneOffset() / 60;
+const userTimeZoneOffset = new Date().getTimezoneOffset() / 60;
 
 function adjustTimezone(date) {
   return new Date(date.getTime() + (userTimeZoneOffset + ukTimeZoneOffset) * 60 * 60 * 1000);
 }
 
 function isSpecialDate(date) {
-  const dateString = date.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
-  return specialDates.some(entry => entry.date === dateString);
+  const dateString = date.toISOString().split('T')[0];
+  return specialDates.some((entry) => entry.date === dateString);
 }
 
 function getSpecialDate(date) {
   const dateString = date.toISOString().split('T')[0];
-  return specialDates.find(entry => entry.date === dateString);
+  return specialDates.find((entry) => entry.date === dateString);
 }
-let today = new Date();
-let isBST = today.getTimezoneOffset() === 60; // Check if it's British Summer Time (BST)
+
+const today = new Date();
+const isBST = today.getTimezoneOffset() === 60;
+
 if (isBST) {
-  ukTimeZoneOffset = 1; // Adjust for BST offset (1 hour ahead of GMT)
+  ukTimeZoneOffset = 1;
 }
 
 function isSnowfallPeriod() {
-  let currentDate = new Date();
-  let startDate = new Date(currentDate.getFullYear(), 10, 23); // November is month 10
-  let endDate = new Date(currentDate.getFullYear(), 11, 31); // December is month 11
-
+  const currentDate = new Date();
+  const startDate = new Date(currentDate.getFullYear(), 10, 23);
+  const endDate = new Date(currentDate.getFullYear(), 11, 31);
   return currentDate >= startDate && currentDate <= endDate;
 }
 
-// Function to create a snowflake element
 function createSnowflake() {
-  let snowflake = document.createElement('div');
+  const snowflake = document.createElement('div');
   snowflake.className = 'snowflake';
   snowflake.style.left = `${Math.random() * window.innerWidth}px`;
   document.body.appendChild(snowflake);
-  // Remove snowflake after animation completes
+
   snowflake.addEventListener('animationend', () => {
     document.body.removeChild(snowflake);
   });
 }
 
-// Create snowflakes if it's the snowfall period
 if (isSnowfallPeriod()) {
-  // Create snowflakes periodically
   setInterval(createSnowflake, 405);
 }
