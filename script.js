@@ -1,96 +1,81 @@
-const colorPalettes = {
-  winter: {
-    primaryBgColor: "#8BADC1",
-    secondaryBgColor: "rgba(0, 0, 0, 0.5)",
-    highlightColor: "#FFFFFF",
-    buttonBgColor: "#5B6777",
-    dropdownBgColor: "#A2C2A2",
-    dropdownHoverColor: "#E6E6FA",
-    dropdownTextColor: "#4B0082",
-    accentColor: "#87CEEB",
-  },
-  spring: {
-    primaryBgColor: "#BFD7B5",
-    secondaryBgColor: "rgba(0, 0, 0, 0.5)",
-    highlightColor: "#F0E68C",
-    buttonBgColor: "#8F9779",
-    dropdownBgColor: "#D3D3D3",
-    dropdownHoverColor: "#F5F5F5",
-    dropdownTextColor: "#228B22",
-    accentColor: "#20B2AA",
-  },
-  summer: {
-    primaryBgColor: "#FFDAB9",
-    secondaryBgColor: "rgba(0, 0, 0, 0.5)",
-    highlightColor: "#FFE4B5",
-    buttonBgColor: "#D2B48C",
-    dropdownBgColor: "#F0FFFF",
-    dropdownHoverColor: "#FAFAD2",
-    dropdownTextColor: "#2E8B57",
-    accentColor: "#FF6347",
-  },
-  autumn: {
-    primaryBgColor: "#F4A460",
-    secondaryBgColor: "rgba(0, 0, 0, 0.5)",
-    highlightColor: "#D2B48C",
-    buttonBgColor: "#8B4513",
-    dropdownBgColor: "#F5DEB3",
-    dropdownHoverColor: "#FFE4C4",
-    dropdownTextColor: "#8B4513",
-    accentColor: "#FF4500",
-  },
-};
-
 let events = [];
 let sentNotifications = [];
 let specialDates = [];
-let currentEvent = null;
 
-const eventFiles = [
-  { name: "MP1", url: "MP1.json" },
-  { name: "AM1", url: "AM1.json" },
-  { name: "MP2", url: "MP2.json" },
-  { name: "AM2", url: "AM2.json" },
-];
+const eventFiles = [{
+  name: "MP1",
+  url: "MP1.json"
+}, {
+  name: "AM1",
+  url: "AM1.json"
+}, {
+  name: "MP2",
+  url: "MP2.json"
+}, {
+  name: "AM2",
+  url: "AM2.json"
+},];
+let currentEventName = "";
+let currentEventStart = null;
+let currentEventLocation = "";
+let currentEventSentNotification = false;
 
-async function loadJSON(url) {
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`Error loading JSON from ${url}. Status: ${response.status}`);
+function loadJSON(url, callback) {
+  let xhr = new XMLHttpRequest();
+  xhr.overrideMimeType("application/json");
+  xhr.open("GET", url, true);
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        callback(JSON.parse(xhr.responseText));
+      } else {
+        console.error(`Error loading JSON from ${url}. Status: ${xhr.status}`);
+      }
     }
-    return await response.json();
-  } catch (error) {
-    console.error(error);
-  }
+  };
+
+  xhr.send(null);
 }
 
 function getTodaysEvents() {
-  const today = new Date();
-  const dayOfWeek = today.getDay();
+  let today = new Date();
+  let dayOfWeek = today.getDay();
   return events.filter((event) => event.startDay === dayOfWeek);
 }
 
-function getNextEvent() {
-  const now = adjustTimezone(new Date());
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const todaysEvents = getTodaysEvents();
 
-  for (const event of todaysEvents) {
-    const startTime = adjustTimezone(new Date(`${today.toDateString()} ${event.startTime}`));
-    const endTime = adjustTimezone(new Date(`${today.toDateString()} ${event.endTime}`));
+function getNextEvent() {
+  let now = adjustTimezone(new Date());
+  let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  let todaysEvents = getTodaysEvents();
+
+  for (let event of todaysEvents) {
+    let startTime = adjustTimezone(new Date(`${today.toDateString()} ${event.startTime}`));
+    let endTime = adjustTimezone(new Date(`${today.toDateString()} ${event.endTime}`));
 
     if (now >= startTime && now < endTime) {
-      return { ...event, start: startTime, end: endTime };
+      return {
+        name: event.name,
+        start: startTime,
+        location: event.location,
+        end: endTime
+      };
     }
 
     if (now < startTime) {
-      return { ...event, start: startTime, end: endTime };
+      return {
+        name: event.name,
+        start: startTime,
+        end: endTime,
+        location: event.location
+      };
     }
   }
 
   return null;
 }
+
 
 function updateCountdown() {
   if (events.length === 0) {
@@ -98,117 +83,181 @@ function updateCountdown() {
     return;
   }
 
-  const now = adjustTimezone(new Date());
-  const nextEvent = isSpecialDate(now) ? getSpecialDate(now) : getNextEvent();
+  let now = adjustTimezone(new Date());
+  let nextEvent;
+  let specialDates;
 
-  if (!nextEvent) {
-    resetCountdown();
+  if (isSpecialDate(now)) {
+    nextEvent = getSpecialDate(now);
+  } else {
+    nextEvent = getNextEvent();
+  }
+
+  if (nextEvent === null) {
+    currentEventName = "";
+    currentEventStart = null;
+    currentEventLocation = "";
+    currentEventSentNotification = false;
+
+    document.getElementById("countdown-text").innerHTML = "Inga fler lektioner idag.";
+    document.getElementById("location").innerHTML = "";
+    document.getElementById("countdown-number").innerHTML = "Hejdå!";
+    document.getElementById("progress-bar").style.display = "none";
+
     return;
   }
+  let {
+    name,
+    location,
+    start,
+    end
+  } = nextEvent;
+  let countdownElement = document.getElementById("countdown");
+  let progressElement = document.getElementById("progress");
 
-  const { name, location, start, end } = nextEvent;
+  if (now < start) {
+    let remainingTime = formatSeconds((start - now) / 1000);
 
-  if (!currentEvent || currentEvent.name !== name || currentEvent.start !== start) {
-    updateEventInfo(name, location, start);
-    notifyEventStart(name, location, now < start);
+    if (
+      currentEventName !== name ||
+      currentEventStart !== start ||
+      currentEventLocation !== location
+    ) {
+      currentEventName = name;
+      currentEventStart = start;
+      currentEventLocation = location;
+      currentEventSentNotification = false;
+
+      document.title = `${remainingTime} tills | ${name}`;
+      let countdownText = ` ${name} börjar om: `;
+      let countdownNumber = `${remainingTime}`;
+
+      document.getElementById("countdown-text").innerHTML = countdownText;
+      document.getElementById("countdown-number").innerHTML = countdownNumber;
+      document.getElementById("location").innerHTML = "Rum: " + currentEventLocation;
+      document.getElementById("countdown").style.color = "#ffff";
+      document.getElementById("progress").style.width = "";
+      document.getElementById("progress").style.backgroundColor = "#a3d47a";
+      document.getElementById("progress-bar").style.display = "block";
+
+      if (!sentNotifications.includes(name)) {
+        new Notification(name, {
+          body: `Börjar om ${remainingTime} i ${location}`
+        });
+        sentNotifications.push(name);
+        currentEventSentNotification = true;
+      }
+
+      let progressWidth =
+        (((start - now) / 1000 / (start - (start - 60 * 1000))) * 100) /
+        100 *
+        document.getElementById("progress-bar").offsetWidth;
+
+      progressWidth = Math.max(0, progressWidth);
+
+      progressElement.style.width = `${progressWidth}px`;
+      return;
+    }
+  }
+  let remainingTime = formatSeconds((end - now) / 1000);
+
+  if (
+    currentEventName !== name ||
+    currentEventStart !== start ||
+    currentEventLocation !== location
+  ) {
+    currentEventName = name;
+    currentEventStart = start;
+    currentEventLocation = location;
+    currentEventSentNotification = false;
+
+    let countdownText = `Tid kvar för ${name}:`;
+    let countdownNumber = `${remainingTime}`;
+    let locationText = `Rum: ${location}`;
+
+    document.getElementById("countdown-text").innerHTML = countdownText;
+    document.getElementById("countdown-number").innerHTML = countdownNumber;
+    document.getElementById("location").innerHTML = locationText;
+    document.title = `${remainingTime} kvar | ${name}`;
   }
 
-  if (now >= start && now < end && !currentEvent.sentNotification) {
-    notifyEventOngoing(name, location);
-  }
-
-  updateProgressBar(now, start, end);
-}
-
-function resetCountdown() {
-  currentEvent = null;
-
-  const countdownTextElement = document.getElementById("countdown-text");
-  countdownTextElement.textContent = "Inga fler lektioner idag.";
-
-  const locationElement = document.getElementById("location");
-  locationElement.textContent = "";
-
-  const countdownNumberElement = document.getElementById("countdown-number");
-  countdownNumberElement.textContent = "Hejdå!";
-
-  const progressBarElement = document.getElementById("progress-bar");
-  progressBarElement.style.display = "none";
-}
-
-function updateEventInfo(name, location, start) {
-  const now = new Date();
-  currentEvent = { name, location, start, sentNotification: false };
-
-  const countdownTextElement = document.getElementById("countdown-text");
-  const countdownText = now < start ? `${name} börjar om:` : `Tid kvar för ${name}:`;
-  countdownTextElement.textContent = countdownText;
-
-  const countdownNumberElement = document.getElementById("countdown-number");
-  const countdownNumber = formatSeconds((start - now) / 1000);
-  countdownNumberElement.textContent = countdownNumber;
-
-  const locationElement = document.getElementById("location");
-  const locationText = now < start ? `Rum: ${location}` : `Rum: ${location}`;
-  locationElement.textContent = locationText;
-
-  document.title = now < start ? `${countdownNumber} tills | ${name}` : `${countdownNumber} kvar | ${name}`;
-}
-
-function notifyEventStart(name, location, isBeforeEvent) {
-  if (!sentNotifications.includes(name)) {
-    const notificationOptions = {
-      body: isBeforeEvent ? `Börjar om ${formatSeconds((currentEvent.start - now) / 1000)} i ${location}` : `Pågår nu i ${location}`,
-    };
-    new Notification(name, notificationOptions);
+  if (!currentEventSentNotification &&
+    now >= start &&
+    !sentNotifications.includes(name)
+  ) {
+    new Notification(name, {
+      body: `Pågår nu i ${location}`
+    });
     sentNotifications.push(name);
-    currentEvent.sentNotification = true;
+    currentEventSentNotification = true;
   }
+
+  // Calculate progress width for the ongoing event
+  let progressWidth =
+    (((now - start) / 1000 / ((end - start) / 1000)) * 100) /
+    100 *
+    document.getElementById("progress-bar").offsetWidth;
+
+  progressWidth = Math.max(0, progressWidth); // Ensure progressWidth is not negative
+
+  progressElement.style.width = `${progressWidth}px`;
+  document.getElementById("progress-bar").style.display = "block";
+}
+/**
+ * Formats a given number of seconds into a string representation of hours, minutes, and seconds.
+ * @param {number} seconds - The number of seconds to format.
+ * @returns {string} - The formatted time string in the format "hh:mm:ss".
+ */
+function formatSeconds(seconds) {
+  let minutes = Math.floor(seconds / 60);
+  let hours = Math.floor(minutes / 60);
+  let paddedSeconds = pad(Math.floor(seconds) % 60, 2);
+
+  return hours > 0 ? `${hours}:${pad(minutes % 60, 2)}:${paddedSeconds}` : `${pad(minutes, 2)}:${paddedSeconds}`;
 }
 
-function notifyEventOngoing(name, location) {
-  if (now >= currentEvent.start && now < currentEvent.end && !sentNotifications.includes(name)) {
-    const notificationOptions = {
-      body: `Pågår nu i ${location}`,
-    };
-    new Notification(name, notificationOptions);
-    sentNotifications.push(name);
-    currentEvent.sentNotification = true;
-  }
+function pad(value, length) {
+  return ("000000000" + value).substr(-length);
 }
 
-function updateProgressBar(now, start, end) {
-  const progressWidth = ((now - start) / (end - start)) * 100;
-  const progressElement = document.getElementById("progress");
-  progressElement.style.width = `${Math.max(0, progressWidth)}%`;
 
-  const progressBarElement = document.getElementById("progress-bar");
-  progressBarElement.style.display = "block";
+function loadEventFile(filename) {
+  loadJSON(`scheman/${filename}`, (data) => {
+    console.log('Loaded data:', data);
+
+    if (Array.isArray(data)) {
+      events = data.filter(entry => !entry.specialDate);
+      specialDates = data.filter(entry => entry.specialDate);
+    } else {
+      events = data;
+      specialDates = [];
+    }
+    console.log('Regular events:', events);
+    console.log('Special dates:', specialDates);
+
+    updateCountdown();
+  });
 }
-
-async function loadEventFile(filename) {
-  const data = await loadJSON(`scheman/${filename}`);
-  if (Array.isArray(data)) {
-    events = data.filter((entry) => !entry.specialDate);
-    specialDates = data.filter((entry) => entry.specialDate);
-  } else {
-    events = data;
-    specialDates = [];
-  }
-  updateCountdown();
-}
-
 function init() {
-  const dropdownContent = document.querySelector(".dropdown-content");
-  const dropdownButton = document.querySelector(".dropdown-button");
+  let dropdownContent = document.querySelector(".dropdown-content");
+  let dropdownButton = document.querySelector(".dropdown-button");
 
-  eventFiles.forEach(({ name, url }) => {
-    const anchor = document.createElement("a");
+  eventFiles.forEach(({
+    name,
+    url
+  }) => {
+    let anchor = document.createElement("a");
     anchor.innerText = name;
-    anchor.onclick = async () => {
-      await loadEventFile(url);
-      await loadEventFile("specialDates.json");
+    anchor.onclick = () => {
+      loadEventFile(url, () => {
+        loadEventFile('specialDates.json', () => {
+          updateCountdown();
+        });
+      });
+      closeDropdown();
     };
+
+    anchor.addEventListener("click", () => { });
 
     dropdownContent.appendChild(anchor);
   });
@@ -218,55 +267,38 @@ function init() {
   dropdownButton.addEventListener("click", () => {
     toggleDropdown();
   });
-
-  applyColorPalette();
-}
-
-function applyColorPalette() {
-  const month = new Date().getMonth();
-  const palette = colorPalettes[getPaletteName(month)];
-  Object.entries(palette).forEach(([property, value]) => {
-    document.body.style.setProperty(`--${property}`, value);
-  });
-}
-
-function getPaletteName(month) {
-  if (month >= 0 && month <= 2) {
-    return "winter";
-  } else if (month >= 3 && month <= 5) {
-    return "spring";
-  } else if (month >= 6 && month <= 8) {
-    return "summer";
-  } else {
-    return "autumn";
-  }
 }
 
 function toggleDropdown() {
-  const dropdownContent = document.querySelector(".dropdown-content");
+  let dropdownContent = document.querySelector(".dropdown-content");
   dropdownContent.classList.toggle("show");
-  applyColorPalette();
+}
+
+function closeDropdown() {
+  let dropdownContent = document.querySelector(".dropdown-content");
+  dropdownContent.classList.remove("show");
 }
 
 window.onload = init;
+
+
 setInterval(updateCountdown, 100);
 
 const soundFiles = ["bird.mp3", "bird.mp3", "sound3.mp3"];
 
 function playRandomSound() {
-  const randomSound = soundFiles[Math.floor(Math.random() * soundFiles.length)];
-  const audio = new Audio(`sounds/${randomSound}`);
+  let randomSound = soundFiles[Math.floor(Math.random() * soundFiles.length)];
+  let audio = new Audio(`sounds/${randomSound}`);
   audio.volume = 0.1;
   audio.play();
 }
 
 const title = document.querySelector("title");
 title.addEventListener("click", playRandomSound);
-
 const button = document.querySelector(".dropdown-button");
 button.addEventListener("click", () => {
-  const clickSound = new Audio("sounds/click.mp3");
-  clickSound.volume = 0.01;
+  let clickSound = new Audio("sounds/click.mp3");
+  clickSound.volume = 0.01; // Adjust the volume level as needed (0.2 is 20% of the maximum volume)
   clickSound.play();
   button.classList.add("pop");
   setTimeout(() => {
@@ -275,52 +307,50 @@ button.addEventListener("click", () => {
 });
 
 let ukTimeZoneOffset = 0;
-const userTimeZoneOffset = new Date().getTimezoneOffset() / 60;
+
+let userTimeZoneOffset = new Date().getTimezoneOffset() / 60;
 
 function adjustTimezone(date) {
   return new Date(date.getTime() + (userTimeZoneOffset + ukTimeZoneOffset) * 60 * 60 * 1000);
 }
 
 function isSpecialDate(date) {
-  const dateString = date.toISOString().split('T')[0];
-  return specialDates.some((entry) => entry.date === dateString);
+  const dateString = date.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
+  return specialDates.some(entry => entry.date === dateString);
 }
 
 function getSpecialDate(date) {
   const dateString = date.toISOString().split('T')[0];
-  return specialDates.find((entry) => entry.date === dateString);
+  return specialDates.find(entry => entry.date === dateString);
 }
-
-const today = new Date();
-const isBST = today.getTimezoneOffset() === 60;
-
+let today = new Date();
+let isBST = today.getTimezoneOffset() === 60; // Check if it's British Summer Time (BST)
 if (isBST) {
-  ukTimeZoneOffset = 1;
+  ukTimeZoneOffset = 1; // Adjust for BST offset (1 hour ahead of GMT)
 }
 
-function formatSeconds(seconds) {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = Math.floor(seconds % 60);
-  return `${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
-}
 function isSnowfallPeriod() {
-  const currentDate = new Date();
-  const startDate = new Date(currentDate.getFullYear(), 10, 23);
-  const endDate = new Date(currentDate.getFullYear(), 11, 31);
+  let currentDate = new Date();
+  let startDate = new Date(currentDate.getFullYear(), 10, 23); // November is month 10
+  let endDate = new Date(currentDate.getFullYear(), 11, 31); // December is month 11
+
   return currentDate >= startDate && currentDate <= endDate;
 }
 
+// Function to create a snowflake element
 function createSnowflake() {
-  const snowflake = document.createElement('div');
+  let snowflake = document.createElement('div');
   snowflake.className = 'snowflake';
   snowflake.style.left = `${Math.random() * window.innerWidth}px`;
   document.body.appendChild(snowflake);
-
+  // Remove snowflake after animation completes
   snowflake.addEventListener('animationend', () => {
     document.body.removeChild(snowflake);
   });
 }
 
+// Create snowflakes if it's the snowfall period
 if (isSnowfallPeriod()) {
+  // Create snowflakes periodically
   setInterval(createSnowflake, 405);
 }
