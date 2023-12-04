@@ -1,8 +1,8 @@
 :root {
-	--primary-bg-color: rgb(228, 143, 143);
+	--primary-bg-color: rgba(36, 33, 85, 0.443);
 	--text-color: #ffffff;
 	--secondary-bg-color: rgba(13, 19, 14, 0.418);
-	--highlight-color: #c7ed99;
+	--highlight-color: #ddffb4;
 	--button-bg-color: #452b276f;
 	--dropdown-bg-color: #72473fbe;
 	--dropdown-hover-color: #fffaf938;
@@ -187,23 +187,36 @@ div#rss-container {
 
 	.button {
 		font-size: 1.5rem;
-		padding: .75rem 1.5rem;
+		padding: .75rem 1.5rem
 	}
 }
 
 .snowflake {
 	position: absolute;
 	width: .75rem;
-	transform-styl;
 	height: .7rem;
-	background-color: #ffffff;
+	background-color: #ffffffa8;
 	border-radius: 50%;
-
 	pointer-events: none;
 	user-select: none;
+	z-index: 0;
+	animation: snowfall cubic-bezier(.06, .05, .095, .035) 2s
+}
 
-	z-index: 1;
+@keyframes snowfall {
+	0% {
+		transform: translateY(-10vh) rotate(0);
+		opacity: .6
+	}
 
+	50% {
+		opacity: 1
+	}
+
+	100% {
+		transform: translateY(110vh) rotate(360deg);
+		opacity: 0
+	}
 }
 
 @keyframes fadeInUp {
