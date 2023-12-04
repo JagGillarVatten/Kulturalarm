@@ -1,0 +1,247 @@
+[
+        {
+            "name": "Stuga",
+            "startDay": 1,
+            "startTime": "09:45",
+            "endTime": "10:45",
+            "location": "714"
+        },
+        {
+            "name": "Stuga",
+            "startDay": 1,
+            "startTime": "10:00",
+            "endTime": "11:00",
+            "location": "608"
+        },
+        {
+            "name": "Mentorsgrupp",
+            "startDay": 1,
+            "startTime": "11:00",
+            "endTime": "12:00",
+            "location": " "
+        },
+        {
+            "name": "Lunch",
+            "startDay": 1,
+            "startTime": "12:20",
+            "endTime": "12:50",
+            "location": " "
+        },
+        {
+            "name": "Ensemble med körsång",
+            "startDay": 1,
+            "startTime": "12:50",
+            "endTime": "14:05",
+            "location": "319"
+        },
+        {
+            "name": "Ensemble med körsång",
+            "startDay": 1,
+            "startTime": "12:50",
+            "endTime": "14:05",
+            "location": "314"
+        },
+        {
+            "name": "Ensemble med körsång",
+            "startDay": 1,
+            "startTime": "12:50",
+            "endTime": "14:05",
+            "location": "320"
+        },
+        {
+            "name": "Svenska",
+            "startDay": 1,
+            "startTime": "14:15",
+            "endTime": "15:30",
+            "location": "616"
+        },
+        {
+            "name": "Naturkunskap",
+            "startDay": 1,
+            "startTime": "15:40",
+            "endTime": "16:55",
+            "location": "705"
+        },
+        {
+            "name": "Stuga",
+            "startDay": 1,
+            "startTime": "17:00",
+            "endTime": "18:15",
+            "location": "705"
+        },
+        {
+            "name": "Historia",
+            "startDay": 2,
+            "startTime": "08:10",
+            "endTime": "09:25",
+            "location": "606"
+        },
+        {
+            "name": "Gehörs- och musiklära",
+            "startDay": 2,
+            "startTime": "09:30",
+            "endTime": "10:45",
+            "location": "415"
+        },
+        {
+            "name": "Engelska",
+            "startDay": 2,
+            "startTime": "10:55",
+            "endTime": "12:10",
+            "location": "709"
+        },
+        {
+            "name": "Lunch",
+            "startDay": 2,
+            "startTime": "12:20",
+            "endTime": "12:50",
+            "location": " "
+        },
+        {
+            "name": "Matematik",
+            "startDay": 2,
+            "startTime": "12:55",
+            "endTime": "14:10",
+            "location": "715"
+        },
+        {
+            "name": "Psykologi",
+            "startDay": 2,
+            "startTime": "13:00",
+            "endTime": "14:15",
+            "location": "610"
+        },
+        {
+            "name": "Entreprenörsskap",
+            "startDay": 2,
+            "startTime": "14:15",
+            "endTime": "15:40",
+            "location": "606"
+        },
+        {
+            "name": "Naturkunskap",
+            "startDay": 3,
+            "startTime": "09:00",
+            "endTime": "10:15",
+            "location": "723"
+        },
+        {
+            "name": "Svenska",
+            "startDay": 3,
+            "startTime": "10:55",
+            "endTime": "12:10",
+            "location": "606"
+        },
+        {
+            "name": "Lunch",
+            "startDay": 3,
+            "startTime": "12:10",
+            "endTime": "12:40",
+            "location": " "
+        },
+        {
+            "name": "Estetisk kommunikation",
+            "startDay": 3,
+            "startTime": "13:00",
+            "endTime": "14:15",
+            "location": "308"
+        },
+        {
+            "name": "Musikproduktion",
+            "startDay": 3,
+            "startTime": "14:20",
+            "endTime": "15:50",
+            "location": "305"
+        },
+        {
+            "name": "Medieproduktion",
+            "startDay": 4,
+            "startTime": "10:55",
+            "endTime": "12:10",
+            "location": "313"
+        },
+        {
+            "name": "Lunch",
+            "startDay": 4,
+            "startTime": "12:15",
+            "endTime": "12:45",
+            "location": " "
+        },
+        {
+            "name": "Historia",
+            "startDay": 4,
+            "startTime": "13:00",
+            "endTime": "14:15",
+            "location": "705"
+        },
+        {
+            "name": "Engelska",
+            "startDay": 4,
+            "startTime": "14:25",
+            "endTime": "15:40",
+            "location": "709"
+        },
+        {
+            "name": "Stuga",
+            "startDay": 4,
+            "startTime": "15:45",
+            "endTime": "17:00",
+            "location": " "
+        },
+        {
+            "name": "Ensemble med körsång",
+            "startDay": 5,
+            "startTime": "10:05",
+            "endTime": "11:20",
+            "location": "316"
+        },
+        {
+            "name": "Ensemble med körsång",
+            "startDay": 5,
+            "startTime": "10:05",
+            "endTime": "11:20",
+            "location": "319"
+        },
+        {
+            "name": "Ensemble med körsång",
+            "startDay": 5,
+            "startTime": "10:05",
+            "endTime": "11:20",
+            "location": "315"
+        },
+        {
+            "name": "Gehörs- och musiklära",
+            "startDay": 5,
+            "startTime": "11:35",
+            "endTime": "12:50",
+            "location": "416"
+        },
+        {
+            "name": "Psykologi",
+            "startDay": 5,
+            "startTime": "12:55",
+            "endTime": "14:10",
+            "location": "606"
+        },
+        {
+            "name": "Lunch",
+            "startDay": 5,
+            "startTime": "13:00",
+            "endTime": "13:30",
+            "location": "MP2"
+        },
+        {
+            "name": "Entreprenörsskap",
+            "startDay": 5,
+            "startTime": "14:20",
+            "endTime": "15:50",
+            "location": "616"
+        },
+        {
+            "name": "Matematik",
+            "startDay": 5,
+            "startTime": "14:25",
+            "endTime": "15:40",
+            "location": "617"
+        }
+    ]
