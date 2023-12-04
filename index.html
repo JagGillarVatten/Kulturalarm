@@ -1,44 +1,44 @@
 <!DOCTYPE html>
 <html lang="sv">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kulturalarm</title>
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kulturalarm</title>
 
-    <!-- Styles -->
-    <link rel="preload" href="style.css" as="style" />
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body onload="init()">
-    <!-- Main Content -->
-    <div class="name">Kulturalarm</div>
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
 
-    <div id="countdown">
-      <div id="countdown-text"></div>
-      <div id="countdown-number"></div>
-    </div>
+  <!-- Styles -->
+  <link rel="preload" href="style.css" as="style" />
+  <link rel="stylesheet" href="style.css" />
+</head>
 
-    <div class="progress-bar" id="progress-bar">
-      <span id="progress"></span>
-    </div>
+<body onload="init()">
+  <!-- Main Content -->
+  <div class="name">Kulturalarm</div>
 
-    <p id="location"></p>
+  <div id="countdown">
+    <div id="countdown-text"></div>
+    <div id="countdown-number"></div>
+  </div>
 
-    <!-- Dropdown -->
-    <div class="dropdown">
-      <button class="dropdown-button button" title="Byt schema">
-        Byt schema
-      </button>
-      <div class="dropdown-content"></div>
-    </div>
+  <div class="progress-bar" id="progress-bar">
+    <span id="progress"></span>
+  </div>
 
-    <!-- Page Visit Count -->
-    <div
-      id="page-visit-count"
-      style="
+  <p id="location"></p>
+
+  <!-- Dropdown -->
+  <div class="dropdown">
+    <button class="dropdown-button button" title="Byt schema">
+      Byt schema
+    </button>
+    <div class="dropdown-content"></div>
+  </div>
+
+  <!-- Page Visit Count -->
+  <div id="page-visit-count" style="
         position: relative;
         bottom: -9rem;
         align-items: center;
@@ -46,14 +46,13 @@
         padding: 0px;
         color: rgb(0, 0, 0);
         font-size: 16px;
-      "
-    >
-      Du är den <span id="visit-count"></span>e besökaren!
-    </div>
+      ">
+    Du är den <span id="visit-count"></span>e besökaren!
+  </div>
 
-    <!-- Scripts -->
-    <script src="script.js"></script>
-    <script src="pagevisit.js"></script>
-  </body>
-  
+  <!-- Scripts -->
+  <script src="script.js"></script>
+  <script src="pagevisit.js"></script>
+</body>
+
 </html>
