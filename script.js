@@ -25,6 +25,9 @@ let currentEventStart = null;
 let currentEventLocation = "";
 let currentEventSentNotification = false;
 
+// Hour offset for timezone adjustment
+let hourOffset = 0;
+
 function loadJSON(url, callback) {
   let xhr = new XMLHttpRequest();
   xhr.overrideMimeType("application/json");
@@ -50,17 +53,13 @@ function getTodaysEvents() {
 }
 
 function getNextEvent() {
-  let now = adjustTimezone(new Date());
+  let now = new Date();
   let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   let todaysEvents = getTodaysEvents();
 
   for (let event of todaysEvents) {
-    let startTime = adjustTimezone(
-      new Date(`${today.toDateString()} ${event.startTime}`)
-    );
-    let endTime = adjustTimezone(
-      new Date(`${today.toDateString()} ${event.endTime}`)
-    );
+    let startTime = new Date(`${today.toDateString()} ${event.startTime}`);
+    let endTime = new Date(`${today.toDateString()} ${event.endTime}`);
 
     if (now >= startTime && now < endTime) {
       return {
@@ -90,9 +89,8 @@ function updateCountdown() {
     return;
   }
 
-  let now = adjustTimezone(new Date());
+  let now = new Date();
   let nextEvent;
-  let specialDates;
 
   if (isSpecialDate(now)) {
     nextEvent = getSpecialDate(now);
@@ -206,6 +204,7 @@ function updateCountdown() {
   progressElement.style.width = `${progressWidth}px`;
   document.getElementById("progress-bar").style.display = "block";
 }
+
 /**
  * Formats a given number of seconds into a string representation of hours, minutes, and seconds.
  * @param {number} seconds - The number of seconds to format.
@@ -242,6 +241,7 @@ function loadEventFile(filename) {
     updateCountdown();
   });
 }
+
 function init() {
   let dropdownContent = document.querySelector(".dropdown-content");
   let dropdownButton = document.querySelector(".dropdown-button");
@@ -267,6 +267,17 @@ function init() {
 
   dropdownButton.addEventListener("click", () => {
     toggleDropdown();
+  });
+
+  // Add event listeners for timezone adjustment buttons
+  document.getElementById("plus-button").addEventListener("click", () => {
+    hourOffset++;
+    updateCountdown();
+  });
+
+  document.getElementById("minus-button").addEventListener("click", () => {
+    hourOffset--;
+    updateCountdown();
   });
 }
 
@@ -298,7 +309,7 @@ title.addEventListener("click", playRandomSound);
 const button = document.querySelector(".dropdown-button");
 button.addEventListener("click", () => {
   let clickSound = new Audio("sounds/click.mp3");
-  clickSound.volume = 0.01; // Adjust the volume level as needed (0.2 is 20% of the maximum volume)
+  clickSound.volume = 0.01;
   clickSound.play();
   button.classList.add("pop");
   setTimeout(() => {
@@ -312,12 +323,12 @@ let userTimeZoneOffset = new Date().getTimezoneOffset() / 60;
 
 function adjustTimezone(date) {
   return new Date(
-    date.getTime() + (userTimeZoneOffset + ukTimeZoneOffset) * 60 * 60 * 1000
+    date.getTime() + (userTimeZoneOffset + ukTimeZoneOffset + hourOffset) * 60 * 60 * 1000
   );
 }
 
 function isSpecialDate(date) {
-  const dateString = date.toISOString().split("T")[0]; // Format date as YYYY-MM-DD
+  const dateString = date.toISOString().split("T")[0];
   return specialDates.some((entry) => entry.date === dateString);
 }
 
@@ -325,34 +336,32 @@ function getSpecialDate(date) {
   const dateString = date.toISOString().split("T")[0];
   return specialDates.find((entry) => entry.date === dateString);
 }
+
 let today = new Date();
-let isBST = today.getTimezoneOffset() === 60; // Check if it's British Summer Time (BST)
+let isBST = today.getTimezoneOffset() === 60;
 if (isBST) {
-  ukTimeZoneOffset = 1; // Adjust for BST offset (1 hour ahead of GMT)
+  ukTimeZoneOffset = 1;
 }
 
 function isSnowfallPeriod() {
   let currentDate = new Date();
-  let startDate = new Date(currentDate.getFullYear(), 10, 23); // November is month 10
-  let endDate = new Date(currentDate.getFullYear(), 11, 31); // December is month 11
+  let startDate = new Date(currentDate.getFullYear(), 10, 23);
+  let endDate = new Date(currentDate.getFullYear(), 11, 31);
 
   return currentDate >= startDate && currentDate <= endDate;
 }
 
-// Function to create a snowflake element
 function createSnowflake() {
   let snowflake = document.createElement("div");
   snowflake.className = "snowflake";
   snowflake.style.left = `${Math.random() * window.innerWidth}px`;
   document.body.appendChild(snowflake);
-  // Remove snowflake after animation completes
+
   snowflake.addEventListener("animationend", () => {
     document.body.removeChild(snowflake);
   });
 }
 
-// Create snowflakes if it's the snowfall period
 if (isSnowfallPeriod()) {
-  // Create snowflakes periodically
   setInterval(createSnowflake, 405);
 }
