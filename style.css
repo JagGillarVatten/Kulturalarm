@@ -1,7 +1,7 @@
 :root {
 	--primary-bg-color: rgb(106, 35, 50);
 	--text-color: #ffffff;
-	--secondary-bg-color: rgb(61, 25, 30);
+	--secondary-bg-color: rgb(10, 7, 8);
 	--highlight-color: #ddffb4;
 	--button-bg-color: #452b276f;
 	--dropdown-bg-color: #44221cbe;
@@ -61,20 +61,21 @@ body {
 	width: 80%;
 	animation: fadeInUp .5s ease-in-out;
 	border-style: none;
-	height: 2rem;
+	height: 10%;
 	border-radius: .3rem;
 	background-color: var(--secondary-bg-color);
 	position: relative;
 	transition: .4s;
-	padding: 0.9rem;
-	margin: 4rem;
+	padding: 0rem;
+	margin: 20%;
 	overflow: hidden;
 }
 
 
 .progress-bar span {
 	display: block;
-	height: 2rem;
+	height: 4rem;
+
 	animation: shake infinite;
 	border-radius: .3rem;
 	background-color: var(--highlight-color);

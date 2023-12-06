@@ -363,5 +363,5 @@ function createSnowflake() {
 }
 
 if (isSnowfallPeriod()) {
-  setInterval(createSnowflake, 405);
+  setInterval(createSnowflake, 230);
 }
