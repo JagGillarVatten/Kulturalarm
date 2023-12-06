@@ -62,10 +62,12 @@ body {
 	animation: fadeInUp .5s ease-in-out;
 	border-style: none;
 	height: 2rem;
-	border-radius: .1rem;
+	border-radius: .3rem;
 	background-color: var(--secondary-bg-color);
 	position: relative;
 	transition: .4s;
+	padding: 0.9rem;
+	margin: 4rem;
 	overflow: hidden;
 }
 
@@ -74,7 +76,7 @@ body {
 	display: block;
 	height: 2rem;
 	animation: shake infinite;
-	border-radius: .1rem;
+	border-radius: .3rem;
 	background-color: var(--highlight-color);
 	position:relative;
 	transition: width .1s, background-color 2s ease;
@@ -87,7 +89,7 @@ body {
 	background-color: var(--button-bg-color);
 	border: none;
 	padding: 1rem 2rem;
-	border-radius: 1rem;
+	border-radius: rem;
 	transition: .1s ease
 }
 .dropdown {
