@@ -1,7 +1,7 @@
 :root {
-	--primary-bg-color: rgba(36, 33, 85, 0.443);
+	--primary-bg-color: rgb(106, 35, 50);
 	--text-color: #ffffff;
-	--secondary-bg-color: rgba(13, 19, 14, 0.418);
+	--secondary-bg-color: rgb(61, 25, 30);
 	--highlight-color: #ddffb4;
 	--button-bg-color: #452b276f;
 	--dropdown-bg-color: #72473fbe;
@@ -195,7 +195,7 @@ div#rss-container {
 	position: absolute;
 	width: .75rem;
 	height: .7rem;
-	background-color: #ffffffa8;
+	background-color: #ffffff;
 	border-radius: 50%;
 	pointer-events: none;
 	user-select: none;
