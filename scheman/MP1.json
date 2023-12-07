@@ -110,7 +110,7 @@
     "name": "Svenska",
     "startDay": 4,
     "startTime": "11:00",
-    "endTime": "12:20",
+    "endTime": "12:15",
     "location": "705"
   },
   {
@@ -133,6 +133,14 @@
     "endTime": "15:45",
     "location": "705"
   },
+  {
+    "name": "Stuga",
+    "startDay": 4,
+    "startTime": "15:45",
+    "endTime": "17:00",
+    "location": ""
+  },
+  
 
   {
     "name": "Idrott (Teoretisk)",
