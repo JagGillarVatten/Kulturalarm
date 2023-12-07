@@ -220,13 +220,16 @@ div#rss-container {
 	0% {
 		transform: translateY(-10vh) rotate(0);
 		opacity: .6
+	
 	}
 
 	50% {
 		opacity: 1
+		
 	}
 
 	100% {
+		filter: blur(0.09rem);
 		transform: translateY(110vh) rotate(360deg);
 		opacity: 0
 	}
@@ -235,6 +238,7 @@ div#rss-container {
 @keyframes fadeInUp {
 	0% {
 		opacity: 0;
+		filter: blur(0.9rem);
 		transform: translateY(20px)
 	}
 
