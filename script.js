@@ -294,16 +294,6 @@ function closeDropdown() {
 window.onload = init;
 
 setInterval(updateCountdown, 100);
-
-const soundFiles = ["bird.mp3", "bird.mp3", "sound3.mp3"];
-
-function playRandomSound() {
-  let randomSound = soundFiles[Math.floor(Math.random() * soundFiles.length)];
-  let audio = new Audio(`sounds/${randomSound}`);
-  audio.volume = 0.1;
-  audio.play();
-}
-
 const title = document.querySelector("title");
 title.addEventListener("click", playRandomSound);
 const button = document.querySelector(".dropdown-button");
