@@ -293,7 +293,7 @@ function closeDropdown() {
 
 window.onload = init;
 
-setInterval(updateCountdown, 100);
+setInterval(updateCountdown, 50);
 const title = document.querySelector("title");
 title.addEventListener("click", playRandomSound);
 const button = document.querySelector(".dropdown-button");
