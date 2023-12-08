@@ -258,7 +258,7 @@ function init() {
       closeDropdown();
     };
 
-    anchor.addEventListener("click", () => {});
+    anchor.addEventListener("click", () => { });
 
     dropdownContent.appendChild(anchor);
   });
