@@ -70,7 +70,11 @@ body {
 	border-radius: .3rem;
 	background-color: var(--secondary-bg-color);
 	position: relative;
--webkit-transition:  width 0.3s ease-in-out;
+	-webkit-transition:300ms linear;
+	-moz-transition:300ms linear;
+	-o-transition:300ms linear;
+	-ms-transition:300ms linear;
+	transition:300ms linear;
 	padding: 0rem;
 	margin: 20%;
 	overflow: hidden;
