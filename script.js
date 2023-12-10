@@ -3,37 +3,28 @@ let sentNotifications = [];
 let specialDates = [];
 
 const eventFiles = [
-  {
-    name: "MP1",
-    url: "MP1.json",
-  },
-  {
-    name: "AM1",
-    url: "AM1.json",
-  },
-  {
-    name: "MP2",
-    url: "MP2.json",
-  },
-  {
-    name: "AM2",
-    url: "AM2.json",
-  },
+  { name: "MP1", url: "MP1.json" },
+  { name: "AM1", url: "AM1.json" },
+  { name: "MP2", url: "MP2.json" },
+  { name: "AM2", url: "AM2.json" },
 ];
-let currentEventName = "";
-let currentEventStart = null;
-let currentEventLocation = "";
-let currentEventSentNotification = false;
+
+let currentEvent = {
+  name: "",
+  start: null,
+  location: "",
+  sentNotification: false,
+};
 
 // Hour offset for timezone adjustment
-let hourOffset = 0;
+const hourOffset = 0;
 
 function loadJSON(url, callback) {
-  let xhr = new XMLHttpRequest();
+  const xhr = new XMLHttpRequest();
   xhr.overrideMimeType("application/json");
   xhr.open("GET", url, true);
 
-  xhr.onreadystatechange = function () {
+  xhr.onreadystatechange = () => {
     if (xhr.readyState === 4) {
       if (xhr.status === 200) {
         callback(JSON.parse(xhr.responseText));
@@ -47,36 +38,22 @@ function loadJSON(url, callback) {
 }
 
 function getTodaysEvents() {
-  let today = new Date();
-  let dayOfWeek = today.getDay();
+  const today = new Date();
+  const dayOfWeek = today.getDay();
   return events.filter((event) => event.startDay === dayOfWeek);
 }
 
 function getNextEvent() {
-  let now = new Date();
-  let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  let todaysEvents = getTodaysEvents();
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const todaysEvents = getTodaysEvents();
 
-  for (let event of todaysEvents) {
-    let startTime = new Date(`${today.toDateString()} ${event.startTime}`);
-    let endTime = new Date(`${today.toDateString()} ${event.endTime}`);
+  for (const event of todaysEvents) {
+    const startTime = new Date(`${today.toDateString()} ${event.startTime}`);
+    const endTime = new Date(`${today.toDateString()} ${event.endTime}`);
 
-    if (now >= startTime && now < endTime) {
-      return {
-        name: event.name,
-        start: startTime,
-        location: event.location,
-        end: endTime,
-      };
-    }
-
-    if (now < startTime) {
-      return {
-        name: event.name,
-        start: startTime,
-        end: endTime,
-        location: event.location,
-      };
+    if ((now >= startTime && now < endTime) || now < startTime) {
+      return { ...event, start: startTime, end: endTime };
     }
   }
 
@@ -89,131 +66,94 @@ function updateCountdown() {
     return;
   }
 
-  let now = new Date();
-  let nextEvent;
-
-  if (isSpecialDate(now)) {
-    nextEvent = getSpecialDate(now);
-  } else {
-    nextEvent = getNextEvent();
-  }
+  const now = new Date();
+  const nextEvent = isSpecialDate(now) ? getSpecialDate(now) : getNextEvent();
 
   if (nextEvent === null) {
-    currentEventName = "";
-    currentEventStart = null;
-    currentEventLocation = "";
-    currentEventSentNotification = false;
-
-    document.getElementById("countdown-text").innerHTML =
-      "Inga fler lektioner idag.";
-    document.getElementById("location").innerHTML = "";
-    document.getElementById("countdown-number").innerHTML = "Hejdå!";
-    document.getElementById("progress-bar").style.display = "none";
-
+    resetCountdown();
     return;
   }
-  let { name, location, start, end } = nextEvent;
-  let countdownElement = document.getElementById("countdown");
-  let progressElement = document.getElementById("progress");
+
+  const { name, location, start, end } = nextEvent;
+  const countdownElement = document.getElementById("countdown");
+  const progressElement = document.getElementById("progress");
+  const remainingTime = formatSeconds((now < start ? start : end - now) / 1000);
+
+  if (
+    shouldUpdateCountdown(
+      name,
+      start,
+      location,
+      remainingTime,
+      now,
+      progressElement.offsetWidth
+    )
+  ) {
+    updateCountdownDisplay(name, start, location, remainingTime);
+  }
+}
+
+function shouldUpdateCountdown(name, start, location, remainingTime, now, progressBarWidth) {
+  return (
+    currentEvent.name !== name ||
+    currentEvent.start !== start ||
+    currentEvent.location !== location ||
+    (now < start && !currentEvent.sentNotification)
+  );
+}
+
+function updateCountdownDisplay(name, start, location, remainingTime) {
+  currentEvent = { name, start, location };
+  const countdownText = now < start ? `${name} börjar om:` : `Tid kvar för ${name}:`;
+  const countdownNumber = `${remainingTime}`;
+  const locationText = now < start ? `Rum: ${location}` : `Pågår nu i ${location}`;
+
+  document.getElementById("countdown-text").innerHTML = countdownText;
+  document.getElementById("countdown-number").innerHTML = countdownNumber;
+  document.getElementById("location").innerHTML = locationText;
+  document.title = `${remainingTime} ${now < start ? 'tills' : 'kvar'} | ${name}`;
 
   if (now < start) {
-    let remainingTime = formatSeconds((start - now) / 1000);
-
-    if (
-      currentEventName !== name ||
-      currentEventStart !== start ||
-      currentEventLocation !== location
-    ) {
-      currentEventName = name;
-      currentEventStart = start;
-      currentEventLocation = location;
-      currentEventSentNotification = false;
-
-      document.title = `${remainingTime} tills | ${name}`;
-      let countdownText = ` ${name} börjar om: `;
-      let countdownNumber = `${remainingTime}`;
-
-      document.getElementById("countdown-text").innerHTML = countdownText;
-      document.getElementById("countdown-number").innerHTML = countdownNumber;
-      document.getElementById("location").innerHTML =
-        "Rum: " + currentEventLocation;
-      document.getElementById("countdown").style.color = "#ffff";
-      document.getElementById("progress").style.width = "";
-      document.getElementById("progress").style.backgroundColor = "#a3d47a";
-      document.getElementById("progress-bar").style.display = "block";
-
-      if (!sentNotifications.includes(name)) {
-        new Notification(name, {
-          body: `Börjar om ${remainingTime} i ${location}`,
-        });
-        sentNotifications.push(name);
-        currentEventSentNotification = true;
-      }
-
-      let progressWidth =
-        ((((start - now) / 1000 / (start - (start - 60 * 1000))) * 100) / 100) *
-        document.getElementById("progress-bar").offsetWidth;
-
-      progressWidth = Math.max(0, progressWidth);
-
-      progressElement.style.width = `${progressWidth}px`;
-      return;
-    }
-  }
-  let remainingTime = formatSeconds((end - now) / 1000);
-
-  if (
-    currentEventName !== name ||
-    currentEventStart !== start ||
-    currentEventLocation !== location
-  ) {
-    currentEventName = name;
-    currentEventStart = start;
-    currentEventLocation = location;
-    currentEventSentNotification = false;
-
-    let countdownText = `Tid kvar för ${name}:`;
-    let countdownNumber = `${remainingTime}`;
-    let locationText = `Rum: ${location}`;
-
-    document.getElementById("countdown-text").innerHTML = countdownText;
-    document.getElementById("countdown-number").innerHTML = countdownNumber;
-    document.getElementById("location").innerHTML = locationText;
-    document.title = `${remainingTime} kvar | ${name}`;
+    setupCountdownProgressBar(now, start, progressBarWidth);
+    triggerNotification(name, remainingTime, location);
   }
 
-  if (
-    !currentEventSentNotification &&
-    now >= start &&
-    !sentNotifications.includes(name)
-  ) {
-    new Notification(name, {
-      body: `Pågår nu i ${location}`,
-    });
-    sentNotifications.push(name);
-    currentEventSentNotification = true;
-  }
+  currentEvent.sentNotification = now < start;
+}
 
-  // Calculate progress width for the ongoing event
-  let progressWidth =
-    ((((now - start) / 1000 / ((end - start) / 1000)) * 100) / 100) *
-    document.getElementById("progress-bar").offsetWidth;
+function resetCountdown() {
+  currentEvent = { name: "", start: null, location: "", sentNotification: false };
 
-  progressWidth = Math.max(0, progressWidth); // Ensure progressWidth is not negative
+  document.getElementById("countdown-text").innerHTML = "Inga fler lektioner idag.";
+  document.getElementById("location").innerHTML = "";
+  document.getElementById("countdown-number").innerHTML = "Hejdå!";
+  document.getElementById("progress-bar").style.display = "none";
+}
 
-  progressElement.style.width = `${progressWidth}px`;
+function setupCountdownProgressBar(now, start, progressBarWidth) {
+  const progressWidth = Math.max(
+    0,
+    ((now - start) / 1000 / ((start - (start - 60 * 1000)) / 1000)) * 100
+  );
+
+  document.getElementById("progress").style.width = `${(progressWidth / 100) * progressBarWidth}px`;
   document.getElementById("progress-bar").style.display = "block";
 }
 
-/**
- * Formats a given number of seconds into a string representation of hours, minutes, and seconds.
- * @param {number} seconds - The number of seconds to format.
- * @returns {string} - The formatted time string in the format "hh:mm:ss".
- */
+function triggerNotification(name, remainingTime, location) {
+  if (!sentNotifications.includes(name)) {
+    new Notification(name, {
+      body: now < start ? `Börjar om ${remainingTime} i ${location}` : `Pågår nu i ${location}`,
+    });
+    sentNotifications.push(name);
+    currentEvent.sentNotification = true;
+  }
+}
+
 function formatSeconds(seconds) {
-  let minutes = Math.floor(seconds / 60);
-  let hours = Math.floor(minutes / 60);
-  let paddedSeconds = pad(Math.floor(seconds) % 60, 2);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const paddedSeconds = pad(Math.floor(seconds) % 60, 2);
 
   return hours > 0
     ? `${hours}:${pad(minutes % 60, 2)}:${paddedSeconds}`
@@ -242,63 +182,83 @@ function loadEventFile(filename) {
   });
 }
 
-function init() {
-  let dropdownContent = document.querySelector(".dropdown-content");
-  let dropdownButton = document.querySelector(".dropdown-button");
+class Dropdown {
+  constructor(button, content) {
+    this.button = button;
+    this.content = content;
+    this.init();
+  }
 
-  eventFiles.forEach(({ name, url }) => {
-    let anchor = document.createElement("a");
-    anchor.innerText = name;
-    anchor.onclick = () => {
-      loadEventFile(url, () => {
-        loadEventFile("specialDates.json", () => {
-          updateCountdown();
-        });
+  init() {
+    this.renderItems();
+    this.attachEvents();
+  }
+
+  renderItems() {
+    eventFiles.forEach(({ name, url }) => {
+      const anchor = document.createElement("a");
+      anchor.innerText = name;
+      anchor.addEventListener("click", () => {
+        this.selectItem(url);
       });
-      closeDropdown();
-    };
+      this.content.appendChild(anchor);
+    });
+  }
 
-    anchor.addEventListener("click", () => { });
+  attachEvents() {
+    this.button.addEventListener("click", () => {
+      this.toggle();
+    });
+  }
 
-    dropdownContent.appendChild(anchor);
-  });
+  selectItem(url) {
+    loadEventFile(url, () => {
+      loadEventFile("specialDates.json", () => {
+        updateCountdown();
+      });
+    });
+    this.close();
+  }
 
-  loadEventFile(eventFiles[0].url);
+  toggle() {
+    this.content.classList.toggle("open");
+  }
 
-  dropdownButton.addEventListener("click", () => {
-    toggleDropdown();
-  });
-
-  // Add event listeners for timezone adjustment buttons
-  document.getElementById("plus-button").addEventListener("click", () => {
-    hourOffset++;
-    updateCountdown();
-  });
-
-  document.getElementById("minus-button").addEventListener("click", () => {
-    hourOffset--;
-    updateCountdown();
-  });
+  close() {
+    this.content.classList.remove("open");
+  }
 }
 
+const dropdown = new Dropdown(
+  document.querySelector(".dropdown-button"),
+  document.querySelector(".dropdown-content")
+);
+
+function init() {
+  loadEventFile(eventFiles[0].url);
+  updateCountdown();
+}
+
+init();
+
 function toggleDropdown() {
-  let dropdownContent = document.querySelector(".dropdown-content");
-  dropdownContent.classList.toggle("show");
+  document.querySelector(".dropdown-content").classList.toggle("show");
 }
 
 function closeDropdown() {
-  let dropdownContent = document.querySelector(".dropdown-content");
-  dropdownContent.classList.remove("show");
+  document.querySelector(".dropdown-content").classList.remove("show");
 }
 
 window.onload = init;
 
 setInterval(updateCountdown, 50);
+
 const title = document.querySelector("title");
 title.addEventListener("click", playRandomSound);
+
 const button = document.querySelector(".dropdown-button");
 button.addEventListener("click", () => {
-  let clickSound = new Audio("sounds/click.mp3");
+  const clickSound = new Audio("sounds/click.mp3");
   clickSound.volume = 0.01;
   clickSound.play();
   button.classList.add("pop");
@@ -309,7 +269,7 @@ button.addEventListener("click", () => {
 
 let ukTimeZoneOffset = 0;
 
-let userTimeZoneOffset = new Date().getTimezoneOffset() / 60;
+const userTimeZoneOffset = new Date().getTimezoneOffset() / 60;
 
 function adjustTimezone(date) {
   return new Date(
@@ -327,24 +287,25 @@ function getSpecialDate(date) {
   return specialDates.find((entry) => entry.date === dateString);
 }
 
-let today = new Date();
-let isBST = today.getTimezoneOffset() === 60;
+const today = new Date();
+const isBST = today.getTimezoneOffset() === 60;
 if (isBST) {
   ukTimeZoneOffset = 1;
 }
 
 function isSnowfallPeriod() {
-  let currentDate = new Date();
-  let startDate = new Date(currentDate.getFullYear(), 10, 23);
-  let endDate = new Date(currentDate.getFullYear(), 11, 31);
+  const currentDate = new Date();
+  const startDate = new Date(currentDate.getFullYear(), 10, 23);
+  const endDate = new Date(currentDate.getFullYear(), 11, 31);
 
   return currentDate >= startDate && currentDate <= endDate;
 }
 
 function createSnowflake() {
-  let snowflake = document.createElement("div");
+  const snowflake = document.createElement("div");
   snowflake.className = "snowflake";
   snowflake.style.left = `${Math.random() * window.innerWidth}px`;
+  snowflake.style.animationDuration = `${Math.random() * 2 + 1}s`; // Vary the animation duration
   document.body.appendChild(snowflake);
 
   snowflake.addEventListener("animationend", () => {
@@ -352,6 +313,10 @@ function createSnowflake() {
   });
 }
 
-if (isSnowfallPeriod()) {
-  setInterval(createSnowflake, 230);
+function startSnowfall() {
+  if (isSnowfallPeriod()) {
+    setInterval(createSnowflake, 100); // Adjust the interval for more frequent snowflakes
+  }
 }
+
+startSnowfall();
