@@ -91,11 +91,13 @@ function updateCountdown() {
 
   let now = new Date();
   let nextEvent;
-
+ let todaysEvents = getTodaysEvents();
+  let eventListContainer = document.getElementById("event-list");
+  let eventListUl = document.getElementById("events-ul");
   if (isSpecialDate(now)) {
     nextEvent = getSpecialDate(now);
   } else {
-    nextEvent = getNextEvent();
+    nextEvent = getNextEvet();
   }
 
   if (nextEvent === null) {
@@ -243,50 +245,6 @@ function loadEventFile(filename) {
 }
 
 function init() {
-<<<<<<< HEAD
-  loadEventFile(eventFiles[0].url);
-  updateCountdown();
-  displayDayAndDate();
-}
-function displayDayAndDate() {
-  const daysOfWeek = [
-    "Söndag",
-    "Måndag",
-    "Tisdag",
-    "Onsdag",
-    "Torsdag",
-    "Fredag",
-    "Lördag",
-  ];
-
-  const today = new Date();
-  const dayOfWeek = daysOfWeek[today.getDay()];
-  const dateString = `${today.getDate()} ${getSwedishMonth(today.getMonth())} ${today.getFullYear()}`;
-
-  const dayAndDateElement = document.getElementById("day-and-date");
-  dayAndDateElement.innerHTML = `${dayOfWeek}, ${dateString}`;
-}
-
-function getSwedishMonth(monthIndex) {
-  const months = [
-    "Januari",
-    "Februari",
-    "Mars",
-    "April",
-    "Maj",
-    "Juni",
-    "Juli",
-    "Augusti",
-    "September",
-    "Oktober",
-    "November",
-    "December",
-  ];
-  return months[monthIndex];
-}
-init();
-displayDayAndDate();
-=======
   let dropdownContent = document.querySelector(".dropdown-content");
   let dropdownButton = document.querySelector(".dropdown-button");
 
@@ -302,7 +260,7 @@ displayDayAndDate();
       closeDropdown();
     };
 
-    anchor.addEventListener("click", () => { });
+    anchor.addEventListener("click", () => {});
 
     dropdownContent.appendChild(anchor);
   });
@@ -325,7 +283,6 @@ displayDayAndDate();
   });
 }
 
->>>>>>> parent of 393d7d8 (update favicon.ico and script.js)
 function toggleDropdown() {
   let dropdownContent = document.querySelector(".dropdown-content");
   dropdownContent.classList.toggle("show");
