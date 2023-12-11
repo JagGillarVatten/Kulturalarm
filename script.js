@@ -97,7 +97,7 @@ function updateCountdown() {
   if (isSpecialDate(now)) {
     nextEvent = getSpecialDate(now);
   } else {
-    nextEvent = getNextEvet();
+    nextEvent = getNextEvent();
   }
 
   if (nextEvent === null) {
