@@ -271,16 +271,6 @@ function init() {
     toggleDropdown();
   });
 
-  // Add event listeners for timezone adjustment buttons
-  document.getElementById("plus-button").addEventListener("click", () => {
-    hourOffset++;
-    updateCountdown();
-  });
-
-  document.getElementById("minus-button").addEventListener("click", () => {
-    hourOffset--;
-    updateCountdown();
-  });
 }
 
 function toggleDropdown() {
