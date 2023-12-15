@@ -8,9 +8,9 @@
 	--dropdown-hover-color: #fffaf938;
 	--dropdown-text-color: #d9a4a4;
 	--accent-color: #7d462e
-  }
-  
-  body {
+}
+
+body {
 	background-color: rgb(246, 94, 39);
 	color: var(--text-color);
 	margin: 0;
@@ -22,45 +22,45 @@
 	font-size: 1.2rem;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-  }
-  
-  #location {
+	align-items: center
+}
+
+#location {
 	position: relative;
-	margin: 0; /* Adjusted to prevent negative margin */
-  }
-  
-  .name {
-	font-size:7.5rem;
+	margin: 0
+}
+
+.name {
+	font-size: 7.5rem;
 	font-weight: 700;
 	margin-top: 0;
 	position: static;
 	animation: fadeInUp 0.8s ease-in-out;
 	font-family: Quicksand, sans-serif;
 	text-align: center;
-	letter-spacing: 0.1rem;
-  }
-  
-  #countdown-number,
-  #countdown-text,
-  #location {
+	letter-spacing: 0.1rem
+}
+
+#countdown-number,
+#countdown-text,
+#location {
 	animation: fadeInUp 0.6s;
-	text-align: center;
-  }
-  
-  #countdown-text {
+	text-align: center
+}
+
+#countdown-text {
 	font-size: 24px;
 	font-weight: 700;
-	z-index: 0;
-  }
-  
-  #countdown-number {
+	z-index: 0
+}
+
+#countdown-number {
 	position: static;
 	text-align: center;
-	font-size: 6em;
-  }
-  
-  .progress-bar {
+	font-size: 6em
+}
+
+.progress-bar {
 	width: 80%;
 	animation: fadeInUp 0.1s ease-in-out;
 	border-style: none;
@@ -74,21 +74,21 @@
 	-ms-transition: 300ms linear;
 	transition: 300ms linear;
 	padding: 0rem;
-	margin: 2rem auto; /* Adjusted margin to center */
-	overflow: hidden;
-  }
-  
-  .progress-bar span {
+	margin: 2rem auto;
+	overflow: hidden
+}
+
+.progress-bar span {
 	display: block;
 	height: 4rem;
 	animation: shake infinite;
 	border-radius: 0.3rem;
 	background-color: var(--highlight-color);
 	position: relative;
-	transition: width 0.1s, background-color 2s ease;
-  }
-  
-  .button {
+	transition: width 0.1s, background-color 2s ease
+}
+
+.button {
 	color: var(--text-color);
 	font-size: 2rem;
 	font-family: Quicksand, sans-serif;
@@ -97,17 +97,17 @@
 	padding: 1rem 2rem;
 	border-radius: 0.3rem;
 	transition: 0.1s ease;
-	margin-top: 1rem; /* Added margin to separate from progress bar */
-  }
-  
-  .dropdown {
+	margin-top: 1rem
+}
+
+.dropdown {
 	position: relative;
-	margin: 2rem auto; /* Centered with space from the top */
+	margin: 2rem auto;
 	display: flex;
-	justify-content: center;
-  }
-  
-  .dropdown-content {
+	justify-content: center
+}
+
+.dropdown-content {
 	position: absolute;
 	display: none;
 	z-index: 1;
@@ -115,15 +115,15 @@
 	min-width: 160px;
 	box-shadow: 0px 8px 16px 0px rgba(63, 45, 45, 0.2);
 	padding: 12px 16px;
-	bottom: -100%; /* Adjusted to -100% to position above the dropdown button */
-	left: 50%; /* Center the dropdown */
-	transform: translateX(-50%); /* Center the dropdown */
-  }
-  
-  .dropdown:hover .dropdown-content {
-	display: block;
-  }
-  
+	bottom: -100%;
+	left: 50%;
+	transform: translateX(-50%)
+}
+
+.dropdown:hover .dropdown-content {
+	display: block
+}
+
 .dropdown-content a {
 	color: var(--dropdown-text-color);
 	font-size: 2rem;
@@ -136,20 +136,17 @@
 	display: block;
 	position: relative;
 	padding: 0.5rem;
-	margin-top: 0.5rem;
+	margin-top: 0.5rem
 }
 
 .dropdown-content a:hover {
-
 	letter-spacing: 0.2rem;
-	color: var(--accent-color);
+	color: var(--accent-color)
 }
 
 .dropdown-content.show {
-	display: block;
+	display: block
 }
-
-
 
 ul {
 	list-style: none;
@@ -172,45 +169,34 @@ div#rss-container {
 	align-self: center
 }
 
-@media screen and (max-width:632px) {
+.progress-bar {
+	width: 70%
+}
 
-	#countdown-number,
-	.name,
-	.progress-bar,
-	body,
-	h1,
-	p {
-		font-size: 1.0em
-	}
+#countdown-number {
+	font-size: 0.2rem
+}
 
-	.progress-bar {
-		width: 70%
-	}
+p {
+	font-size: 1.1em
+}
 
-	#countdown-number {
-		font-size: 0.2rem
-	}
+.name {
+	font-size: 4.5rem
+}
 
-	p {
-		font-size: 1.1em
-	}
+#countdown-number {
+	font-size: 4.5em
+}
 
-	.name {
-		font-size: 4.5rem
-	}
+.progress-bar {
+	height: 2rem
+}
 
-	#countdown-number {
-		font-size: 4.5em
-	}
-
-	.progress-bar {
-		height: 2rem
-	}
-
-	.button {
-		font-size: 1.5rem;
-		padding: .75rem 1.5rem
-	}
+.button {
+	font-size: 1.5rem;
+	padding: .75rem 1.5rem
+}
 }
 
 .snowflake {
@@ -222,23 +208,23 @@ div#rss-container {
 	pointer-events: none;
 	user-select: none;
 	z-index: 0;
-	animation: snowfall cubic-bezier(.06, .05, .095, .035) 2s
+	animation: #FFFAFAfall cubic-bezier(.06, .05, .095, .035) 2s
 }
 
 @keyframes snowfall {
 	0% {
 		transform: translateY(-1vh) rotate(0);
-		opacity: 1;
+		opacity: 1
 	}
 
 	50% {
-		opacity: 1;
+		opacity: 1
 	}
 
 	100% {
 		filter: blur(0.09rem);
 		transform: translateY(230vh) rotate(360deg);
-		opacity: 1;
+		opacity: 1
 	}
 }
 
