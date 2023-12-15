@@ -201,6 +201,7 @@ p {
 
 .snowflake {
 	position: absolute;
+<<<<<<< HEAD
 	width: .75rem;
 	height: .7rem;
 	background-color: #ffffff;
@@ -210,6 +211,13 @@ p {
 	z-index: 0;
 	animation: #FFFAFAfall cubic-bezier(.06, .05, .095, .035) 2s
 }
+=======
+	width: 10px; 
+	height: 10px;
+	border-radius: 50%;
+  }
+  
+>>>>>>> b463d6dbca052b5e5447f53e3f2170f438fd632a
 
 @keyframes snowfall {
 	0% {

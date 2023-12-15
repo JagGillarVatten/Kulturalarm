@@ -271,16 +271,6 @@ function init() {
     toggleDropdown();
   });
 
-  // Add event listeners for timezone adjustment buttons
-  document.getElementById("plus-button").addEventListener("click", () => {
-    hourOffset++;
-    updateCountdown();
-  });
-
-  document.getElementById("minus-button").addEventListener("click", () => {
-    hourOffset--;
-    updateCountdown();
-  });
 }
 
 function toggleDropdown() {
@@ -336,15 +326,15 @@ if (isBST) {
 }
 
 function isSnowfallPeriod() {
-  let currentDate = new Date();
-  let startDate = new Date(currentDate.getFullYear(), 10, 23);
-  let endDate = new Date(currentDate.getFullYear(), 11, 31);
+  const currentDate = new Date();
+  const startDate = new Date(currentDate.getFullYear(), 10, 23);
+  const endDate = new Date(currentDate.getFullYear() + 1, 0, 1); // Changed end date to January 1st
 
   return currentDate >= startDate && currentDate <= endDate;
 }
 
 function createSnowflake() {
-  let snowflake = document.createElement("div");
+  const snowflake = document.createElement("div");
   snowflake.className = "snowflake";
   snowflake.style.left = `${Math.random() * window.innerWidth}px`;
   document.body.appendChild(snowflake);
@@ -354,6 +344,10 @@ function createSnowflake() {
   });
 }
 
-if (isSnowfallPeriod()) {
-  setInterval(createSnowflake, 230);
+function startSnowfall() {
+  if (isSnowfallPeriod()) {
+    setInterval(createSnowflake, 230);
+  }
 }
+
+startSnowfall();
