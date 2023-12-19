@@ -215,11 +215,15 @@ div#rss-container {
 
 .snowflake {
 	position: absolute;
-	width: 10px; 
-	height: 10px;
-	border-radius: 50%;
-  }
-  
+	width: .75rem;
+	height: .7rem;
+	background-color: #ffffff;
+	border-radius: 5%;
+	pointer-events: none;
+	user-select: none;
+	z-index: 0;
+	animation: snowfall cubic-bezier(.06, .05, .095, .035) 2s
+}
 
 @keyframes snowfall {
 	0% {
