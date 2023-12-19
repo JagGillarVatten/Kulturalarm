@@ -1,7 +1,8 @@
 let events = [];
 let sentNotifications = [];
 let specialDates = [];
-
+const countdownEl = document.getElementById('countdown');
+const locationEl = document.getElementById('location');
 const eventFiles = [
   {
     name: "MP1",
@@ -143,7 +144,7 @@ function updateCountdown() {
       document.getElementById("progress").style.width = "";
       document.getElementById("progress").style.backgroundColor = "#a3d47a";
       document.getElementById("progress-bar").style.display = "block";
-
+      
       if (!sentNotifications.includes(name)) {
         new Notification(name, {
           body: `Börjar om ${remainingTime} i ${location}`,
@@ -351,3 +352,47 @@ function startSnowfall() {
 }
 
 startSnowfall();
+// Lägg till händelselyssnare för tangentbordsstyrning
+document.addEventListener('keydown', hanteraTangenttryck);
+
+function hanteraTangenttryck(e) {
+
+  // Öppna rullgardinsmenyn vid Enter-tangent
+  if (e.key === 'Enter') {
+    toggleDropdown();
+  }
+
+  // Stäng rullgardinsmenyn vid Escape-tangent
+  else if (e.key === 'Escape') {
+    closeDropdown();
+  }
+
+  // Navigera alternativ med piltangenter
+  else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    let alternativ = document.querySelectorAll('.dropdown-content a');
+    let nuvarandeIndex = Array.from(alternativ).findIndex(el => el.classList.contains('selected'));
+
+    if (e.key === 'ArrowDown') {
+      nuvarandeIndex++;
+      if (nuvarandeIndex >= alternativ.length) {
+        nuvarandeIndex = 0;
+      }
+    }
+    else if (e.key === 'ArrowUp') {
+      nuvarandeIndex--;
+      if (nuvarandeIndex < 0) {
+        nuvarandeIndex = alternativ.length - 1;
+      }
+    }
+
+    alternativ.forEach(el => el.classList.remove('selected'));
+    alternativ[nuvarandeIndex].classList.add('selected');
+
+  }
+
+  // Välj alternativ vid Enter-tangent
+  else if (e.key === 'Enter' && document.querySelector('.selected')) {
+    document.querySelector('.selected').click();
+  }
+
+}
