@@ -89,6 +89,22 @@ function updateCountdown() {
     let todaysEvents = getTodaysEvents();
     let eventListContainer = document.getElementById("event-list");
     let eventListUl = document.getElementById("events-ul");
+
+    // Check if it's a special date range
+    if (
+        now.getDate() > 21 && now.getMonth() === 11 || // After December 21st
+        (now.getDate() <= 10 && now.getMonth() === 11) // Until January 10th
+    ) {
+        let daysLeft = 10 - now.getDate();
+        document.getElementById("countdown-text").innerHTML =
+            "God jul, önskar dig ett skönt lov";
+        document.getElementById("location").innerHTML = `Kom tillbaka om ${daysLeft*-1} dagar`;
+        document.getElementById("countdown-number").innerHTML = "";
+        document.getElementById("progress-bar").style.display = "none";
+        return;
+    }
+
+    // Continue with regular event logic
     if (isSpecialDate(now)) {
         nextEvent = getSpecialDate(now);
     } else {
@@ -327,29 +343,3 @@ if (isBST) {
     ukTimeZoneOffset = 1;
 }
 
-function isSnowfallPeriod() {
-    const currentDate = new Date();
-    const startDate = new Date(currentDate.getFullYear(), 10, 23);
-    const endDate = new Date(currentDate.getFullYear() + 1, 0, 1); // Changed end date to January 1st
-
-    return currentDate >= startDate && currentDate <= endDate;
-}
-
-function createSnowflake() {
-    const snowflake = document.createElement("div");
-    snowflake.className = "snowflake";
-    snowflake.style.left = `${Math.random() * window.innerWidth}px`;
-    document.body.appendChild(snowflake);
-
-    snowflake.addEventListener("animationend", () => {
-        document.body.removeChild(snowflake);
-    });
-}
-
-function startSnowfall() {
-    if (isSnowfallPeriod()) {
-        setInterval(createSnowflake, 230);
-    }
-}
-
-startSnowfall();
