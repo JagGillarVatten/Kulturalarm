@@ -2,55 +2,59 @@
 let isNewSession = sessionStorage.getItem("isNewSession") === null;
 
 if (isNewSession) {
-  // Get the visit count from local storage, or set it to 0 if it doesn't exist
-  let visitCount = localStorage.getItem("visitCount");
-  if (!visitCount) {
-    visitCount = 0;
-  }
+  // Get the accurate visit count from local storage
+  let visitCount = parseInt(localStorage.getItem("visitCount")) || 0;
 
-  // Increment the visit count and save it to local storage
+  // Increment the visit count
   visitCount++;
+
+  // Save the accurate visit count to local storage
   localStorage.setItem("visitCount", visitCount);
 
-  // Display the visit count on the page
+  // Display the accurate visit count on the page
   document.getElementById("visit-count").textContent = visitCount;
 
-  // Log the current visit count to the console
-  console.log(`Current visit count: ${visitCount}`);
+  // Log the accurate current visit count
+  console.log(`Current accurate visit count: ${visitCount}`);
 
-  // Set the session flag to prevent incrementing the count on page refresh
+  // Set session flag to prevent incrementing on page refresh
   sessionStorage.setItem("isNewSession", false);
+
 } else {
-  // Get the visit count from local storage and display it on the page
-  let visitCount = localStorage.getItem("visitCount");
+
+  // Get the accurate visit count from local storage
+  let visitCount = parseInt(localStorage.getItem("visitCount")) || 0;
+
+  // Display the accurate visit count on page
   document.getElementById("visit-count").textContent = visitCount;
 
-  // Log the current visit count to the console
-  console.log(`Current visit count: ${visitCount}`);
+  // Log the accurate current visit count
+  console.log(`Current accurate visit count: ${visitCount}`);
+
 }
 
-// Get the client IP address and log it to the console
+// Get client IP address
 const ipRequest = new XMLHttpRequest();
 
-ipRequest.addEventListener("load", function () {
-  console.log(`Client IP address: ${this.responseText}`);
-});
-
 ipRequest.open("GET", "https://api.ipify.org", true);
-
 ipRequest.send();
 
-// Fade out the visit count after 5 seconds
+// Fade out visit count after 5 seconds
 setTimeout(function () {
+
   let fadeEffect = setInterval(function () {
+
     if (!document.getElementById("page-visit-count").style.opacity) {
       document.getElementById("page-visit-count").style.opacity = 1;
     }
+
     if (document.getElementById("page-visit-count").style.opacity > 0) {
       document.getElementById("page-visit-count").style.opacity -= 0.1;
     } else {
       clearInterval(fadeEffect);
       document.getElementById("page-visit-count").style.display = "none";
     }
+
   }, 50);
+
 }, 5000);
