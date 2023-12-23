@@ -1,5 +1,5 @@
 # Kulturalarm
-
+! (https://github.com/JagGillarVatten/Kulturalarm/blob/main/favicon.png)
 Kulturalarm är en webbapplikation utvecklad för elever på Kulturama Sjöstaden för att enkelt hålla koll på sina lektioner och tider. Applikationen inkluderar en nedräkningstimer som visar hur mycket tid som har gått och hur mycket tid som återstår för varje lektion.
 
 ## Funktioner
