@@ -1,5 +1,5 @@
 # Kulturalarm
-![Kulturalarm Logo](https://file.garden/ZWc5R9szsWLb2ccu/favicon.png))
+![Kulturalarm Logo](https://file.garden/ZWc5R9szsWLb2ccu/favicon3ae.png))
 
 Kulturalarm är en webbapplikation utvecklad för elever på Kulturama Sjöstaden för att enkelt hålla koll på sina lektioner och tider. Applikationen inkluderar en nedräkningstimer som visar hur mycket tid som har gått och hur mycket tid som återstår för varje lektion.
 
