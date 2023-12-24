@@ -20,12 +20,37 @@ let currentEventName = "",
     currentEventSentNotification = !1,
     hourOffset = 0;
 
-function loadJSON(e, t) {
-    let n = new XMLHttpRequest;
-    n.overrideMimeType("application/json"), n.open("GET", e, !0), n.onreadystatechange = function() {
-        4 === n.readyState && (200 === n.status ? t(JSON.parse(n.responseText)) : console.error(`Error loading JSON from ${e}. Status: ${n.status}`))
-    }, n.send(null)
-}
+    function loadJSON(url, callback) {
+        // Check if the data is already cached
+        const cachedData = localStorage.getItem(url);
+        
+        if (cachedData) {
+            // If cached, parse and use the cached data
+            callback(JSON.parse(cachedData));
+            return;
+        }
+    
+        let xhr = new XMLHttpRequest();
+        xhr.overrideMimeType("application/json");
+        xhr.open("GET", url, true);
+    
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    // Cache the data in localStorage
+                    localStorage.setItem(url, xhr.responseText);
+    
+                    // Parse and use the data
+                    callback(JSON.parse(xhr.responseText));
+                } else {
+                    console.error(`Error loading JSON from ${url}. Status: ${xhr.status}`);
+                }
+            }
+        };
+    
+        xhr.send(null);
+    }
+    
 
 function getTodaysEvents() {
     let e = (new Date).getDay();
