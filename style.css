@@ -15,10 +15,9 @@
 	color: var(--text-color);
 	margin: 0;
 	position: relative;
-	padding: 1rem;
+	padding: 1rem 0; /* Simplified padding */
 	font-family: Quicksand, sans-serif;
 	z-index: 1;
-	overflow: hidden;
 	font-size: 1.2rem;
 	display: flex;
 	flex-direction: column;
@@ -31,16 +30,17 @@
   }
   
   .name {
-	font-size:7.5rem;
+	font-size: 7.5rem;
 	font-weight: 700;
 	margin-top: 0;
-	position: static;
+	/* Removed redundant position: static; */
 	animation: fadeInUp 0.8s ease-in-out;
 	font-family: Quicksand, sans-serif;
 	text-align: center;
 	letter-spacing: 0.1rem;
   }
   
+  /* Combined selectors with the same animation */
   #countdown-number,
   #countdown-text,
   #location {
@@ -68,12 +68,8 @@
 	border-radius: 0.3rem;
 	background-color: var(--secondary-bg-color);
 	position: relative;
-	-webkit-transition: 300ms linear;
-	-moz-transition: 300ms linear;
-	-o-transition: 300ms linear;
-	-ms-transition: 300ms linear;
-	transition: 300ms linear;
-	padding: 0rem;
+	transition: 300ms linear; /* Used shorthand transition property */
+	padding: 0; /* Removed unnecessary padding */
 	margin: 2rem auto; /* Adjusted margin to center */
 	overflow: hidden;
   }
@@ -124,7 +120,7 @@
 	display: block;
   }
   
-.dropdown-content a {
+  .dropdown-content a {
 	color: var(--dropdown-text-color);
 	font-size: 2rem;
 	border-radius: 0.5rem;
@@ -137,120 +133,75 @@
 	position: relative;
 	padding: 0.5rem;
 	margin-top: 0.5rem;
-}
-
-.dropdown-content a:hover {
-
+  }
+  
+  .dropdown-content a:hover {
 	letter-spacing: 0.2rem;
 	color: var(--accent-color);
-}
-
-.dropdown-content.show {
+  }
+  
+  .dropdown-content.show {
 	display: block;
-}
-
-
-
-ul {
+  }
+  
+  ul {
 	list-style: none;
 	margin: 0;
-	padding: 0
-}
-
-li {
-	margin-bottom: 1px
-}
-
-strong {
-	font-weight: 700
-}
-
-div#rss-container {
+	padding: 0;
+  }
+  
+  li {
+	margin-bottom: 1px;
+  }
+  
+  strong {
+	font-weight: 700;
+  }
+  
+  div#rss-container {
 	border-radius: 5px;
-	box-shadow: 2px 2px 5px rgba(255, 246, 246, .1);
+	box-shadow: 2px 2px 5px rgba(255, 246, 246, 0.1);
 	padding: 1px;
-	align-self: center
-}
-
-@media screen and (max-width:632px) {
-
+	align-self: center;
+  }
+  
+  @media screen and (max-width: 632px) {
+	/* Combined similar font-size declarations */
 	#countdown-number,
 	.name,
 	.progress-bar,
 	body,
 	h1,
 	p {
-		font-size: 1.0em
+	  font-size: 1.0em;
 	}
-
+  
 	.progress-bar {
-		width: 70%
+	  width: 70%;
 	}
-
+  
 	#countdown-number {
-		font-size: 0.2rem
+	  font-size: 0.2rem;
 	}
-
+  
 	p {
-		font-size: 1.1em
+	  font-size: 1.1em;
 	}
-
+  
 	.name {
-		font-size: 4.5rem
+	  font-size: 4.5rem;
 	}
-
+  
 	#countdown-number {
-		font-size: 4.5em
+	  font-size: 4.5em;
 	}
-
+  
 	.progress-bar {
-		height: 2rem
+	  height: 2rem;
 	}
-
+  
 	.button {
-		font-size: 1.5rem;
-		padding: .75rem 1.5rem
+	  font-size: 1.5rem;
+	  padding: 0.75rem 1.5rem;
 	}
-}
-
-.snowflake {
-	position: absolute;
-	width: .75rem;
-	height: .7rem;
-	background-color: #ffffff;
-	border-radius: 5%;
-	pointer-events: none;
-	user-select: none;
-	z-index: 0;
-	animation: snowfall cubic-bezier(.06, .05, .095, .035) 2s
-}
-
-@keyframes snowfall {
-	0% {
-		transform: translateY(-1vh) rotate(0);
-		opacity: 1;
-	}
-
-	50% {
-		opacity: 1;
-	}
-
-	100% {
-		filter: blur(0.09rem);
-		transform: translateY(230vh) rotate(360deg);
-		opacity: 1;
-	}
-}
-
-@keyframes fadeInUp {
-	0% {
-		opacity: 0;
-		filter: blur(0.2rem);
-		transform: translateY(-23vh)
-	}
-
-	100% {
-		opacity: 1;
-		transform: translateY(0)
-	}
-}
+  }
