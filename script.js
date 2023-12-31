@@ -1,235 +1,326 @@
-let events = [],
-    sentNotifications = [],
-    specialDates = [];
-const eventFiles = [{
-    name: "MP1",
-    url: "MP1.json"
-}, {
-    name: "AM1",
-    url: "AM1.json"
-}, {
-    name: "MP2",
-    url: "MP2.json"
-}, {
-    name: "AM2",
-    url: "AM2.json"
-}];
-let currentEventName = "",
-    currentEventStart = null,
-    currentEventLocation = "",
-    currentEventSentNotification = !1,
-    hourOffset = 0;
+// Use const for variables that are not reassigned
+const events = [];
+const sentNotifications = [];
+const specialDates = [];
+const eventFiles = [
+  { name: "MP1", url: "MP1.json" },
+  { name: "AM1", url: "AM1.json" },
+  { name: "MP2", url: "MP2.json" },
+  { name: "AM2", url: "AM2.json" }
+];
+let currentEventName = "";
+let currentEventStart = null;
+let currentEventLocation = "";
+let currentEventSentNotification = false;
+let hourOffset = 0;
 
-    function loadJSON(url, callback) {
-        // Check if the data is already cached
-        const cachedData = localStorage.getItem(url);
-        
-        if (cachedData) {
-            // If cached, parse and use the cached data
-            callback(JSON.parse(cachedData));
-            return;
-        }
-    
-        let xhr = new XMLHttpRequest();
-        xhr.overrideMimeType("application/json");
-        xhr.open("GET", url, true);
-    
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    // Cache the data in localStorage
-                    localStorage.setItem(url, xhr.responseText);
-    
-                    // Parse and use the data
-                    callback(JSON.parse(xhr.responseText));
-                } else {
-                    console.error(`Error loading JSON from ${url}. Status: ${xhr.status}`);
-                }
-            }
-        };
-    
-        xhr.send(null);
+function loadJSON(url, callback) {
+  // Check if the data is already cached
+  const cachedData = localStorage.getItem(url);
+
+  if (cachedData) {
+    // If cached, parse and use the cached data
+    callback(JSON.parse(cachedData));
+    return;
+  }
+
+  let xhr = new XMLHttpRequest();
+  xhr.overrideMimeType("application/json");
+  xhr.open("GET", url, true);
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        // Cache the data in localStorage
+        localStorage.setItem(url, xhr.responseText);
+
+        // Parse and use the data
+        callback(JSON.parse(xhr.responseText));
+      } else {
+        console.error(`Error loading JSON from ${url}. Status: ${xhr.status}`);
+      }
     }
-    
+  };
+
+  xhr.send(null);
+}
 
 function getTodaysEvents() {
-    let e = (new Date).getDay();
-    return events.filter((t => t.startDay === e))
+  let day = new Date().getDay();
+  return events.filter((event) => event.startDay === day);
 }
 
 function getNextEvent() {
-    let e = new Date,
-        t = new Date(e.getFullYear(), e.getMonth(), e.getDate()),
-        n = getTodaysEvents();
-    for (let o of n) {
-        let n = new Date(`${t.toDateString()} ${o.startTime}`),
-            r = new Date(`${t.toDateString()} ${o.endTime}`);
-        if (e >= n && e < r) return {
-            name: o.name,
-            start: n,
-            location: o.location,
-            end: r
-        };
-        if (e < n) return {
-            name: o.name,
-            start: n,
-            end: r,
-            location: o.location
-        }
+  let now = new Date();
+  let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  let todaysEvents = getTodaysEvents();
+
+  for (let event of todaysEvents) {
+    let start = new Date(`${today.toDateString()} ${event.startTime}`);
+    let end = new Date(`${today.toDateString()} ${event.endTime}`);
+
+    if (now >= start && now < end) {
+      return {
+        name: event.name,
+        start: start,
+        location: event.location,
+        end: end
+      };
     }
-    return null
+
+    if (now < start) {
+      return {
+        name: event.name,
+        start: start,
+        end: end,
+        location: event.location
+      };
+    }
+  }
+
+  return null;
 }
 
 function updateCountdown() {
-    if (events.length === 0) {
-        setTimeout(updateCountdown, 1000);
-        return;
-    }
+  if (events.length === 0) {
+    setTimeout(updateCountdown, 1000);
+    return;
+  }
 
-    let now = new Date();
-    let nextEvent;
-    let todaysEvents = getTodaysEvents();
-    let eventListContainer = document.getElementById("event-list");
-    let eventListUl = document.getElementById("events-ul");
+  let now = Date.now();
+  let nextEvent;
+  let todaysEvents = getTodaysEvents();
+  let eventListContainer = document.querySelector("#event-list");
+  let eventListUl = document.querySelector("#events-ul");
 
-    // Check if it's a special date range
+  // Continue with regular event logic
+  nextEvent = getNextEvent();
+
+  if (nextEvent === null) {
+    currentEventName = "";
+    currentEventStart = null;
+    currentEventLocation = "";
+    currentEventSentNotification = false;
+
+    document.querySelector("#countdown-text").textContent =
+      "Inga fler lektioner idag.";
+    document.querySelector("#location").textContent = "";
+    document.querySelector("#countdown-number").textContent = "Hejdå!";
+    document.querySelector("#progress-bar").style.display = "none";
+
+    return;
+  }
+
+  let {
+    name: eventName,
+    location: eventLocation,
+    start: eventStart,
+    end: eventEnd
+  } = nextEvent;
+
+  let countdownText = document.querySelector("#countdown-text");
+  let countdownNumber = document.querySelector("#countdown-number");
+  let locationElement = document.querySelector("#location");
+  let countdownElement = document.querySelector("#countdown");
+  let progressBar = document.querySelector("#progress");
+  let progressBarContainer = document.querySelector("#progress-bar");
+
+  if (today < eventStart) {
+    let timeLeft = formatSeconds((eventStart - today) / 1000);
+
     if (
-        now.getDate() > 21 && now.getMonth() === 11 || // After December 21st
-        (now.getDate() <= 10 && now.getMonth() === 11) // Until January 10th
+      currentEventName !== eventName ||
+      currentEventStart !== eventStart ||
+      currentEventLocation !== eventLocation
     ) {
-        let daysLeft = 10 - now.getDate();
-        document.getElementById("countdown-text").innerHTML =
-            "God jul, önskar dig ett skönt lov";
-        document.getElementById("location").innerHTML = `Kom tillbaka om ${daysLeft*-1} dagar`;
-        document.getElementById("countdown-number").innerHTML = "";
-        document.getElementById("progress-bar").style.display = "none";
+      currentEventName = eventName;
+      currentEventStart = eventStart;
+      currentEventLocation = eventLocation;
+      currentEventSentNotification = false;
+
+      document.title = `${timeLeft} tills | ${eventName}`;
+      countdownText.textContent = ` ${eventName} börjar om: `;
+      countdownNumber.textContent = timeLeft;
+      locationElement.textContent = "Rum: " + currentEventLocation;
+      countdownElement.style.color = "#ffff";
+      progressBar.style.width = "";
+      progressBar.style.backgroundColor = "#a3d47a";
+      progressBarContainer.style.display = "block";
+
+      if (!sentNotifications.includes(eventName)) {
+        new Notification(eventName, {
+          body: `Börjar om ${timeLeft} i ${eventLocation}`
+        });
+
+        sentNotifications.push(eventName);
+        currentEventSentNotification = true;
+      }
+
+      let progressWidth =
+        (eventStart - today) / 1000 / (eventStart - (eventStart - 60000)) * 100 / 100 *
+        progressBarContainer.offsetWidth;
+      progressWidth = Math.max(0, progressWidth);
+      progressBar.style.width = `${progressWidth}px`;
+
+      return;
+    }
+  }
+
+  let timeLeft = formatSeconds((eventEnd - today) / 1000);
+
+  if (
+    currentEventName !== eventName ||
+    currentEventStart !== eventStart ||
+    currentEventLocation !== eventLocation
+  ) {
+    currentEventName = eventName;
+    currentEventStart = eventStart;
+    currentEventLocation = eventLocation;
+    currentEventSentNotification = false;
+
+    let countdownText = `Tid kvar för ${eventName}:`;
+    let countdownNumber = timeLeft;
+    let locationText = `Rum: ${eventLocation}`;
+
+    countdownText.textContent = countdownText;
+    countdownNumber.textContent = countdownNumber;
+    locationElement.textContent = locationText;
+    document.title = `${timeLeft} kvar | ${eventName}`;
+  }
+
+  if (
+    !currentEventSentNotification &&
+    today >= eventStart &&
+    !sentNotifications.includes(eventName)
+  ) {
+    new Notification(eventName, {
+      body: `Pågår nu i ${eventLocation}`
+    });
+
+    sentNotifications.push(eventName);
+    currentEventSentNotification = true;
+  }
+
+  let progressWidth =
+    (today - eventStart) / 1000 / ((eventEnd - eventStart) / 1000) * 100 / 100 *
+    progressBarContainer.offsetWidth;
+  progressWidth = Math.max(0, progressWidth);
+  progressBar.style.width = `${progressWidth}px`;
+  progressBarContainer.style.display = "block";
+}
+
+function formatSeconds(seconds) {
+  let minutes = Math.floor(seconds / 60);
+  let hours = Math.floor(minutes / 60);
+  let paddedSeconds = pad(Math.floor(seconds) % 60, 2);
+
+  return hours > 0
+    ? `${hours}:${pad(minutes % 60, 2)}:${paddedSeconds}`
+    : `${pad(minutes, 2)}:${paddedSeconds}`;
+}
+
+function pad(number, length) {
+  return ("000000000" + number).substr(-length);
+}
+
+function loadEventFile(url, callback) {
+  fetch(`scheman/${url}`)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Failed to fetch ${url}. Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Loaded data:", data);
+
+      if (!data) {
+        console.error("Data is empty");
         return;
-    }
+      }
 
-    // Continue with regular event logic
-    if (isSpecialDate(now)) {
-        nextEvent = getSpecialDate(now);
-    } else {
-        nextEvent = getNextEvent();
-    }
+      events.length = 0; // Clear the array
+      events.push(...data);
 
-    if (nextEvent === null) {
-        currentEventName = "";
-        currentEventStart = null;
-        currentEventLocation = "";
-        currentEventSentNotification = false;
+      console.log("Regular events:", events);
 
-        document.getElementById("countdown-text").innerHTML =
-            "Inga fler lektioner idag.";
-        document.getElementById("location").innerHTML = "";
-        document.getElementById("countdown-number").innerHTML = "Hejdå!";
-        document.getElementById("progress-bar").style.display = "none";
-
-        return;
-    }
-    let {
-        name: n,
-        location: o,
-        start: r,
-        end: a
-    } = e, i = (document.getElementById("countdown"), document.getElementById("progress"));
-    if (t < r) {
-        let e = formatSeconds((r - t) / 1e3);
-        if (currentEventName !== n || currentEventStart !== r || currentEventLocation !== o) {
-            currentEventName = n, currentEventStart = r, currentEventLocation = o, currentEventSentNotification = !1, document.title = `${e} tills | ${n}`;
-            let a = ` ${n} börjar om: `,
-                l = `${e}`;
-            document.getElementById("countdown-text").innerHTML = a, document.getElementById("countdown-number").innerHTML = l, document.getElementById("location").innerHTML = "Rum: " + currentEventLocation, document.getElementById("countdown").style.color = "#ffff", document.getElementById("progress").style.width = "", document.getElementById("progress").style.backgroundColor = "#a3d47a", document.getElementById("progress-bar").style.display = "block", sentNotifications.includes(n) || (new Notification(n, {
-                body: `Börjar om ${e} i ${o}`
-            }), sentNotifications.push(n), currentEventSentNotification = !0);
-            let c = (r - t) / 1e3 / (r - (r - 6e4)) * 100 / 100 * document.getElementById("progress-bar").offsetWidth;
-            return c = Math.max(0, c), void(i.style.width = `${c}px`)
-        }
-    }
-    let l = formatSeconds((a - t) / 1e3);
-    if (currentEventName !== n || currentEventStart !== r || currentEventLocation !== o) {
-        currentEventName = n, currentEventStart = r, currentEventLocation = o, currentEventSentNotification = !1;
-        let e = `Tid kvar för ${n}:`,
-            t = `${l}`,
-            a = `Rum: ${o}`;
-        document.getElementById("countdown-text").innerHTML = e, document.getElementById("countdown-number").innerHTML = t, document.getElementById("location").innerHTML = a, document.title = `${l} kvar | ${n}`
-    }!currentEventSentNotification && t >= r && !sentNotifications.includes(n) && (new Notification(n, {
-        body: `Pågår nu i ${o}`
-    }), sentNotifications.push(n), currentEventSentNotification = !0);
-    let c = (t - r) / 1e3 / ((a - r) / 1e3) * 100 / 100 * document.getElementById("progress-bar").offsetWidth;
-    c = Math.max(0, c), i.style.width = `${c}px`, document.getElementById("progress-bar").style.display = "block"
-}
-
-function formatSeconds(e) {
-    let t = Math.floor(e / 60),
-        n = Math.floor(t / 60),
-        o = pad(Math.floor(e) % 60, 2);
-    return n > 0 ? `${n}:${pad(t%60,2)}:${o}` : `${pad(t,2)}:${o}`
-}
-
-function pad(e, t) {
-    return ("000000000" + e).substr(-t)
-}
-
-function loadEventFile(e) {
-    loadJSON(`scheman/${e}`, (e => {
-        console.log("Loaded data:", e), Array.isArray(e) ? (events = e.filter((e => !e.specialDate)), specialDates = e.filter((e => e.specialDate))) : (events = e, specialDates = []), console.log("Regular events:", events), console.log("Special dates:", specialDates), updateCountdown()
-    }))
+      if (callback) {
+        callback();
+      }
+    })
+    .catch((error) => {
+      console.error("Failed to load data:", error);
+    });
 }
 
 function init() {
-    let e = document.querySelector(".dropdown-content"),
-        t = document.querySelector(".dropdown-button");
-    eventFiles.forEach((({
-        name: t,
-        url: n
-    }) => {
-        let o = document.createElement("a");
-        o.innerText = t, o.onclick = () => {
-            loadEventFile(n, (() => {
-                loadEventFile("specialDates.json", (() => {
-                    updateCountdown()
-                }))
-            })), closeDropdown()
-        }, o.addEventListener("click", (() => {})), e.appendChild(o)
-    })), loadEventFile(eventFiles[0].url), t.addEventListener("click", (() => {
-        toggleDropdown()
-    }))
+  let dropdownContent = document.querySelector(".dropdown-content");
+  let dropdownButton = document.querySelector(".dropdown-button");
+
+  eventFiles.forEach(({ name, url }) => {
+    let link = document.createElement("a");
+    link.innerText = name;
+    link.onclick = () => {
+      loadEventFile(url);
+      closeDropdown();
+    };
+
+    link.addEventListener("click", () => {});
+
+    dropdownContent.appendChild(link);
+  });
+
+  loadEventFile(eventFiles[0].url);
+  dropdownButton.addEventListener("click", () => {
+    toggleDropdown();
+  });
 }
 
 function toggleDropdown() {
-    document.querySelector(".dropdown-content").classList.toggle("show")
+  document.querySelector(".dropdown-content").classList.toggle("show");
 }
 
 function closeDropdown() {
-    document.querySelector(".dropdown-content").classList.remove("show")
+  document.querySelector(".dropdown-content").classList.remove("show");
 }
-window.onload = init, setInterval(updateCountdown, 50);
+
+window.onload = init;
+requestAnimationFrame(updateCountdown);
+
 const title = document.querySelector("title");
 title.addEventListener("click", playRandomSound);
+
 const button = document.querySelector(".dropdown-button");
-button.addEventListener("click", (() => {
-    let e = new Audio("sounds/click.mp3");
-    e.volume = .01, e.play(), button.classList.add("pop"), setTimeout((() => {
-        button.classList.remove("pop")
-    }), 30)
-}));
-let ukTimeZoneOffset = 0,
-    userTimeZoneOffset = (new Date).getTimezoneOffset() / 60;
+button.addEventListener("click", () => {
+  let audio = new Audio("sounds/click.mp3");
+  audio.volume = 0.01;
+  audio.play();
+  button.classList.add("pop");
 
-function adjustTimezone(e) {
-    return new Date(e.getTime() + 60 * (userTimeZoneOffset + ukTimeZoneOffset + hourOffset) * 60 * 1e3)
+  setTimeout(() => {
+    button.classList.remove("pop");
+  }, 30);
+});
+
+let ukTimeZoneOffset = 0;
+let userTimeZoneOffset = new Date().getTimezoneOffset() / 60;
+
+function adjustTimezone(date) {
+  return new Date(
+    date.getTime() +
+      60 * (userTimeZoneOffset + ukTimeZoneOffset + hourOffset) * 60 * 1000
+  );
 }
 
-function isSpecialDate(e) {
-    const t = e.toISOString().split("T")[0];
-    return specialDates.some((e => e.date === t))
+function isSpecialDate(date) {
+  //TODO: Implement new special date feauture check
+  return false;
 }
 
-function getSpecialDate(e) {
-    const t = e.toISOString().split("T")[0];
-    return specialDates.find((e => e.date === t))
+function getSpecialDate(date) {
+  //TODO: Implement new special date feauture retrieval
+  return null;
 }
-let today = new Date,
-    isBST = 60 === today.getTimezoneOffset();
 
+let today = new Date();
+let isBST = 60 === today.getTimezoneOffset();
