@@ -95,9 +95,9 @@ function updateCountdown() {
     // Check if it's a special date range
     if (
         now.getDate() > 21 && now.getMonth() === 11 || // After December 21st
-        (now.getDate() <= 10 && now.getMonth() === 11) // Until January 10th
+        (now.getDate() <= 11 && now.getMonth() === 11) // Until January 10th
     ) {
-        let daysLeft = 10 - now.getDate();
+        let daysLeft = 7 - now.getDate();
         document.getElementById("countdown-text").innerHTML =
             "God jul, önskar dig ett skönt lov";
         document.getElementById("location").innerHTML = `Kom tillbaka om ${daysLeft*-1} dagar`;
