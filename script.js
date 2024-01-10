@@ -194,7 +194,7 @@ function updateCountdown() {
     });
     sentNotifications.push(name);
     currentEventSentNotification = true;
-  }
+      }
 
   // Calculate progress width for the ongoing event
   let progressWidth =
@@ -243,7 +243,6 @@ function loadEventFile(filename) {
     updateCountdown();
   });
 }
-
 function init() {
   let dropdownContent = document.querySelector(".dropdown-content");
   let dropdownButton = document.querySelector(".dropdown-button");
@@ -260,7 +259,7 @@ function init() {
       closeDropdown();
     };
 
-    anchor.addEventListener("click", () => {});
+    anchor.addEventListener("click", () => { });
 
     dropdownContent.appendChild(anchor);
   });
@@ -286,12 +285,19 @@ function init() {
 function toggleDropdown() {
   let dropdownContent = document.querySelector(".dropdown-content");
   dropdownContent.classList.toggle("show");
+
+  // Add fade in animation
+  dropdownContent.style.animation = "fadeIn 0.5s";
 }
 
 function closeDropdown() {
   let dropdownContent = document.querySelector(".dropdown-content");
   dropdownContent.classList.remove("show");
-}
+
+  // Add fade out animation
+ dropdownContent.style.animation = "fadeOut 0.5s";
+ 
+  }
 
 window.onload = init;
 
@@ -309,7 +315,8 @@ button.addEventListener("click", () => {
   }, 30);
 });
 
-let ukTimeZoneOffset = 0;
+let u
+kTimeZoneOffset = 0;
 
 let userTimeZoneOffset = new Date().getTimezoneOffset() / 60;
 
