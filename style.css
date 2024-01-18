@@ -18,13 +18,14 @@
 	padding: 1rem 0; /* Simplified padding */
 	font-family: Quicksand, sans-serif;
 	z-index: 1;
-	font-size: 1.2rem;
+	font-size: 2.2rem;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
   }
   
   #location {
+	font-size: 4rem;
 	position: relative;
 	margin: 0; /* Adjusted to prevent negative margin */
   }
@@ -123,7 +124,7 @@
   
   .dropdown-content a {
 	color: var(--dropdown-text-color);
-	font-size: 2rem;
+	font-size:2rem;
 	border-radius: 0.5rem;
 	text-align: center;
 	background-color: var(--dropdown-bg-color);
@@ -220,9 +221,9 @@
 	.dot {
 	position: static;
 	width: 2rem;
-	filter: blur(0.06rem);
 	height: 2rem;
 	display: inline-grid;
+	transform: translateY(1rem);
 	background-color: rgba(0, 0, 0, 0.255);
 	border-radius: 50%;
 	
@@ -230,9 +231,9 @@
 
 
 	.dot.active {
-		transform: translateY(-0.5px);
-		box-shadow: 0 .4rem rgba(0, 0, 0, 0.3);
+	
+	
 		filter: blur(0px);
-		box-shado:;
+	
 		background-color: rgb(255, 255, 255);
 	}
