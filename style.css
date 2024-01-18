@@ -200,7 +200,17 @@
 	.progress-bar {
 	  height: 2rem;
 	}
-  
+	.dot {
+		width: 10px;
+		height: 10px;
+		flex-direction: r;
+		background-color: gray;
+		border-radius: 50%;
+	}
+
+	.dot.active {
+		background-color: rgb(255, 255, 255);
+	}
 	.button {
 	  font-size: 1.5rem;
 	  padding: 0.75rem 1.5rem;
@@ -216,4 +226,3 @@
 	@keyframes fadeOut {
 	from { opacity: 1; }
 	to { opacity: 0; }
-	}

@@ -246,7 +246,29 @@ function loadEventFile(filename) {
 function init() {
   let dropdownContent = document.querySelector(".dropdown-content");
   let dropdownButton = document.querySelector(".dropdown-button");
+  const days = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
 
+  const date = new Date();
+  const day = date.getDay();
+  
+  const dayElement = document.createElement('div');
+  dayElement.textContent = days[day];
+  
+  document.body.appendChild(dayElement);
+  
+  const dotsContainer = document.createElement('div');
+  
+  for (let i = 0; i < 7; i++) {
+    const dot = document.createElement('div');
+    dot.classList.add('dot');
+    if (i === day) {
+      dot.classList.add('active');
+    }
+    dotsContainer.appendChild(dot);
+  }
+  
+  document.body.appendChild(dotsContainer);
+  
   eventFiles.forEach(({ name, url }) => {
     let anchor = document.createElement("a");
     anchor.innerText = name;
@@ -364,3 +386,4 @@ function createSnowflake() {
 if (isSnowfallPeriod()) {
   setInterval(createSnowflake, 230);
 }
+
