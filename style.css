@@ -200,17 +200,7 @@
 	.progress-bar {
 	  height: 2rem;
 	}
-	.dot {
-		width: 10px;
-		height: 10px;
-		flex-direction: r;
-		background-color: gray;
-		border-radius: 50%;
-	}
 
-	.dot.active {
-		background-color: rgb(255, 255, 255);
-	}
 	.button {
 	  font-size: 1.5rem;
 	  padding: 0.75rem 1.5rem;
@@ -226,3 +216,23 @@
 	@keyframes fadeOut {
 	from { opacity: 1; }
 	to { opacity: 0; }
+}
+	.dot {
+	position: static;
+	width: 2rem;
+	filter: blur(0.06rem);
+	height: 2rem;
+	display: inline-grid;
+	background-color: rgba(0, 0, 0, 0.255);
+	border-radius: 50%;
+	
+}
+
+
+	.dot.active {
+		transform: translateY(-0.5px);
+		box-shadow: 0 .4rem rgba(0, 0, 0, 0.3);
+		filter: blur(0px);
+		box-shado:;
+		background-color: rgb(255, 255, 255);
+	}
