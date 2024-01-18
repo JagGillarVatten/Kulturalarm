@@ -244,6 +244,33 @@ function loadEventFile(filename) {
   });
 }
 function init() {
+
+const fullscreenButton = document.createElement('button');
+fullscreenButton.innerText = 'Fullscreen';
+fullscreenButton.style.position = 'fixed';
+fullscreenButton.style.bottom = '20px';
+fullscreenButton.style.opacity='0';
+fullscreenButton.style.right = '20px';
+
+fullscreenButton.addEventListener('mouseover', () => {
+  fullscreenButton.style.opacity = '1';
+});
+
+fullscreenButton.addEventListener('mouseout', () => {
+  fullscreenButton.style.opacity = '0';
+  fullscreenButton.style.transition = '0.2s';
+});
+
+fullscreenButton.addEventListener('click', () => {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+});
+
+document.body.appendChild(fullscreenButton);
+
   let dropdownContent = document.querySelector(".dropdown-content");
   let dropdownButton = document.querySelector(".dropdown-button");
   const days = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
@@ -386,4 +413,3 @@ function createSnowflake() {
 if (isSnowfallPeriod()) {
   setInterval(createSnowflake, 230);
 }
-
