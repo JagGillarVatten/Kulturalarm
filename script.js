@@ -427,16 +427,25 @@ function updateBackground() {
   let currentHour = now.getHours();
 
   let body = document.body;
-
-  if (currentHour >= 6 && currentHour < 12) {
+  if (currentHour >= 6 && currentHour < 9) {
     // Morning: Set background color for morning
     body.style.backgroundColor = "#FEE715"; // Yellow
-  } else if (currentHour >= 12 && currentHour < 18) {
+  } else if (currentHour >= 9 && currentHour < 12) {
+    // Late Morning: Set background color 
+    body.style.backgroundColor = "#FCD116"; // Light Yellow
+  } else if (currentHour >= 12 && currentHour < 15) {
     // Afternoon: Set background color for afternoon
     body.style.backgroundColor = "#87CEEB"; // Light Blue
+  } else if (currentHour >= 15 && currentHour < 18) {
+    // Late Afternoon: Set background color
+    body.style.backgroundColor = "#ADD8E6"; // Light Blue
+  } else if (currentHour >= 18 && currentHour < 21) {
+    // Evening: Set background color for evening
+    body.style.backgroundColor = "#483D8B"; // Dark Purple
   } else {
-    // Evening/Night: Set background color for evening/night
-    body.style.backgroundColor = "#2F4F4F"; // Dark Slate Gray
+    // Night: Set background color for night
+    body.style.backgroundColor = "#2b1f32"; // Midnight Blue
   }
+
 }
 setInterval(updateBackground, 60000);
