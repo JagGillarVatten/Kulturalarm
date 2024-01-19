@@ -409,4 +409,33 @@ function isSnowfallPeriod() {
 }
 
 function createSnowflake() {
-  let snowflake = document.creat
+  let snowflake = document.createElement("div");
+  snowflake.className = "snowflake";
+  snowflake.style.left = `${Math.random() * window.innerWidth}px`;
+  document.body.appendChild(snowflake);
+
+  snowflake.addEventListener("animationend", () => {
+    document.body.removeChild(snowflake);
+  });
+}
+
+if (isSnowfallPeriod()) {
+  setInterval(createSnowflake, 230);
+}
+function updateBackground() {
+  let now = new Date();
+  let currentHour = now.getHours();
+
+  let body = document.body;
+
+  if (currentHour >= 6 && currentHour < 12) {
+    // Morning: Set background color for morning
+    body.style.backgroundColor = "#FEE715"; // Yellow
+  } else if (currentHour >= 12 && currentHour < 18) {
+    // Afternoon: Set background color for afternoon
+    body.style.backgroundColor = "#87CEEB"; // Light Blue
+  } else {
+    // Evening/Night: Set background color for evening/night
+    body.style.backgroundColor = "#2F4F4F"; // Dark Slate Gray
+  }
+}
