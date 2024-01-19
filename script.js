@@ -206,7 +206,7 @@ function updateCountdown() {
   progressElement.style.width = `${progressWidth}px`;
   document.getElementById("progress-bar").style.display = "block";
 }
-
+updateBackground();
 /**
  * Formats a given number of seconds into a string representation of hours, minutes, and seconds.
  * @param {number} seconds - The number of seconds to format.
@@ -244,56 +244,61 @@ function loadEventFile(filename) {
   });
 }
 function init() {
-
-const fullscreenButton = document.createElement('button');
-fullscreenButton.innerText = 'Fullscreen';
-fullscreenButton.style.position = 'fixed';
-fullscreenButton.style.bottom = '20px';
-fullscreenButton.style.opacity='0';
-fullscreenButton.style.right = '20px';
-
-fullscreenButton.addEventListener('mouseover', () => {
-  fullscreenButton.style.opacity = '1';
-});
-
-fullscreenButton.addEventListener('mouseout', () => {
+  const fullscreenButton = document.createElement('button');
+  fullscreenButton.textContent = 'Fullscreen';
+  fullscreenButton.style.position = 'fixed';
+  fullscreenButton.style.bottom = '20px';
+  fullscreenButton.style.right = '20px';
   fullscreenButton.style.opacity = '0';
-  fullscreenButton.style.transition = '0.2s';
-});
-
-fullscreenButton.addEventListener('click', () => {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen();
-  } else {
-    document.exitFullscreen();
-  }
-});
-
-document.body.appendChild(fullscreenButton);
-
+  
+  fullscreenButton.addEventListener('mouseover', () => {
+    fullscreenButton.style.opacity = '1';
+  });
+  
+  fullscreenButton.addEventListener('mouseout', () => {
+    fullscreenButton.style.opacity = '0';
+    fullscreenButton.style.transition = 'opacity 0.2s';
+  });
+  
+  fullscreenButton.addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+      fullscreenButton.textContent = 'Exit Fullscreen';
+    } else {
+      document.exitFullscreen();
+      fullscreenButton.textContent = 'Fullscreen';
+    }
+  });
+  
+  document.body.appendChild(fullscreenButton);
   let dropdownContent = document.querySelector(".dropdown-content");
   let dropdownButton = document.querySelector(".dropdown-button");
   const days = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
 
   const date = new Date();
   const day = date.getDay();
-  
+
   const dayElement = document.createElement('div');
   dayElement.textContent = days[day];
-  
+
+  dayElement.style.animation = 'fadeIn 1s';
+
   document.body.appendChild(dayElement);
-  
+
   const dotsContainer = document.createElement('div');
-  
+
   for (let i = 0; i < 7; i++) {
     const dot = document.createElement('div');
     dot.classList.add('dot');
     if (i === day) {
       dot.classList.add('active');
     }
+
+    dot.style.animation = 'fadeIn 0.5s forwards';
+
     dotsContainer.appendChild(dot);
   }
-  
+
   document.body.appendChild(dotsContainer);
   
   eventFiles.forEach(({ name, url }) => {
@@ -328,7 +333,9 @@ document.body.appendChild(fullscreenButton);
   document.getElementById("minus-button").addEventListener("click", () => {
     hourOffset--;
     updateCountdown();
+  
   });
+  
 }
 
 function toggleDropdown() {
@@ -347,9 +354,11 @@ function closeDropdown() {
  dropdownContent.style.animation = "fadeOut 0.5s";
  
   }
-
-window.onload = init;
-
+  window.onload = function () {
+    init();
+    updateBackground();
+  };
+  
 setInterval(updateCountdown, 50);
 const title = document.querySelector("title");
 title.addEventListener("click", playRandomSound);
@@ -412,4 +421,21 @@ function createSnowflake() {
 
 if (isSnowfallPeriod()) {
   setInterval(createSnowflake, 230);
+}
+function updateBackground() {
+  let now = new Date();
+  let currentHour = now.getHours();
+
+  let body = document.body;
+
+  if (currentHour >= 6 && currentHour < 12) {
+    // Morning: Set background color for morning
+    body.style.backgroundColor = "#FEE715"; // Yellow
+  } else if (currentHour >= 12 && currentHour < 18) {
+    // Afternoon: Set background color for afternoon
+    body.style.backgroundColor = "#87CEEB"; // Light Blue
+  } else {
+    // Evening/Night: Set background color for evening/night
+    body.style.backgroundColor = "#2F4F4F"; // Dark Slate Gray
+  }
 }
