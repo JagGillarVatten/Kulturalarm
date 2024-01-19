@@ -439,3 +439,4 @@ function updateBackground() {
     body.style.backgroundColor = "#2F4F4F"; // Dark Slate Gray
   }
 }
+setInterval(updateBackground, 60000);
