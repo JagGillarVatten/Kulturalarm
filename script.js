@@ -427,9 +427,9 @@ function updateBackground() {
   let currentHour = now.getHours();
 
   let body = document.body;
-  if (currentHour >= 6 && currentHour < 9) {
+  if (currentHour >= 6 && currentHour < 1) {
     // Morning: Set background color for morning
-    body.style.backgroundColor = "#FEE715"; // Yellow
+    body.style.backgroundColor = "#f65e7"; // Orange lol
   } else if (currentHour >= 9 && currentHour < 12) {
     // Late Morning: Set background color 
     body.style.backgroundColor = "#FCD116"; // Light Yellow
@@ -444,7 +444,7 @@ function updateBackground() {
     body.style.backgroundColor = "#483D8B"; // Dark Purple
   } else {
     // Night: Set background color for night
-    body.style.backgroundColor = "#2b1f32"; // Midnight Blue
+    body.style.backgroundColor = "#2b0932"; // Midnight Blue
   }
 
 }
