@@ -432,34 +432,62 @@ function createSnowflake() {
     document.body.removeChild(snowflake);
   });
 }
-
-if (isSnowfallPeriod()) {
-  setInterval(createSnowflake, 230);
-}
 function updateBackground() {
   let now = new Date();
-  let currentHour = now.getHours();
+  let currentHour = now.getHours() + now.getMinutes() / 60;
 
   let body = document.body;
-  if (currentHour >= 6 && currentHour < 1) {
-    // Morning: Set background color for morning
-    body.style.backgroundColor = "#f65e7"; // Orange lol
+
+  let morningColor = "#f65e7";
+  let lateMorningColor = "#FCD116";
+  let afternoonColor = "#87CEEB";
+  let lateAfternoonColor = "#2120ff";
+  let eveningColor = "#2b0932";
+  let nightColor = "#0e041c";
+
+
+  if (currentHour >= 6 && currentHour < 9) {
+    // Morning: Interpolate between night and morning colors
+    let mix = (currentHour - 6) / 3;
+    body.style.backgroundColor = interpolateColor(nightColor, morningColor, mix);
   } else if (currentHour >= 9 && currentHour < 12) {
-    // Late Morning: Set background color 
-    body.style.backgroundColor = "#FCD116"; // Light Yellow
+    // Late Morning: Interpolate between morning and late morning colors
+    let mix = (currentHour - 9) / 3;
+    body.style.backgroundColor = interpolateColor(morningColor, lateMorningColor, mix);
   } else if (currentHour >= 12 && currentHour < 15) {
-    // Afternoon: Set background color for afternoon
-    body.style.backgroundColor = "#87CEEB"; // Light Blue
+    // Afternoon: Interpolate between late morning and afternoon colors
+    let mix = (currentHour - 12) / 3;
+    body.style.backgroundColor = interpolateColor(lateMorningColor, afternoonColor, mix);
   } else if (currentHour >= 15 && currentHour < 18) {
-    // Late Afternoon: Set background color
-    body.style.backgroundColor = "#ADD8E6"; // Light Blue
+    // Late Afternoon: Interpolate between afternoon and late afternoon colors
+    let mix = (currentHour - 15) / 3;
+    body.style.backgroundColor = interpolateColor(afternoonColor, lateAfternoonColor, mix);
   } else if (currentHour >= 18 && currentHour < 21) {
-    // Evening: Set background color for evening
-    body.style.backgroundColor = "#483D8B"; // Dark Purple
+    // Evening: Interpolate between late afternoon and evening colors
+    let mix = (currentHour - 18) / 3;
+    body.style.backgroundColor = interpolateColor(lateAfternoonColor, eveningColor, mix);
   } else {
-    // Night: Set background color for night
-    body.style.backgroundColor = "#2b0932"; // Midnight Blue
+    // Night: Interpolate between evening and night colors
+    let mix = (currentHour - 21) / 3;
+    body.style.backgroundColor = interpolateColor(eveningColor, nightColor, mix);
   }
 
 }
-setInterval(updateBackground, 60000);
+
+function interpolateColor(color1, color2, mix) {
+  let r1 = parseInt(color1.slice(1, 3), 16);
+  let g1 = parseInt(color1.slice(3, 5), 16);
+  let b1 = parseInt(color1.slice(5, 7), 16);
+
+  let r2 = parseInt(color2.slice(1, 3), 16);
+  let g2 = parseInt(color2.slice(3, 5), 16);
+  let b2 = parseInt(color2.slice(5, 7), 16);
+
+  let r = Math.round(r1 * (1 - mix) + r2 * mix);
+  let g = Math.round(g1 * (1 - mix) + g2 * mix);
+  let b = Math.round(b1 * (1 - mix) + b2 * mix);
+
+  return "#" + r.toString(16) + g.toString(16) + b.toString(16);
+}
+
+setInterval(updateBackground, 1000);
