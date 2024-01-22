@@ -250,26 +250,39 @@ function init() {
   fullscreenButton.style.bottom = '20px';
   fullscreenButton.style.right = '20px';
   fullscreenButton.style.opacity = '0';
-  
+
   fullscreenButton.addEventListener('mouseover', () => {
     fullscreenButton.style.opacity = '1';
   });
-  
+
+
   fullscreenButton.addEventListener('mouseout', () => {
     fullscreenButton.style.opacity = '0';
     fullscreenButton.style.transition = 'opacity 0.2s';
   });
-  
+
   fullscreenButton.addEventListener('click', () => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
       fullscreenButton.textContent = 'Exit Fullscreen';
+
+      let timeout;
+      document.onmousemove = () => {
+        clearTimeout(timeout);
+
+        timeout = setTimeout(() => {
+          document.body.style.cursor = 'none';
+        }, 3000);
+
+        document.body.style.cursor = '';
+      }
+
     } else {
       document.exitFullscreen();
       fullscreenButton.textContent = 'Fullscreen';
     }
   });
-  
+
   document.body.appendChild(fullscreenButton);
   let dropdownContent = document.querySelector(".dropdown-content");
   let dropdownButton = document.querySelector(".dropdown-button");
@@ -300,7 +313,7 @@ function init() {
   }
 
   document.body.appendChild(dotsContainer);
-  
+
   eventFiles.forEach(({ name, url }) => {
     let anchor = document.createElement("a");
     anchor.innerText = name;
@@ -333,10 +346,11 @@ function init() {
   document.getElementById("minus-button").addEventListener("click", () => {
     hourOffset--;
     updateCountdown();
-  
+
   });
-  
+
 }
+
 
 function toggleDropdown() {
   let dropdownContent = document.querySelector(".dropdown-content");
