@@ -244,6 +244,7 @@ function loadEventFile(filename) {
   });
 }
 function init() {
+  // Create fullscreen button
   const fullscreenButton = document.createElement('button');
   fullscreenButton.textContent = 'Fullscreen';
   fullscreenButton.style.position = 'fixed';
@@ -251,21 +252,24 @@ function init() {
   fullscreenButton.style.right = '20px';
   fullscreenButton.style.opacity = '0';
 
+  // Fade in on hover
   fullscreenButton.addEventListener('mouseover', () => {
     fullscreenButton.style.opacity = '1';
   });
 
-
+  // Fade out on mouseout
   fullscreenButton.addEventListener('mouseout', () => {
     fullscreenButton.style.opacity = '0';
     fullscreenButton.style.transition = 'opacity 0.2s';
   });
 
+  // Toggle fullscreen on click
   fullscreenButton.addEventListener('click', () => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
       fullscreenButton.textContent = 'Exit Fullscreen';
 
+      // Hide cursor after 3 seconds of inactivity
       let timeout;
       document.onmousemove = () => {
         clearTimeout(timeout);
@@ -283,21 +287,31 @@ function init() {
     }
   });
 
+  // Add fullscreen button to DOM
   document.body.appendChild(fullscreenButton);
-  let dropdownContent = document.querySelector(".dropdown-content");
-  let dropdownButton = document.querySelector(".dropdown-button");
+
+  // Get dropdown elements
+  const dropdownContent = document.querySelector(".dropdown-content");
+  const dropdownButton = document.querySelector(".dropdown-button");
+
+  // Get days of week
   const days = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
 
+  // Get current day
   const date = new Date();
   const day = date.getDay();
 
+  // Create day element
   const dayElement = document.createElement('div');
   dayElement.textContent = days[day];
 
+  // Fade in animation
   dayElement.style.animation = 'fadeIn 1s';
 
+  // Add to DOM
   document.body.appendChild(dayElement);
 
+  // Create dots
   const dotsContainer = document.createElement('div');
 
   for (let i = 0; i < 7; i++) {
@@ -307,37 +321,37 @@ function init() {
       dot.classList.add('active');
     }
 
+    // Fade in animation
     dot.style.animation = 'fadeIn 0.5s forwards';
 
     dotsContainer.appendChild(dot);
   }
 
+  // Add to DOM
   document.body.appendChild(dotsContainer);
 
-  eventFiles.forEach(({ name, url }) => {
-    let anchor = document.createElement("a");
-    anchor.innerText = name;
+  // Add schema options
+  eventFiles.forEach(file => {
+    const anchor = document.createElement("a");
+    anchor.innerText = file.name;
     anchor.onclick = () => {
-      loadEventFile(url, () => {
-        loadEventFile("specialDates.json", () => {
-          updateCountdown();
-        });
+      loadEventFile(file.url, () => {
+        loadEventFile("specialDates.json", updateCountdown);
       });
       closeDropdown();
     };
 
     anchor.addEventListener("click", () => { });
-
     dropdownContent.appendChild(anchor);
   });
 
+  // Load default schema
   loadEventFile(eventFiles[0].url);
 
-  dropdownButton.addEventListener("click", () => {
-    toggleDropdown();
-  });
+  // Toggle dropdown on button click
+  dropdownButton.addEventListener("click", toggleDropdown);
 
-  // Add event listeners for timezone adjustment buttons
+  // Timezone buttons
   document.getElementById("plus-button").addEventListener("click", () => {
     hourOffset++;
     updateCountdown();
@@ -346,10 +360,10 @@ function init() {
   document.getElementById("minus-button").addEventListener("click", () => {
     hourOffset--;
     updateCountdown();
-
   });
 
 }
+
 
 
 function toggleDropdown() {
@@ -387,8 +401,8 @@ button.addEventListener("click", () => {
   }, 30);
 });
 
-let u
-kTimeZoneOffset = 0;
+let 
+ukTimeZoneOffset = 0;
 
 let userTimeZoneOffset = new Date().getTimezoneOffset() / 60;
 
@@ -433,61 +447,58 @@ function createSnowflake() {
   });
 }
 function updateBackground() {
-  let now = new Date();
-  let currentHour = now.getHours() + now.getMinutes() / 60;
 
   let body = document.body;
 
   let morningColor = "#f65e7";
-  let lateMorningColor = "#FCD116";
   let afternoonColor = "#87CEEB";
-  let lateAfternoonColor = "#2120ff";
   let eveningColor = "#2b0932";
   let nightColor = "#0e041c";
 
+  let currentHour = new Date().getHours();
+  let currentMinute = new Date().getMinutes();
 
-  if (currentHour >= 6 && currentHour < 9) {
-    // Morning: Interpolate between night and morning colors
-    let mix = (currentHour - 6) / 3;
-    body.style.backgroundColor = interpolateColor(nightColor, morningColor, mix);
-  } else if (currentHour >= 9 && currentHour < 12) {
-    // Late Morning: Interpolate between morning and late morning colors
-    let mix = (currentHour - 9) / 3;
-    body.style.backgroundColor = interpolateColor(morningColor, lateMorningColor, mix);
-  } else if (currentHour >= 12 && currentHour < 15) {
-    // Afternoon: Interpolate between late morning and afternoon colors
-    let mix = (currentHour - 12) / 3;
-    body.style.backgroundColor = interpolateColor(lateMorningColor, afternoonColor, mix);
-  } else if (currentHour >= 15 && currentHour < 18) {
-    // Late Afternoon: Interpolate between afternoon and late afternoon colors
-    let mix = (currentHour - 15) / 3;
-    body.style.backgroundColor = interpolateColor(afternoonColor, lateAfternoonColor, mix);
-  } else if (currentHour >= 18 && currentHour < 21) {
-    // Evening: Interpolate between late afternoon and evening colors
-    let mix = (currentHour - 18) / 3;
-    body.style.backgroundColor = interpolateColor(lateAfternoonColor, eveningColor, mix);
+  let morningStart = 6;
+  let morningEnd = 12;
+
+  let afternoonStart = 12;
+  let afternoonEnd = 18;
+
+  let eveningStart = 18;
+  let eveningEnd = 22;
+
+  if (currentHour >= morningStart && currentHour < morningEnd) {
+    let morningProgress = (currentHour - morningStart + currentMinute / 60) / (morningEnd - morningStart);
+    body.style.backgroundColor = interpolateColor(nightColor, morningColor, morningProgress);
+  } else if (currentHour >= afternoonStart && currentHour < afternoonEnd) {
+    let afternoonProgress = (currentHour - afternoonStart + currentMinute / 60) / (afternoonEnd - afternoonStart);
+    body.style.backgroundColor = interpolateColor(morningColor, afternoonColor, afternoonProgress);
+  } else if (currentHour >= eveningStart && currentHour < eveningEnd) {
+    let eveningProgress = (currentHour - eveningStart + currentMinute / 60) / (eveningEnd - eveningStart);
+    body.style.backgroundColor = interpolateColor(afternoonColor, eveningColor, eveningProgress);
   } else {
-    // Night: Interpolate between evening and night colors
-    let mix = (currentHour - 21) / 3;
-    body.style.backgroundColor = interpolateColor(eveningColor, nightColor, mix);
+    let nightProgress = (currentHour - eveningEnd + currentMinute / 60) / (24 - eveningEnd);
+    body.style.backgroundColor = interpolateColor(eveningColor, nightColor, nightProgress);
   }
-
 }
 
-function interpolateColor(color1, color2, mix) {
-  let r1 = parseInt(color1.slice(1, 3), 16);
-  let g1 = parseInt(color1.slice(3, 5), 16);
-  let b1 = parseInt(color1.slice(5, 7), 16);
+function interpolateColor(color1, color2, factor) {
+  let r1 = parseInt(color1.substring(1, 3), 16);
+  let g1 = parseInt(color1.substring(3, 5), 16);
+  let b1 = parseInt(color1.substring(5, 7), 16);
 
-  let r2 = parseInt(color2.slice(1, 3), 16);
-  let g2 = parseInt(color2.slice(3, 5), 16);
-  let b2 = parseInt(color2.slice(5, 7), 16);
+  let r2 = parseInt(color2.substring(1, 3), 16);
+  let g2 = parseInt(color2.substring(3, 5), 16);
+  let b2 = parseInt(color2.substring(5, 7), 16);
 
-  let r = Math.round(r1 * (1 - mix) + r2 * mix);
-  let g = Math.round(g1 * (1 - mix) + g2 * mix);
-  let b = Math.round(b1 * (1 - mix) + b2 * mix);
+  let r = Math.round(r1 + factor * (r2 - r1));
+  let g = Math.round(g1 + factor * (g2 - g1));
+  let b = Math.round(b1 + factor * (b2 - b1));
 
-  return "#" + r.toString(16) + g.toString(16) + b.toString(16);
+  return "#" + r.toString(16).padStart(2, '0') + g.toString(16).padStart(2, '0') + b.toString(16).padStart(2, '0');
 }
+
+
+
 
 setInterval(updateBackground, 1000);
