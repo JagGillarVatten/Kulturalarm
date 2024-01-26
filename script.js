@@ -1,7 +1,14 @@
+// Define the necessary variables
 let events = [];
 let sentNotifications = [];
 let specialDates = [];
+let currentEventName = "";
+let currentEventStart = null;
+let currentEventLocation = "";
+let currentEventSentNotification = false;
+let hourOffset = 0;
 
+// Define the event files
 const eventFiles = [
   {
     name: "MP1",
@@ -20,14 +27,8 @@ const eventFiles = [
     url: "AM2.json",
   },
 ];
-let currentEventName = "";
-let currentEventStart = null;
-let currentEventLocation = "";
-let currentEventSentNotification = false;
 
-// Hour offset for timezone adjustment
-let hourOffset = 0;
-
+// Load JSON data from a URL
 function loadJSON(url, callback) {
   let xhr = new XMLHttpRequest();
   xhr.overrideMimeType("application/json");
@@ -46,12 +47,14 @@ function loadJSON(url, callback) {
   xhr.send(null);
 }
 
+// Get today's events
 function getTodaysEvents() {
   let today = new Date();
   let dayOfWeek = today.getDay();
   return events.filter((event) => event.startDay === dayOfWeek);
 }
 
+// Get the next event
 function getNextEvent() {
   let now = new Date();
   let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -82,12 +85,16 @@ function getNextEvent() {
 
   return null;
 }
+
+// Update the countdown and display the events
 function updateCountdown() {
   if (events.length === 0) {
     setTimeout(updateCountdown, 1000);
     return;
   }
-updateBackground();
+
+  updateBackground();
+
   let now = new Date();
   let nextEvent;
   let todaysEvents = getTodaysEvents();
@@ -110,7 +117,7 @@ updateBackground();
       currentEventSentNotification = false;
 
       document.getElementById("countdown-text").innerHTML =
-        "Inga fler lektioner idag.";
+        "Inga fler lektioner idag";
       document.getElementById("location").innerHTML = "";
       document.getElementById("countdown-number").innerHTML = "Hejdå!";
       document.getElementById("progress-bar").style.display = "none";
@@ -147,7 +154,7 @@ updateBackground();
       }
 
       if (location !== document.getElementById("location").innerHTML) {
-        document.getElementById("location").innerHTML = "Rum: " + location;
+        document.getElementById("location").innerHTML = "Plats: " + location;
       }
 
       document.getElementById("countdown").style.color = "#ffff";
@@ -157,7 +164,7 @@ updateBackground();
 
       if (!sentNotifications.includes(name)) {
         new Notification(name, {
-          body: `Börjar om ${remainingTime} i ${location}`,
+          body: `Börjar om ${remainingTime} at ${location}`,
         });
         sentNotifications.push(name);
         currentEventSentNotification = true;
@@ -210,6 +217,7 @@ updateBackground();
     ) {
       new Notification(name, {
         body: `Pågår nu i ${location}`,
+
       });
       sentNotifications.push(name);
       currentEventSentNotification = true;
@@ -227,6 +235,7 @@ updateBackground();
   }
 }
 
+// Format seconds into HH:MM:SS format
 function formatSeconds(seconds) {
   let minutes = Math.floor(seconds / 60);
   let hours = Math.floor(minutes / 60);
@@ -237,10 +246,12 @@ function formatSeconds(seconds) {
     : `${pad(minutes, 2)}:${paddedSeconds}`;
 }
 
+// Pad a value with leading zeros
 function pad(value, length) {
   return ("000000000" + value).substr(-length);
 }
 
+// Load event file from a URL
 function loadEventFile(filename) {
   loadJSON(`scheman/${filename}`, (data) => {
     console.log("Loaded data:", data);
@@ -258,6 +269,8 @@ function loadEventFile(filename) {
     updateCountdown();
   });
 }
+
+// Initialize the application
 function init() {
   // Create fullscreen button
   const fullscreenButton = document.createElement('button');
@@ -311,6 +324,7 @@ function init() {
 
   // Get days of week
   const days = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
+
 
   // Get current day
   const date = new Date();
@@ -376,11 +390,9 @@ function init() {
     hourOffset--;
     updateCountdown();
   });
-
 }
 
-
-
+// Toggle the dropdown menu
 function toggleDropdown() {
   let dropdownContent = document.querySelector(".dropdown-content");
   dropdownContent.classList.toggle("show");
@@ -389,22 +401,29 @@ function toggleDropdown() {
   dropdownContent.style.animation = "fadeIn 0.5s";
 }
 
+// Close the dropdown menu
 function closeDropdown() {
   let dropdownContent = document.querySelector(".dropdown-content");
   dropdownContent.classList.remove("show");
 
   // Add fade out animation
- dropdownContent.style.animation = "fadeOut 0.5s";
- 
-  }
-  window.onload = function () {
-    init();
-    updateBackground();
-  };
-  
+  dropdownContent.style.animation = "fadeOut 0.5s";
+}
+
+// Initialize the application on window load
+window.onload = function () {
+  init();
+  updateBackground();
+};
+
+// Update the countdown every 50 milliseconds
 setInterval(updateCountdown, 50);
+
+// Play a random sound on title click
 const title = document.querySelector("title");
 title.addEventListener("click", playRandomSound);
+
+// Add a pop effect on dropdown button click
 const button = document.querySelector(".dropdown-button");
 button.addEventListener("click", () => {
   let clickSound = new Audio("sounds/click.mp3");
@@ -416,33 +435,30 @@ button.addEventListener("click", () => {
   }, 30);
 });
 
-let 
-ukTimeZoneOffset = 0;
-
+// Define the timezone offsets
+let ukTimeZoneOffset = 0;
 let userTimeZoneOffset = new Date().getTimezoneOffset() / 60;
 
+// Adjust the timezone of a date
 function adjustTimezone(date) {
   return new Date(
     date.getTime() + (userTimeZoneOffset + ukTimeZoneOffset + hourOffset) * 60 * 60 * 1000
   );
 }
 
+// Check if a date is a special date
 function isSpecialDate(date) {
   const dateString = date.toISOString().split("T")[0];
   return specialDates.some((entry) => entry.date === dateString);
 }
 
+// Get the special date for a given date
 function getSpecialDate(date) {
   const dateString = date.toISOString().split("T")[0];
   return specialDates.find((entry) => entry.date === dateString);
 }
 
-let today = new Date();
-let isBST = today.getTimezoneOffset() === 60;
-if (isBST) {
-  ukTimeZoneOffset = 1;
-}
-
+// Check if it is the snowfall period
 function isSnowfallPeriod() {
   let currentDate = new Date();
   let startDate = new Date(currentDate.getFullYear(), 10, 23);
@@ -451,6 +467,7 @@ function isSnowfallPeriod() {
   return currentDate >= startDate && currentDate <= endDate;
 }
 
+// Create a snowflake element
 function createSnowflake() {
   let snowflake = document.createElement("div");
   snowflake.className = "snowflake";
@@ -461,8 +478,9 @@ function createSnowflake() {
     document.body.removeChild(snowflake);
   });
 }
-function updateBackground() {
 
+// Update the background color based on the time of day
+function updateBackground() {
   let body = document.body;
 
   let morningColor = "#f65e7";
@@ -497,6 +515,7 @@ function updateBackground() {
   }
 }
 
+// Interpolate between two colors based on a factor
 function interpolateColor(color1, color2, factor) {
   let r1 = parseInt(color1.substring(1, 3), 16);
   let g1 = parseInt(color1.substring(3, 5), 16);
@@ -513,7 +532,5 @@ function interpolateColor(color1, color2, factor) {
   return "#" + r.toString(16).padStart(2, '0') + g.toString(16).padStart(2, '0') + b.toString(16).padStart(2, '0');
 }
 
-
-
-
+// Update the background color every second
 setInterval(updateBackground, 1000);
