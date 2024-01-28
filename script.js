@@ -82,20 +82,18 @@ function getNextEvent() {
 
   return null;
 }
+
 function updateCountdown() {
   if (events.length === 0) {
     setTimeout(updateCountdown, 1000);
     return;
   }
-updateBackground();
+
   let now = new Date();
   let nextEvent;
-  let todaysEvents = getTodaysEvents();
+ let todaysEvents = getTodaysEvents();
   let eventListContainer = document.getElementById("event-list");
   let eventListUl = document.getElementById("events-ul");
-  let countdownElement = document.getElementById("countdown");
-  let progressElement = document.getElementById("progress");
-
   if (isSpecialDate(now)) {
     nextEvent = getSpecialDate(now);
   } else {
@@ -103,22 +101,22 @@ updateBackground();
   }
 
   if (nextEvent === null) {
-    if (currentEventName !== "") {
-      currentEventName = "";
-      currentEventStart = null;
-      currentEventLocation = "";
-      currentEventSentNotification = false;
+    currentEventName = "";
+    currentEventStart = null;
+    currentEventLocation = "";
+    currentEventSentNotification = false;
 
-      document.getElementById("countdown-text").innerHTML =
-        "Inga fler lektioner idag.";
-      document.getElementById("location").innerHTML = "";
-      document.getElementById("countdown-number").innerHTML = "Hejdå!";
-      document.getElementById("progress-bar").style.display = "none";
-    }
+    document.getElementById("countdown-text").innerHTML =
+      "Inga fler lektioner idag.";
+    document.getElementById("location").innerHTML = "";
+    document.getElementById("countdown-number").innerHTML = "Hejdå!";
+    document.getElementById("progress-bar").style.display = "none";
+
     return;
   }
-
   let { name, location, start, end } = nextEvent;
+  let countdownElement = document.getElementById("countdown");
+  let progressElement = document.getElementById("progress");
 
   if (now < start) {
     let remainingTime = formatSeconds((start - now) / 1000);
@@ -134,22 +132,13 @@ updateBackground();
       currentEventSentNotification = false;
 
       document.title = `${remainingTime} tills | ${name}`;
-
       let countdownText = ` ${name} börjar om: `;
       let countdownNumber = `${remainingTime}`;
 
-      if (countdownText !== document.getElementById("countdown-text").innerHTML) {
-        document.getElementById("countdown-text").innerHTML = countdownText;
-      }
-
-      if (countdownNumber !== document.getElementById("countdown-number").innerHTML) {
-        document.getElementById("countdown-number").innerHTML = countdownNumber;
-      }
-
-      if (location !== document.getElementById("location").innerHTML) {
-        document.getElementById("location").innerHTML = "Rum: " + location;
-      }
-
+      document.getElementById("countdown-text").innerHTML = countdownText;
+      document.getElementById("countdown-number").innerHTML = countdownNumber;
+      document.getElementById("location").innerHTML =
+        "Rum: " + currentEventLocation;
       document.getElementById("countdown").style.color = "#ffff";
       document.getElementById("progress").style.width = "";
       document.getElementById("progress").style.backgroundColor = "#a3d47a";
@@ -170,63 +159,59 @@ updateBackground();
       progressWidth = Math.max(0, progressWidth);
 
       progressElement.style.width = `${progressWidth}px`;
+      return;
     }
-  } else {
-    let remainingTime = formatSeconds((end - now) / 1000);
-
-    if (
-      currentEventName !== name ||
-      currentEventStart !== start ||
-      currentEventLocation !== location
-    ) {
-      currentEventName = name;
-      currentEventStart = start;
-      currentEventLocation = location;
-      currentEventSentNotification = false;
-
-      let countdownText = `Tid kvar för ${name}:`;
-      let countdownNumber = `${remainingTime}`;
-      let locationText = `Rum: ${location}`;
-
-      if (countdownText !== document.getElementById("countdown-text").innerHTML) {
-        document.getElementById("countdown-text").innerHTML = countdownText;
-      }
-
-      if (countdownNumber !== document.getElementById("countdown-number").innerHTML) {
-        document.getElementById("countdown-number").innerHTML = countdownNumber;
-      }
-
-      if (locationText !== document.getElementById("location").innerHTML) {
-        document.getElementById("location").innerHTML = locationText;
-      }
-
-      document.title = `${remainingTime} kvar | ${name}`;
-    }
-
-    if (
-      !currentEventSentNotification &&
-      now >= start &&
-      !sentNotifications.includes(name)
-    ) {
-      new Notification(name, {
-        body: `Pågår nu i ${location}`,
-      });
-      sentNotifications.push(name);
-      currentEventSentNotification = true;
-    }
-
-    // Calculate progress width for the ongoing event
-    let progressWidth =
-      ((((now - start) / 1000 / ((end - start) / 1000)) * 100) / 100) *
-      document.getElementById("progress-bar").offsetWidth;
-
-    progressWidth = Math.max(0, progressWidth); // Ensure progressWidth is not negative
-
-    progressElement.style.width = `${progressWidth}px`;
-    document.getElementById("progress-bar").style.display = "block";
   }
-}
+  let remainingTime = formatSeconds((end - now) / 1000);
 
+  if (
+    currentEventName !== name ||
+    currentEventStart !== start ||
+    currentEventLocation !== location
+  ) {
+    currentEventName = name;
+    currentEventStart = start;
+    currentEventLocation = location;
+    currentEventSentNotification = false;
+
+    let countdownText = `Tid kvar för ${name}:`;
+    let countdownNumber = `${remainingTime}`;
+    let locationText = `Rum: ${location}`;
+
+    document.getElementById("countdown-text").innerHTML = countdownText;
+    document.getElementById("countdown-number").innerHTML = countdownNumber;
+    document.getElementById("location").innerHTML = locationText;
+    document.title = `${remainingTime} kvar | ${name}`;
+  }
+
+  if (
+    !currentEventSentNotification &&
+    now >= start &&
+    !sentNotifications.includes(name)
+  ) {
+    new Notification(name, {
+      body: `Pågår nu i ${location}`,
+    });
+    sentNotifications.push(name);
+    currentEventSentNotification = true;
+      }
+
+  // Calculate progress width for the ongoing event
+  let progressWidth =
+    ((((now - start) / 1000 / ((end - start) / 1000)) * 100) / 100) *
+    document.getElementById("progress-bar").offsetWidth;
+
+  progressWidth = Math.max(0, progressWidth); // Ensure progressWidth is not negative
+
+  progressElement.style.width = `${progressWidth}px`;
+  document.getElementById("progress-bar").style.display = "block";
+}
+updateBackground();
+/**
+ * Formats a given number of seconds into a string representation of hours, minutes, and seconds.
+ * @param {number} seconds - The number of seconds to format.
+ * @returns {string} - The formatted time string in the format "hh:mm:ss".
+ */
 function formatSeconds(seconds) {
   let minutes = Math.floor(seconds / 60);
   let hours = Math.floor(minutes / 60);
