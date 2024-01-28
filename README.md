@@ -8,11 +8,11 @@ Kulturalarm är en webbapplikation utvecklad för elever på Kulturama Sjöstade
 - Lättanvänd
 - Nedräkningstimer för lektioner 
 
-## Bidra 
+## Bidra
 
-Jag är elev på Kulturama Sjöstaden, inte anställd av skolan. Detta är ett personligt projekt som inte officiellt är kopplat till Kulturama Gymnasium.
+Jag är elev på Kulturama Sjöstaden, inte anställd av skolan. Detta är ett personligt projekt som inte officiellt är kopplat till Kulturama Gymnasium. 
 
-Om du vill hjälpa till att förbättra Kulturalarm och bidra med fler scheman är du välkommen att göra det! Så här gör du:
+Om du vill hjälpa till att förbättra Kulturalarm och bidra med fler scheman är du välkommen att göra det! Så här går du tillväga:
 
 1. Skapa en JSON-fil för ett schema du vill dela med dig av. Följ formatet som beskrivs nedan.
 2. Lägg till på GitHub eller skicka mig filen på något annat sätt.
