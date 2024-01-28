@@ -152,45 +152,43 @@ function updateCountdown() {
       document.getElementById("progress").style.width = `${progressWidth}%`;
       return;
     }
+  } else {
+    const remainingTime = formatSeconds((end - now) / 1000);
+
+    if (
+      currentEventName !== name ||
+      currentEventStart !== start ||
+      currentEventLocation !== location
+    ) {
+      currentEventName = name;
+      currentEventStart = start;
+      currentEventLocation = location;
+      currentEventSentNotification = false;
+
+      document.getElementById("countdown-text").innerHTML = `Tid kvar för ${name}:`;
+      document.getElementById("countdown-number").innerHTML = remainingTime;
+      document.getElementById("location").innerHTML = `Plats: ${location}`;
+      document.title = `${remainingTime} kvar | ${name}`;
+    }
+
+    if (
+      !currentEventSentNotification &&
+      now >= start &&
+      !sentNotifications.includes(name)
+    ) {
+      new Notification(name, {
+        body: `Pågår just nu vid ${location}`,
+      });
+      sentNotifications.push(name);
+      currentEventSentNotification = true;
+    }
+
+    const progressWidth = Math.max(0, ((now - start) / 1000 / ((end - start) / 1000)) * 100);
+
+    document.getElementById("progress").style.width = `${progressWidth}%`;
+    document.getElementById("progress-bar").style.display = "block";
   }
-
-  const remainingTime = formatSeconds((end - now) / 1000);
-
-  if (
-    currentEventName !== name ||
-    currentEventStart !== start ||
-    currentEventLocation !== location
-  ) {
-    currentEventName = name;
-    currentEventStart = start;
-    currentEventLocation = location;
-    currentEventSentNotification = false;
-
-    document.getElementById("countdown-text").innerHTML = `Tid kvar för ${name}:`;
-    document.getElementById("countdown-number").innerHTML = remainingTime;
-    document.getElementById("location").innerHTML = `Plats: ${location}`;
-    document.title = `${remainingTime} kvar | ${name}`;
-  }
-
-
-  if (
-    !currentEventSentNotification &&
-    now >= start &&
-    !sentNotifications.includes(name)
-  ) {
-    new Notification(name, {
-      body: `Pågår just nu vid ${location}`,
-    });
-    sentNotifications.push(name);
-    currentEventSentNotification = true;
-  }
-
-  const progressWidth = Math.max(0, ((now - start) / 1000 / ((end - start) / 1000)) * 100);
-
-  document.getElementById("progress").style.width = `${progressWidth}%`;
-  document.getElementById("progress-bar").style.display = "block";
 }
-
 // Funktion för att formatera sekunder till en tidssträng
 function formatSeconds(seconds) {
   let minutes = Math.floor(seconds / 60);
