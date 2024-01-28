@@ -413,7 +413,7 @@ function updateBackground() {
   let morningColor = "#f65e7";
   let afternoonColor = "#87CEEB";
   let eveningColor = "#2b0932";
-  let nightColor = "#0e041c";
+  let nightColor = "#2b0432";
 
   let currentHour = new Date().getHours();
   let currentMinute = new Date().getMinutes();
