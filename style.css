@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Afacad&display=swap');
+
 :root {
 	--primary-bg-color: rgb(255, 255, 255);
 	--text-color: #ffffff;
@@ -14,9 +16,11 @@ body {
 	background-color: rgb(246, 94, 39);
 	color: var(--text-color);
 	margin: 0;
+
+
 	position: relative;
 	padding: 1rem 0;
-	font-family: 'Quicksand', sans-serif;
+	font-family: 'Afacad', sans-serif;
 	z-index: 1;
 	font-size: 2.2rem;
 	transition: background-color 1.5s ease;
@@ -28,7 +32,7 @@ body {
 #countdown-container {
 	text-align: center;
 	margin-top: 20px;
-	font-family: 'Arial', sans-serif;
+	font-family: 'Afacad', sans-serif;
 }
 
 /* Header Styles */
@@ -39,12 +43,15 @@ body {
 }
 
 .name {
-	font-size: 7.5rem;
-	font-weight: 700;
+	font-size: 5.5rem;
+	background-color: rgba(255, 255, 255, 0.254);
+	color: transparent;
+	-webkit-text-stroke: 0.05rem rgb(255, 255, 255);
+	font-weight: 910;
 	margin-top: 0;
 	animation: fadeInUp 0.8s ease-in-out;
 	text-align: center;
-	letter-spacing: 0.1rem;
+	letter-spacing: 0.003cm;
 }
 
 /* Countdown Styles */
@@ -95,7 +102,7 @@ body {
 .button {
 	color: var(--text-color);
 	font-size: 2rem;
-	font-family: 'Quicksand', sans-serif;
+	font-family: 'Afacad', sans-serif;
 	background-color: var(--button-bg-color);
 	border: none;
 	padding: 1rem 2rem;
@@ -108,8 +115,8 @@ body {
 .dropdown {
 	position: relative;
 	margin: 2rem auto;
-	
-	display: flex; 
+
+	display: flex;
 	justify-content: center;
 }
 
@@ -137,11 +144,11 @@ body {
 	font-size: 2rem;
 	border-radius: 0.5rem;
 	text-align: center;
-	background-color:rgba(0, 0, 0, 0.226);
+	background-color: rgba(0, 0, 0, 0.226);
 
 
 	transition: 0.1s;
-	font-family: 'Quicksand', sans-serif;
+	font-family: 'Afacad', sans-serif;
 	text-decoration: none;
 	display: block;
 
@@ -152,7 +159,7 @@ body {
 
 .dropdown-content a:hover {
 	letter-spacing: 0.2rem;
-	
+
 	color: var(--accent-color);
 }
 
@@ -186,6 +193,7 @@ div#rss-container {
 
 /* Media Queries for Responsive Design */
 @media screen and (max-width: 632px) {
+
 	#countdown-number,
 	.name,
 	.progress-bar,
@@ -220,6 +228,7 @@ div#rss-container {
 		opacity: 0;
 		transform: translateY(20px);
 	}
+
 	to {
 		opacity: 1;
 		transform: translateY(0);
@@ -227,9 +236,12 @@ div#rss-container {
 }
 
 @keyframes shake {
-	0%, 100% {
+
+	0%,
+	100% {
 		transform: translateX(0);
 	}
+
 	50% {
 		transform: translateX(-5px);
 	}

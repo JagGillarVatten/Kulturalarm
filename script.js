@@ -226,74 +226,72 @@ function loadEventFile(filename) {
 
 // Funktion för att initiera applikationen
 function init() {
-  // Skapa knapp för helskärm
+
+  // Create fullscreen button
   const fullscreenButton = document.createElement('button');
-  fullscreenButton.textContent = 'Helskärm';
+  fullscreenButton.textContent = 'Fullscreen';
   fullscreenButton.style.position = 'fixed';
   fullscreenButton.style.bottom = '20px';
   fullscreenButton.style.right = '20px';
-  fullscreenButton.style.opacity = '0';
+  fullscreenButton.opacity = 0;
 
-  // Visa vid hovring
+  // Show on hover
   fullscreenButton.addEventListener('mouseover', () => {
-    fullscreenButton.style.opacity = '1';
+    fullscreenButton.style.opacity = 1;
   });
 
-  // Göm vid musut
+  // Hide on mouseout
   fullscreenButton.addEventListener('mouseout', () => {
-    fullscreenButton.style.opacity = '0';
+    fullscreenButton.style.opacity = 0;
     fullscreenButton.style.transition = 'opacity 0.2s';
   });
 
-  // Växla helskärm vid klick
+  // Toggle fullscreen on click
   fullscreenButton.addEventListener('click', () => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
-      fullscreenButton.textContent = 'Avsluta helskärm';
+      fullscreenButton.textContent = 'Exit Fullscreen';
 
-      // Göm muspekaren efter 3 sekunders inaktivitet
+      // Hide cursor after 3 seconds inactive
       let timeout;
       document.onmousemove = () => {
         clearTimeout(timeout);
-
         timeout = setTimeout(() => {
           document.body.style.cursor = 'none';
         }, 3000);
-
         document.body.style.cursor = '';
       }
-
     } else {
       document.exitFullscreen();
-      fullscreenButton.textContent = 'Helskärm';
+      fullscreenButton.textContent = 'Fullscreen';
     }
   });
 
-  // Lägg till knappen i DOM
+  // Add button to DOM
   document.body.appendChild(fullscreenButton);
 
-  // Hämta dropdown-element
+  // Get dropdown elements
   const dropdownContent = document.querySelector(".dropdown-content");
   const dropdownButton = document.querySelector(".dropdown-button");
 
-  // Hämta veckodagar
-  const days = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
+  // Get weekdays
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-  // Hämta aktuell dag
+  // Get current day
   const date = new Date();
   const day = date.getDay();
 
-  // Skapa element för dag
+  // Create day element
   const dayElement = document.createElement('div');
   dayElement.textContent = days[day];
 
-  // Fade in-animation
+  // Fade in animation
   dayElement.style.animation = 'fadeIn 1s';
 
-  // Lägg till i DOM
+  // Add to DOM
   document.body.appendChild(dayElement);
 
-  // Skapa prickar
+  // Create dots
   const dotsContainer = document.createElement('div');
 
   for (let i = 0; i < 7; i++) {
@@ -303,95 +301,90 @@ function init() {
       dot.classList.add('active');
     }
 
-    // Fade in-animation
+    // Fade in animation
     dot.style.animation = 'fadeIn 0.5s forwards';
 
     dotsContainer.appendChild(dot);
   }
 
-  // Lägg till i DOM
+  // Add to DOM
   document.body.appendChild(dotsContainer);
 
-  // Lägg till schemaalternativ
+  // Add schedule options
   eventFiles.forEach(file => {
-    const anchor = document.createElement("a");
+    const anchor = document.createElement('a');
     anchor.innerText = file.name;
     anchor.onclick = () => {
       loadEventFile(file.url, () => {
-        loadEventFile("specialDates.json", updateCountdown);
+        loadEventFile('specialDates.json', updateCountdown);
       });
       closeDropdown();
     };
 
-    anchor.addEventListener("click", () => { });
+    anchor.addEventListener('click', () => { });
     dropdownContent.appendChild(anchor);
   });
 
-  // Ladda standard-schema
+  // Load default schedule
   loadEventFile(eventFiles[0].url);
 
-  // Växla dropdown vid knapptryck
-  dropdownButton.addEventListener("click", toggleDropdown);
+  // Toggle dropdown on button click
+  dropdownButton.addEventListener('click', toggleDropdown);
 
-  // Tidszonknappar
-  document.getElementById("plus-button").addEventListener("click", () => {
+  // Timezone buttons
+  document.getElementById('plus-button').addEventListener('click', () => {
     hourOffset++;
     updateCountdown();
   });
 
-  document.getElementById("minus-button").addEventListener("click", () => {
+  document.getElementById('minus-button').addEventListener('click', () => {
     hourOffset--;
     updateCountdown();
   });
+
 }
 
-// Funktion för att växla dropdown-menyn
+// Toggle dropdown
 function toggleDropdown() {
   let dropdownContent = document.querySelector(".dropdown-content");
   dropdownContent.classList.toggle("show");
 
-  // Lägg till fade in-animation
+  // Add fade in animation 
   dropdownContent.style.animation = "fadeIn 0.5s";
 }
 
-// Funktion för att stänga dropdown-menyn
+// Close dropdown
 function closeDropdown() {
   let dropdownContent = document.querySelector(".dropdown-content");
   dropdownContent.classList.remove("show");
 
-  // Lägg till fade out-animation
+  // Add fade out animation
   dropdownContent.style.animation = "fadeOut 0.5s";
 }
 
-// Funktion för att justera tidszonen
+// Adjust timezone
 function adjustTimezone(date) {
-  return new Date(
-    date.getTime() + (userTimeZoneOffset + ukTimeZoneOffset + hourOffset) * 60 * 60 * 1000
-  );
+  return new Date(date.getTime() + (userTimeZoneOffset + ukTimeZoneOffset + hourOffset) * 60 * 60 * 1000);
 }
 
-// Funktion för att kontrollera om datumet är ett speciellt datum
+// Check if special date
 function isSpecialDate(date) {
-  const dateString = date.toISOString().split("T")[0];
-  return specialDates.some((entry) => entry.date === dateString);
+  return specialDates.some(entry => entry.date === date.toISOString().split("T")[0]);
 }
 
-// Funktion för att hämta det speciella datumet
+// Get special date
 function getSpecialDate(date) {
-  const dateString = date.toISOString().split("T")[0];
-  return specialDates.find((entry) => entry.date === dateString);
+  return specialDates.find(entry => entry.date === date.toISOString().split("T")[0]);
 }
 
-// Funktion för att kontrollera om det är snöfallperiod
+// Check if snowfall period
 function isSnowfallPeriod() {
   let currentDate = new Date();
-  let startDate = new Date(currentDate.getFullYear(), 10, 23);
-  let endDate = new Date(currentDate.getFullYear(), 11, 31);
-
-  return currentDate >= startDate && currentDate <= endDate;
+  return currentDate >= new Date(currentDate.getFullYear(), 10, 23)
+    && currentDate <= new Date(currentDate.getFullYear(), 11, 31);
 }
 
-// Funktion för att skapa en snöflingeanimation
+// Create snowflake
 function createSnowflake() {
   let snowflake = document.createElement("div");
   snowflake.className = "snowflake";
