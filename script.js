@@ -300,7 +300,7 @@ function init() {
   const dropdownButton = document.querySelector(".dropdown-button");
 
   // Get weekdays
-  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const days = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
 
   // Get current day
   const date = new Date();
