@@ -6,28 +6,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kulturalarm</title>
 
-
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
+
   <div id="day"> </div>
 
   <div id="dots">
   </div>
-  
-  <!-- Stilar -->
+
+  <!-- Styles -->
   <link rel="preload" href="style.css" as="style" />
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body onload="init()">
-  <!-- Huvudinnehåll -->
+
+  <!-- Main Content -->
   <div class="name">Kulturalarm</div>
 
   <div id="countdown">
-
     <div id="countdown-text"></div>
     <div id="countdown-number"></div>
   </div>
+
   <p id="day-of-week"></p>
 
   <div class="progress-bar" id="progress-bar">
@@ -38,13 +39,13 @@
 
   <!-- Dropdown -->
   <div class="dropdown">
-    <button class="dropdown-button button" title="Byt schema">
-      Byt schema
+    <button class="dropdown-button button" title="Change Schedule">
+      Change Schedule
     </button>
     <div class="dropdown-content"></div>
   </div>
 
-  <!-- Sidbesöksräkning -->
+  <!-- Page Visit Count -->
   <div id="page-visit-count" style="
         position: absolute;
         bottom: -4rem;
@@ -54,10 +55,10 @@
         color: rgb(255, 255, 255);
         font-size: 0.7rem;
       ">
-    Du är den <span id="visit-count"></span>e besökaren!
+    You are visitor number <span id="visit-count"></span>!
   </div>
 
-  <!-- Skript -->
+  <!-- Scripts -->
   <script src="script.js"></script>
   <script src="pagevisit.js"></script>
 </body>
