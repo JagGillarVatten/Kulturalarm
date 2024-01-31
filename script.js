@@ -86,7 +86,6 @@ function getNextEvent() {
 
   return null;
 }
-
 // Funktion för att uppdatera nedräkningen
 function updateCountdown() {
   if (events.length === 0) {
@@ -110,10 +109,17 @@ function updateCountdown() {
     currentEventLocation = "";
     currentEventSentNotification = false;
 
-    document.getElementById("countdown-text").innerHTML = "Inga fler händelser idag.";
-    document.getElementById("location").innerHTML = "";
-    document.getElementById("countdown-number").innerHTML = "Hejdå!";
-    document.getElementById("progress-bar").style.display = "none";
+    const countdownText = document.getElementById("countdown-text");
+    countdownText.innerHTML = "Inga fler händelser idag.";
+
+    const locationEl = document.getElementById("location");
+    locationEl.innerHTML = "";
+
+    const countdownNumber = document.getElementById("countdown-number");
+    countdownNumber.innerHTML = "Hejdå!";
+
+    const progressBar = document.getElementById("progress-bar");
+    progressBar.style.display = "none";
 
     return;
   }
@@ -134,10 +140,18 @@ function updateCountdown() {
       currentEventSentNotification = false;
 
       document.title = `${remainingTime} tills | ${name}`;
-      document.getElementById("countdown-text").innerHTML = `${name} börjar om:`;
-      document.getElementById("countdown-number").innerHTML = remainingTime;
-      document.getElementById("location").innerHTML = "Plats: " + currentEventLocation;
-      document.getElementById("progress-bar").style.display = "block";
+
+      const countdownText = document.getElementById("countdown-text");
+      countdownText.innerHTML = `${name} börjar om:`;
+
+      const countdownNumber = document.getElementById("countdown-number");
+      countdownNumber.innerHTML = remainingTime;
+
+      const locationEl = document.getElementById("location");
+      locationEl.innerHTML = "Plats: " + currentEventLocation;
+
+      const progressBar = document.getElementById("progress-bar");
+      progressBar.style.display = "block";
 
       if (!sentNotifications.includes(name)) {
         new Notification(name, {
@@ -149,7 +163,8 @@ function updateCountdown() {
 
       const progressWidth = Math.max(0, ((start - now) / 1000 / (start - (start - 60 * 1000))) * 100);
 
-      document.getElementById("progress").style.width = `${progressWidth}%`;
+      const progress = document.getElementById("progress");
+      progress.style.width = `${progressWidth}%`;
       return;
     }
   } else {
@@ -165,9 +180,15 @@ function updateCountdown() {
       currentEventLocation = location;
       currentEventSentNotification = false;
 
-      document.getElementById("countdown-text").innerHTML = `Tid kvar för ${name}:`;
-      document.getElementById("countdown-number").innerHTML = remainingTime;
-      document.getElementById("location").innerHTML = `Plats: ${location}`;
+      const countdownText = document.getElementById("countdown-text");
+      countdownText.innerHTML = `Tid kvar för ${name}:`;
+
+      const countdownNumber = document.getElementById("countdown-number");
+      countdownNumber.innerHTML = remainingTime;
+
+      const locationEl = document.getElementById("location");
+      locationEl.innerHTML = `Plats: ${location}`;
+
       document.title = `${remainingTime} kvar | ${name}`;
     }
 
@@ -185,10 +206,14 @@ function updateCountdown() {
 
     const progressWidth = Math.max(0, ((now - start) / 1000 / ((end - start) / 1000)) * 100);
 
-    document.getElementById("progress").style.width = `${progressWidth}%`;
-    document.getElementById("progress-bar").style.display = "block";
+    const progress = document.getElementById("progress");
+    progress.style.width = `${progressWidth}%`;
+
+    const progressBar = document.getElementById("progress-bar");
+    progressBar.style.display = "block";
   }
 }
+
 // Funktion för att formatera sekunder till en tidssträng
 function formatSeconds(seconds) {
   let minutes = Math.floor(seconds / 60);
@@ -275,7 +300,7 @@ function init() {
   const dropdownButton = document.querySelector(".dropdown-button");
 
   // Get weekdays
-  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const days = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
 
   // Get current day
   const date = new Date();
@@ -395,71 +420,51 @@ function createSnowflake() {
     document.body.removeChild(snowflake);
   });
 }
-
-
-// Function to update the background color every second
+// Function to update the background color 
 function updateBackground() {
-  let body = document.body;
 
-  let morningColor = "#f65e7";
-  let afternoonColor = "#87CEEB";
-  let eveningColor = "#2b0932";
-  let nightColor = "#2b0432";
+  const times = [
+    { start: 6, end: 12, color: "#f65e7" }, // morning
+    { start: 12, end: 14, color: "#8e7eEEB" }, // afternoon 
+    { start: 18, end: 22, color: "#eb0932" }, // evening
+    { start: 22, end: 24, color: "#2b0232" } // night
+  ];
 
-  let currentHour = new Date().getHours();
-  let currentMinute = new Date().getMinutes();
+  const now = new Date();
+  const hour = now.getHours();
+  const minute = now.getMinutes();
 
-  let morningStart = 6;
-  let morningEnd = 12;
+  let color;
 
-  let afternoonStart = 12;
-  let afternoonEnd = 18;
+  times.forEach(time => {
+    if (hour >= time.start && hour < time.end) {
+      const progress = (hour - time.start + minute / 60) / (time.end - time.start);
+      color = interpolateColor(times[times.indexOf(time) - 1].color, time.color, progress);
+    }
+  });
 
-  let eveningStart = 18;
-  let eveningEnd = 22;
+  document.body.style.backgroundColor = color;
 
-  if (currentHour >= morningStart && currentHour < morningEnd) {
-    let morningProgress = (currentHour - morningStart + currentMinute / 60) / (morningEnd - morningStart);
-    body.style.backgroundColor = interpolateColor(nightColor, morningColor, morningProgress);
-  } else if (currentHour >= afternoonStart && currentHour < afternoonEnd) {
-    let afternoonProgress = (currentHour - afternoonStart + currentMinute / 60) / (afternoonEnd - afternoonStart);
-    body.style.backgroundColor = interpolateColor(morningColor, afternoonColor, afternoonProgress);
-  } else if (currentHour >= eveningStart && currentHour < eveningEnd) {
-    let eveningProgress = (currentHour - eveningStart + currentMinute / 60) / (eveningEnd - eveningStart);
-    body.style.backgroundColor = interpolateColor(afternoonColor, eveningColor, eveningProgress);
-  } else {
-    let nightProgress = (currentHour - eveningEnd + currentMinute / 60) / (24 - eveningEnd);
-    body.style.backgroundColor = interpolateColor(eveningColor, nightColor, nightProgress);
-  }
 }
 
 // Function to interpolate between two colors
 function interpolateColor(color1, color2, factor) {
-  let r1 = parseInt(color1.substring(1, 3), 16);
-  let g1 = parseInt(color1.substring(3, 5), 16);
-  let b1 = parseInt(color1.substring(5, 7), 16);
 
-  let r2 = parseInt(color2.substring(1, 3), 16);
-  let g2 = parseInt(color2.substring(3, 5), 16);
-  let b2 = parseInt(color2.substring(5, 7), 16);
+  const r1 = parseInt(color1.substring(1, 3), 16);
+  const g1 = parseInt(color1.substring(3, 5), 16);
+  const b1 = parseInt(color1.substring(5, 7), 16);
 
-  let r = Math.round(r1 + factor * (r2 - r1));
-  let g = Math.round(g1 + factor * (g2 - g1));
-  let b = Math.round(b1 + factor * (b2 - b1));
+  const r2 = parseInt(color2.substring(1, 3), 16);
+  const g2 = parseInt(color2.substring(3, 5), 16);
+  const b2 = parseInt(color2.substring(5, 7), 16);
+
+  const r = Math.round(r1 + factor * (r2 - r1));
+  const g = Math.round(g1 + factor * (g2 - g1));
+  const b = Math.round(b1 + factor * (b2 - b1));
 
   return "#" + r.toString(16).padStart(2, '0') + g.toString(16).padStart(2, '0') + b.toString(16).padStart(2, '0');
+
 }
 
-// Function to play a random sound
-function playRandomSound() {
-  let sounds = ["sound1.mp3", "sound2.mp3", "sound3.mp3"];
-  let randomSound = sounds[Math.floor(Math.random() * sounds.length)];
-  let audio = new Audio(randomSound);
-  audio.play();
-}
-
-// Function to update the countdown every 50 milliseconds
-setInterval(updateCountdown, 50);
-
-// Function to update the background color every second
-setInterval(updateBackground, 1000);
+// Update background color every 500ms
+setInterval(updateBackground, 500);
