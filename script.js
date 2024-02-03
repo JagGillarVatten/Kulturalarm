@@ -110,7 +110,9 @@ function updateCountdown() {
     currentEventSentNotification = false;
 
     const countdownText = document.getElementById("countdown-text");
-    countdownText.innerHTML = "Inga fler händelser idag.";
+    if (countdownText.innerHTML !== "Inga fler händelser idag.") {
+      countdownText.innerHTML = "Inga fler händelser idag.";
+    }
 
     const locationEl = document.getElementById("location");
     locationEl.innerHTML = "";
@@ -129,11 +131,7 @@ function updateCountdown() {
   if (now < start) {
     const remainingTime = formatSeconds((start - now) / 1000);
 
-    if (
-      currentEventName !== name ||
-      currentEventStart !== start ||
-      currentEventLocation !== location
-    ) {
+    if (currentEventName !== name) {
       currentEventName = name;
       currentEventStart = start;
       currentEventLocation = location;
@@ -142,7 +140,9 @@ function updateCountdown() {
       document.title = `${remainingTime} tills | ${name}`;
 
       const countdownText = document.getElementById("countdown-text");
-      countdownText.innerHTML = `${name} börjar om:`;
+      if (countdownText.innerHTML !== `${name} börjar om:`) {
+        countdownText.innerHTML = `${name} börjar om:`;
+      }
 
       const countdownNumber = document.getElementById("countdown-number");
       countdownNumber.innerHTML = remainingTime;
@@ -170,18 +170,16 @@ function updateCountdown() {
   } else {
     const remainingTime = formatSeconds((end - now) / 1000);
 
-    if (
-      currentEventName !== name ||
-      currentEventStart !== start ||
-      currentEventLocation !== location
-    ) {
+    if (currentEventName !== name) {
       currentEventName = name;
       currentEventStart = start;
       currentEventLocation = location;
       currentEventSentNotification = false;
 
       const countdownText = document.getElementById("countdown-text");
-      countdownText.innerHTML = `Tid kvar för ${name}:`;
+      if (countdownText.innerHTML !== `Tid kvar för ${name}:`) {
+        countdownText.innerHTML = `Tid kvar för ${name}:`;
+      }
 
       const countdownNumber = document.getElementById("countdown-number");
       countdownNumber.innerHTML = remainingTime;
