@@ -249,7 +249,19 @@ function loadEventFile(filename) {
 
 // Funktion för att initiera applikationen
 function init() {
-
+  if ('Notification' in window) {
+    Notification.requestPermission().then(function(result) {
+      if (result === 'denied') {
+        console.log('Notification permission denied.');
+      } else if (result === 'default') {
+        console.log('User didn\'t give a response.');
+      } else {
+        console.log('Notification permission granted.');
+      }
+    });
+  } else {
+    console.log('Web notifications are not supported.');
+  }
   // Create fullscreen button
   const fullscreenButton = document.createElement('button');
   fullscreenButton.textContent = 'Fullscreen';
