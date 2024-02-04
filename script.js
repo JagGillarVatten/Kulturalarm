@@ -110,9 +110,7 @@ function updateCountdown() {
     currentEventSentNotification = false;
 
     const countdownText = document.getElementById("countdown-text");
-    if (countdownText.innerHTML !== "Inga fler händelser idag.") {
-      countdownText.innerHTML = "Inga fler händelser idag.";
-    }
+    countdownText.innerHTML = "Inga fler händelser idag.";
 
     const locationEl = document.getElementById("location");
     locationEl.innerHTML = "";
@@ -131,7 +129,11 @@ function updateCountdown() {
   if (now < start) {
     const remainingTime = formatSeconds((start - now) / 1000);
 
-    if (currentEventName !== name) {
+    if (
+      currentEventName !== name ||
+      currentEventStart !== start ||
+      currentEventLocation !== location
+    ) {
       currentEventName = name;
       currentEventStart = start;
       currentEventLocation = location;
@@ -140,9 +142,7 @@ function updateCountdown() {
       document.title = `${remainingTime} tills | ${name}`;
 
       const countdownText = document.getElementById("countdown-text");
-      if (countdownText.innerHTML !== `${name} börjar om:`) {
-        countdownText.innerHTML = `${name} börjar om:`;
-      }
+      countdownText.innerHTML = `${name} börjar om:`;
 
       const countdownNumber = document.getElementById("countdown-number");
       countdownNumber.innerHTML = remainingTime;
@@ -170,16 +170,18 @@ function updateCountdown() {
   } else {
     const remainingTime = formatSeconds((end - now) / 1000);
 
-    if (currentEventName !== name) {
+    if (
+      currentEventName !== name ||
+      currentEventStart !== start ||
+      currentEventLocation !== location
+    ) {
       currentEventName = name;
       currentEventStart = start;
       currentEventLocation = location;
       currentEventSentNotification = false;
 
       const countdownText = document.getElementById("countdown-text");
-      if (countdownText.innerHTML !== `Tid kvar för ${name}:`) {
-        countdownText.innerHTML = `Tid kvar för ${name}:`;
-      }
+      countdownText.innerHTML = `Tid kvar för ${name}:`;
 
       const countdownNumber = document.getElementById("countdown-number");
       countdownNumber.innerHTML = remainingTime;
@@ -249,19 +251,7 @@ function loadEventFile(filename) {
 
 // Funktion för att initiera applikationen
 function init() {
-  if ('Notification' in window) {
-    Notification.requestPermission().then(function(result) {
-      if (result === 'denied') {
-        console.log('Notification permission denied.');
-      } else if (result === 'default') {
-        console.log('User didn\'t give a response.');
-      } else {
-        console.log('Notification permission granted.');
-      }
-    });
-  } else {
-    console.log('Web notifications are not supported.');
-  }
+
   // Create fullscreen button
   const fullscreenButton = document.createElement('button');
   fullscreenButton.textContent = 'Fullscreen';
