@@ -1,5 +1,5 @@
 function init() {
-
+  
     // Create fullscreen button
     const fullscreenButton = document.createElement('button');
     fullscreenButton.textContent = 'Fullscreen';
@@ -114,5 +114,6 @@ function init() {
       hourOffset--;
       updateCountdown();
     });
+    
   
   }

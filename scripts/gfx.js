@@ -104,14 +104,7 @@ function toggleDropdown() {
     return "#" + r.toString(16).padStart(2, '0') + g.toString(16).padStart(2, '0') + b.toString(16).padStart(2, '0');
   }
   
-  // Function to play a random sound
-  function playRandomSound() {
-    let sounds = ["sound1.mp3", "sound2.mp3", "sound3.mp3"];
-    let randomSound = sounds[Math.floor(Math.random() * sounds.length)];
-    let audio = new Audio(randomSound);
-    audio.play();
-  }
-  
+
   // Function to update the countdown every 50 milliseconds
   setInterval(updateCountdown, 50);
   
