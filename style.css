@@ -283,3 +283,19 @@ button:active {
 .dot.active {
 	background-color: rgb(255, 255, 255);
 }
+
+.morning {
+	background-color: #796147;
+}
+
+.afternoon {
+	background-color: #ffccbf;
+}
+
+.evening {
+	background-color: #ae6bf6
+}
+
+.night {
+	background-color: #020202;
+}

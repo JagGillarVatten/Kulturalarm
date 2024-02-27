@@ -145,9 +145,14 @@ function pad(value, length) {
 }
 
 // Funktion för att ladda händelsefil
-function loadEventFile(filename) {
-  loadJSON(`scheman/${filename}`, (data) => {
-    console.log("Inläst data:", data);
+async function loadEventFile(filename) {
+  try {
+    const response = await fetch(`scheman/${filename}`);
+    if (!response.ok) {
+      throw new Error('Could not fetch file');
+    }
+
+    const data = await response.json();
 
     if (Array.isArray(data)) {
       events = data.filter((entry) => !entry.specialDate);
@@ -156,9 +161,14 @@ function loadEventFile(filename) {
       events = data;
       specialDates = [];
     }
+
     console.log("Vanliga händelser:", events);
     console.log("Speciella datum:", specialDates);
 
     updateCountdown();
-  });
+
+  } catch (error) {
+    console.error(error);
+  }
 }
+

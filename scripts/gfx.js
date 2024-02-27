@@ -1,4 +1,3 @@
-
 // Toggle dropdown
 function toggleDropdown() {
   let dropdownContent = document.querySelector(".dropdown-content");
@@ -55,55 +54,20 @@ function createSnowflake() {
 // Function to update the background color every second
 function updateBackground() {
   let body = document.body;
-  let morningColor = "#f6d7a7";
-  let afternoonColor = "#a7d7eb";
-  let eveningColor = "#d7a7eb";
-  let nightColor = "#a7a7d7";
 
   let currentHour = new Date().getHours();
   let currentMinute = new Date().getMinutes();
 
-  let morningStart = 6;
-  let morningEnd = 12;
-
-  let afternoonStart = 12;
-  let afternoonEnd = 18;
-
-  let eveningStart = 18;
-  let eveningEnd = 22;
-
-  if (currentHour >= morningStart && currentHour < morningEnd) {
-    let morningProgress = (currentHour - morningStart + currentMinute / 60) / (morningEnd - morningStart);
-    body.style.backgroundColor = interpolateColor(nightColor, morningColor, morningProgress);
-  } else if (currentHour >= afternoonStart && currentHour < afternoonEnd) {
-    let afternoonProgress = (currentHour - afternoonStart + currentMinute / 60) / (afternoonEnd - afternoonStart);
-    body.style.backgroundColor = interpolateColor(morningColor, afternoonColor, afternoonProgress);
-  } else if (currentHour >= eveningStart && currentHour < eveningEnd) {
-    let eveningProgress = (currentHour - eveningStart + currentMinute / 60) / (eveningEnd - eveningStart);
-    body.style.backgroundColor = interpolateColor(afternoonColor, eveningColor, eveningProgress);
+  if (currentHour >= 6 && currentHour < 12) {
+    body.classList.add("morning");
+  } else if (currentHour >= 12 && currentHour < 18) {
+    body.classList.add("afternoon");
+  } else if (currentHour >= 18 && currentHour < 22) {
+    body.classList.add("evening");
   } else {
-    let nightProgress = (currentHour - eveningEnd + currentMinute / 60) / (24 - eveningEnd);
-    body.style.backgroundColor = interpolateColor(eveningColor, nightColor, nightProgress);
+    body.classList.add("night");
   }
 }
-
-// Function to interpolate between two colors
-function interpolateColor(color1, color2, factor) {
-  let r1 = parseInt(color1.substring(1, 3), 16);
-  let g1 = parseInt(color1.substring(3, 5), 16);
-  let b1 = parseInt(color1.substring(5, 7), 16);
-
-  let r2 = parseInt(color2.substring(1, 3), 16);
-  let g2 = parseInt(color2.substring(3, 5), 16);
-  let b2 = parseInt(color2.substring(5, 7), 16);
-
-  let r = Math.round(r1 + factor * (r2 - r1));
-  let g = Math.round(g1 + factor * (g2 - g1));
-  let b = Math.round(b1 + factor * (b2 - b1));
-
-  return "#" + r.toString(16).padStart(2, '0') + g.toString(16).padStart(2, '0') + b.toString(16).padStart(2, '0');
-}
-
 
 // Function to update the countdown every 50 milliseconds
 setInterval(updateCountdown, 50);
