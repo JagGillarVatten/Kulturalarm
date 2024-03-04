@@ -114,22 +114,22 @@ function init() {
     hourOffset--;
     updateCountdown();
   });
-  
-// Close the dropdown menu when the user clicks outside of it
-window.onclick = function(event) {
-  if (!event.target.matches('.dropdown-toggle')) {
-    var dropdowns = document.getElementsByClassName("dropdown-menu");
-    for (var i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
+
+  // Close the dropdown menu when the user clicks outside of it
+  window.onclick = function (event) {
+    if (!event.target.matches('.dropdown-toggle')) {
+      var dropdowns = document.getElementsByClassName("dropdown-menu");
+      for (var i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains('show')) {
+          openDropdown.classList.remove('show');
+        }
       }
     }
   }
-}
 
   // Add a fade-in effect to the dropdown menu
-  $('.dropdown-menu').on('show.bs.dropdown', function() {
+  $('.dropdown-menu').on('show.bs.dropdown', function () {
     $(this).find('.dropdown-item').addClass('animated fadeInDown');
   });
 }

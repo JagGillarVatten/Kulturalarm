@@ -61,7 +61,7 @@ function updateBackground() {
   if (currentHour >= 6 && currentHour < 12) {
     body.classList.add("morning");
   } else if (currentHour >= 12 && currentHour < 18) {
-    body.classList.add("afternoon");
+    body.classList.add("a sfternoon");
   } else if (currentHour >= 18 && currentHour < 22) {
     body.classList.add("evening");
   } else {
