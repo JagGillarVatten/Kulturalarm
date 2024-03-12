@@ -45,7 +45,7 @@ function init() {
 
   // Get dropdown elements
   const dropdownContent = document.querySelector(".dropdown-content");
-const dropdownButton = document.querySelector(".dropdown-button");
+  const dropdownButton = document.querySelector(".dropdown-button");
 
   // Get weekdays
   const days = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
