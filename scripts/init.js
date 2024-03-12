@@ -25,6 +25,15 @@ function init() {
       document.documentElement.requestFullscreen();
       fullscreenButton.textContent = 'Exit Fullscreen';
 
+      // Update button text on fullscreen change
+      document.addEventListener('fullscreenchange', () => {
+        if (document.fullscreenElement) {
+          fullscreenButton.textContent = 'Exit Fullscreen';
+        } else {
+          fullscreenButton.textContent = 'Fullscreen';
+        }
+      });
+
       // Hide cursor after 3 seconds inactive
       let timeout;
       document.onmousemove = () => {

@@ -45,8 +45,8 @@ body {
 .name {
 	font-size: 5.5rem;
 	background-color: rgba(255, 255, 255, 0.254);
-	color: transparent;
-	-webkit-text-stroke: 0.05rem rgb(255, 255, 255);
+	color: white;
+	
 	font-weight: 910;
 	margin-top: 0;
 	animation: fadeInUp 0.8s ease-in-out;
