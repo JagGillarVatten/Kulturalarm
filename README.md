@@ -60,7 +60,7 @@ För att anpassa Kulturalarm med dina egna scheman:
      - `startTime` och `endTime` är start- och sluttid för lektionen
      
 3. Ersätt befintliga JSON-filer i root med dina anpassade JSON-filer.
-4. Lägg till JSON-data i arrayen i script.js. Detta spårar tillgängliga alternativ.
+4. Lägg till JSON-data i arrayen i events.js I mappen "Scripts". Detta spårar tillgängliga alternativ.
 
 ## Att göra
 
