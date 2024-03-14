@@ -88,7 +88,7 @@ body {
 	overflow: hidden;
 
 	animation: intro 03s ease-out;
-}  
+}
 
 @keyframes intro {
 	0% {
@@ -108,6 +108,7 @@ body {
 	background-color: var(--highlight-color);
 	position: relative;
 	transition: width 0.1s, background-color 2s ease;
+	width: 0%;
 }
 
 
@@ -189,7 +190,7 @@ ul {
 }
 
 li {
-	margin-bottom: 1px;
+	margin-bottom: 4px;
 }
 
 /* Miscellaneous Styles */
@@ -217,7 +218,7 @@ div#rss-container {
 	}
 
 	.progress-bar {
-		width: 70%;
+
 		height: 2rem;
 	}
 
@@ -235,31 +236,7 @@ div#rss-container {
 	}
 }
 
-/* Animation Keyframes */
-@keyframes fadeInUp {
-	from {
-		opacity: 0;
-		transform: translateY(20px);
-	}
-
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
-}
-
-@keyframes shake {
-
-	0%,
-	100% {
-		transform: translateX(0);
-	}
-
-	50% {
-		transform: translateX(-5px);
-	}
-}
-
+/* Animation Keyframes
 /* Button Hover Effects */
 button {
 	color: var(--text-color);
