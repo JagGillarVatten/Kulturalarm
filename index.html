@@ -21,52 +21,42 @@
 
 <body onload="init()">
 
-  <div class="content">
+  <!-- Main Content -->
+  <div class="name">Kulturalarm</div>
 
-    <!-- Main Content -->
-    <div class="name">Kulturalarm</div>
-
-    <div id="countdown">
-      <div id="countdown-text"></div>
-      <div id="countdown-number"></div>
-    </div>
-
-    <div class="info">
-      <p id="day-of-week"></p>
-
-      <div class="progress-bar" id="progress-bar">
-        <span id="progress"></span>
-      </div>
-
-      <p id="location"></p>
-    </div>
-
-    <!-- Dropdown -->
-    <div class="dropdown">
-      <button class="dropdown-button button" title="Byt schema">
-        Byt schema
-      </button>
-      <div class="dropdown-content"></div>
-    </div>
-
+  <div id="countdown">
+    <div id="countdown-text"></div>
+    <div id="countdown-number"></div>
   </div>
 
-  <div class="footer">
+  <p id="day-of-week"></p>
 
-    <!-- Page Visit Count -->
-    <div id="page-visit-count">
-      Du är besökare nummer <span id="visit-count"></span>!
-    </div>
-
-    <!-- Scripts -->
-    <script type="text/javascript" src="scripts/events.js"></script>
-    <script type="text/javascript" src="scripts/countdown.js"></script>
-    <script type="text/javascript" src="scripts/init.js"></script>
-    <script type="text/javascript" src="scripts/gfx.js"></script>
-    <script type="text/javascript" src="pagevisit.js"></script>
-
+  <div class="progress-bar" id="progress-bar">
+    <span id="progress"></span>
   </div>
 
+  <p id="location"></p>
+
+  <!-- Dropdown -->
+  <div class="dropdown">
+    <button class="dropdown-button button" title="Byt schema">
+      Byt schema
+    </button>
+    <div class="dropdown-content"></div>
+  </div>
+
+  <!-- Page Visit Count -->
+  <div id="page-visit-count">
+    Du är besökare nummer <span id="visit-count"></span>!
+  </div>
+
+  <!-- Scripts -->
+  <script src="/scripts/events.js"></script>
+  <script src="/scripts/script.js"></script>
+  <script src="/scripts/countdown.js"></script>
+  <script src="/scripts/init.js"></script>
+  <script src="/scripts/gfx.js"></script>
+  <script src="pagevisit.js"></script>
 </body>
 
 </html>

@@ -1,20 +1,29 @@
 // Toggle dropdown
 function toggleDropdown() {
-  let dropdownContent = document.querySelector(".dropdown-content");
+  const dropdownContent = document.querySelector(".dropdown-content");
   dropdownContent.classList.toggle("show");
 
-  // Add fade in animation 
-  dropdownContent.style.animation = "fadeIn 0.5s";
+  // Add fade in animation
+  dropdownContent.style.animation = "fadeIn 0.5s ease-in";
 }
 
 // Close dropdown
 function closeDropdown() {
-  let dropdownContent = document.querySelector(".dropdown-content");
+  const dropdownContent = document.querySelector(".dropdown-content");
   dropdownContent.classList.remove("show");
 
   // Add fade out animation
-  dropdownContent.style.animation = "fadeOut 0.5s";
+  dropdownContent.style.animation = "fadeOut 0.5s ease-out";
 }
+
+// Add animation when option is clicked
+const options = document.querySelectorAll(".dropdown-items ");
+options.forEach(option => {
+  option.addEventListener("click", () => {
+    option.style.animation = "bounce 0.5s";
+  });
+});
+
 
 // Adjust timezone
 function adjustTimezone(date) {
