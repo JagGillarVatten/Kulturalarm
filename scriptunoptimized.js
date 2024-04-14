@@ -250,7 +250,7 @@ function loadEventFile(filename) {
 // Funktion för att initiera applikationen
 function init() {
   if ('Notification' in window) {
-    Notification.requestPermission().then(function(result) {
+    Notification.requestPermission().then(function (result) {
       if (result === 'denied') {
         console.log('Notification permission denied.');
       } else if (result === 'default') {
