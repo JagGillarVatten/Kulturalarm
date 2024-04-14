@@ -22,7 +22,7 @@ function loadJSON(fileUrl, onFileLoaded) {
   const request = new XMLHttpRequest();
   request.overrideMimeType("application/json");
   request.open("GET", fileUrl, true);
-
+  
   // Event handler for XMLHttpRequest state changes
   request.onreadystatechange = function () {
     if (request.readyState === 4) {
