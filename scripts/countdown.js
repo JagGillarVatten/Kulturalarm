@@ -127,9 +127,14 @@ function updateCountdown() {
     progressBar.style.display = "block";
   }
 }
-
-// Funktion för att formatera sekunder till en tidssträng
+// Function to format seconds to a time string
 function formatSeconds(seconds) {
+  // Log error if seconds is not a number
+  if (typeof seconds !== 'number' || isNaN(seconds)) {
+    console.error('Invalid seconds value:', seconds);
+    return '';
+  }
+
   let minutes = Math.floor(seconds / 60);
   let hours = Math.floor(minutes / 60);
   let paddedSeconds = pad(Math.floor(seconds) % 60, 2);
@@ -139,31 +144,41 @@ function formatSeconds(seconds) {
     : `${pad(minutes, 2)}:${paddedSeconds}`;
 }
 
-// Funktion för att fylla på med nollor framför ett värde
+// Function to pad a value with leading zeros
 function pad(value, length) {
+  // Log error if value is not a number
+  if (typeof value !== 'number' || isNaN(value)) {
+    console.error('Invalid value for padding:', value);
+    return '';
+  }
+
   return ("000000000" + value).substr(-length);
 }
 
-// Funktion för att ladda händelsefil
+// Function to load event file
 async function loadEventFile(filename) {
   try {
     const response = await fetch(`scheman/${filename}`);
+
+    // Log error if response is not ok
     if (!response.ok) {
+      console.error('Error fetching event file:', response.status, response.statusText);
       throw new Error('Could not fetch file');
     }
 
     const data = await response.json();
 
-    if (Array.isArray(data)) {
-      events = data.filter((entry) => !entry.specialDate);
-      specialDates = data.filter((entry) => entry.specialDate);
-    } else {
-      events = data;
-      specialDates = [];
+    // Log error if data is not an array
+    if (!Array.isArray(data)) {
+      console.error('Invalid data format:', data);
+      throw new Error('Invalid data format');
     }
 
-    console.log("Vanliga händelser:", events);
-    console.log("Speciella datum:", specialDates);
+    events = data.filter((entry) => !entry.specialDate);
+    specialDates = data.filter((entry) => entry.specialDate);
+
+    console.log('Vanliga händelser:', events);
+    console.log('Speciella datum:', specialDates);
 
     updateCountdown();
 
@@ -171,4 +186,3 @@ async function loadEventFile(filename) {
     console.error(error);
   }
 }
-
