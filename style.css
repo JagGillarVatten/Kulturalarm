@@ -17,6 +17,21 @@ body {
 	color: var(--text-color);
 	margin: 0;
 
+	cursor: url('path/to/custom-cursor.png'), auto;
+  
+  
+  button:hover {
+	animation: shake 0.5s ease infinite;
+  }
+  
+  @keyframes shake {
+	0% { transform: translateX(0); }
+	25% { transform: translateX(-5px) rotate(-5deg); }
+	50% { transform: translateX(5px) rotate(5deg); }
+	75% { transform: translateX(-5px) rotate(-5deg); }
+	100% { transform: translateX(0) rotate(0); }
+  }
+  
 
 	position: relative;
 	padding: 1rem 0;
@@ -109,8 +124,7 @@ body {
 	position: relative;
 	transition: width 0.1s, background-color 2s ease;
 	width: 0%;
-}
-
+  }
 /* Button Styles */
 .button {
 	color: var(--text-color);
