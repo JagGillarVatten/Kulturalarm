@@ -2,52 +2,53 @@
 <html lang="sv">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kulturalarm</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kulturalarm</title>
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
 
-  <div id="day"> </div>
+    <div id="day"> </div>
 
-  <div id="dots">
-  </div>
+    <div id="dots">
+    </div>
 
-  <!-- Styles -->
-  <link rel="preload" href="style.css" as="style" />
-  <link rel="stylesheet" href="style.css" />
+    <!-- Styles -->
+    <link rel="preload" href="style.css" as="style" />
+    <link rel="stylesheet" href="style.css" />
 </head>
 
 <body onload="init()">
 
-  <!-- Main Content -->
-  <div class="name">Kulturalarm</div>
+    <!-- Main Content -->
+    <div class="name">Kulturalarm</div>
 
-  <div id="countdown">
-    <div id="countdown-text"></div>
-    <div id="countdown-number"></div>
-  </div>
+    <div id="countdown">
+        <div id="countdown-text"></div>
+        <div id="countdown-number"></div>
+    </div>
 
-  <p id="day-of-week"></p>
+    <p id="day-of-week"></p>
 
-  <div class="progress-bar" id="progress-bar">
-    <span id="progress"></span>
-  </div>
+    <div class="progress-bar" id="progress-bar">
+        <span id="progress"></span>
+    </div>
 
-  <p id="location"></p>
+    <p id="location"></p>
 
-  <!-- Dropdown -->
-  <div class="dropdown">
-    <button class="dropdown-button button" title="Byt schema">
-      Byt schema
-    </button>
-    <div class="dropdown-content"></div>
-  </div>
+    <!-- Dropdown -->
+    <div class="dropdown">
+        <button class="dropdown-button button" title="Byt schema">
+            Byt schema
+        </button>
+        <div class="dropdown-content"></div>
+    </div>
 
-  <!-- Page Visit Count -->
-  <div id="page-visit-count" style>
-    Du är besökare nummer <span id="visit-count"></span>!
+    <!-- Page Visit Count -->
+    <div id="page-visit-count">
+        Du är besökare nummer <span id="visit-count"></span>!
+    </div>
 
     <!-- Scripts -->
     <script src="/scripts/events.js"></script>
