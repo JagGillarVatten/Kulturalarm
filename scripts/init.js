@@ -1,147 +1,144 @@
 function init() {
-  try {
-    // Create fullscreen button
-    const fullscreenButton = document.createElement('button');
-    fullscreenButton.textContent = 'Fullscreen';
-    fullscreenButton.style.position = 'fixed';
-    fullscreenButton.style.bottom = '20px';
-    fullscreenButton.style.opacity = 0;
+try {
+// Create fullscreen button
+const fullscreenButton = document.createElement('button');
+fullscreenButton.textContent = 'Fullscreen';
+fullscreenButton.style.position = 'fixed';
+fullscreenButton.style.bottom = '20px';
+fullscreenButton.style.opacity = 0;
 
+// Show on hover
+fullscreenButton.addEventListener('mouseover', () => {
+fullscreenButton.style.opacity = 1;
+});
 
-    // Show on hover
-    fullscreenButton.addEventListener('mouseover', () => {
-      fullscreenButton.style.opacity = 1;
-    });
+// Hide on mouseout
+fullscreenButton.addEventListener('mouseout', () => {
+fullscreenButton.style.opacity = 0;
+fullscreenButton.style.transition = 'opacity 0.2s';
+});
 
-    // Hide on mouseout
-    fullscreenButton.addEventListener('mouseout', () => {
-      fullscreenButton.style.opacity = 0;
-      fullscreenButton.style.transition = 'opacity 0.2s';
-    });
+// Toggle fullscreen on click
+fullscreenButton.addEventListener('click', handleFullscreenToggle);
 
-    // Toggle fullscreen on click
-    fullscreenButton.addEventListener('click', () => {
-      try {
-        if (!document.fullscreenElement) {
-          document.documentElement.requestFullscreen();
-          fullscreenButton.textContent = 'Exit Fullscreen';
+function handleFullscreenToggle() {
+try {
+if (!document.fullscreenElement) {
+document.documentElement.requestFullscreen();
+fullscreenButton.textContent = 'Exit Fullscreen';
 
-          // Update button text on fullscreen change
-          document.addEventListener('fullscreenchange', () => {
-            fullscreenButton.textContent = document.fullscreenElement ? 'Exit Fullscreen' : 'Fullscreen';
-          });
+// Update button text on fullscreen change
+document.addEventListener('fullscreenchange', handleFullscreenChange);
+} else {
+document.exitFullscreen();
+fullscreenButton.textContent = 'Fullscreen';
+}
+} catch (error) {
+console.error('Error toggling fullscreen: ' + error.message);
+}
+}
 
-          // Hide cursor after 3 seconds inactive
-          let timeout;
-          document.onmousemove = () => {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => {
-              document.body.style.cursor = 'none';
-            }, 3000);
-            document.body.style.cursor = '';
-          };
-        } else {
-          document.exitFullscreen();
-          fullscreenButton.textContent = 'Fullscreen';
-        }
-      } catch (error) {
-        console.error('Error toggling fullscreen:', error);
-      }
-    });
+function handleFullscreenChange() {
+fullscreenButton.textContent = document.fullscreenElement ? 'Exit Fullscreen' : 'Fullscreen';
+}
 
-    // Add button to DOM
-    document.body.appendChild(fullscreenButton);
+// Add button to DOM
+document.body.appendChild(fullscreenButton);
 
-    // Get dropdown elements
-    const dropdownContent = document.querySelector('.dropdown-content');
-    const dropdownButton = document.querySelector('.dropdown-button');
+// Get dropdown elements
+const dropdownContent = document.querySelector('.dropdown-content');
+const dropdownButton = document.querySelector('.dropdown-button');
 
-    // Get weekdays
-    const days = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
+// Get weekdays
+const days = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
 
-    // Get current day
-    const date = new Date();
-    const day = date.getDay();
+// Get current day
+const date = new Date();
+const day = date.getDay();
 
-    // Create day element
-    const dayElement = document.createElement('div');
-    dayElement.textContent = days[day];
+// Create day element
+const dayElement = document.createElement('h2');
+dayElement.textContent = days[day];
 
-    // Fade in animation
-    dayElement.style.animation = 'fadeIn 1s';
+// Fade in animation
+fadeIn(dayElement, '1s');
 
-    // Add to DOM
-    document.body.appendChild(dayElement);
+// Add to DOM
+document.body.appendChild(dayElement);
 
-    // Create dots
-    const dotsContainer = document.createElement('div');
+// Create dots
+const dotsContainer = document.createElement('div');
 
-    for (let i = 0; i < 7; i++) {
-      const dot = document.createElement('div');
-      dot.classList.add('dot');
-      if (i === day) {
-        dot.classList.add('active');
-      }
+for (let i = 0; i < 7; i++) {
+const dot = document.createElement('div');
+dot.classList.add('dot');
+if (i === day) {
+dot.classList.add('active');
+}
 
-      // Fade in animation
-      dot.style.animation = 'fadeIn 0.5s forwards';
+// Fade in animation
+fadeIn(dot, '0.5s');
 
-      dotsContainer.appendChild(dot);
-    }
+dotsContainer.appendChild(dot);
+}
 
-    // Add to DOM
-    document.body.appendChild(dotsContainer);
+// Add to DOM
+document.body.appendChild(dotsContainer);
 
-    // Add schedule options
-    eventFiles.forEach(file => {
-      const anchor = document.createElement('a');
-      anchor.innerText = file.name;
-      anchor.onclick = () => {
-        loadEventFile(file.url, () => {
-          loadEventFile('specialDates.json', updateCountdown);
-        });
-        closeDropdown();
-      };
+function fadeIn(element, duration) {
+element.style.animation = `fadeIn ${duration} forwards`;
+}
 
-      anchor.addEventListener('click', () => { });
-      dropdownContent.appendChild(anchor);
-    });
+// Add schedule options
+eventFiles.forEach(file => {
+const anchor = document.createElement('a');
+anchor.innerText = file.name;
+anchor.onclick = () => {
+loadEventFile(file.url, () => {
+loadEventFile('specialDates.json', updateCountdown);
+});
+closeDropdown();
+};
 
-    // Load default schedule
-    loadEventFile(eventFiles[0].url);
+anchor.addEventListener('click', () => { });
+dropdownContent.appendChild(anchor);
+});
 
-    // Toggle dropdown on button click
-    dropdownButton.addEventListener('click', toggleDropdown);
+// Load default schedule
+loadEventFile(eventFiles[0].url);
 
-    // Timezone buttons
-    document.getElementById('plus-button').addEventListener('click', () => {
-      hourOffset++;
-      updateCountdown();
-    });
+// Toggle dropdown on button click
+dropdownButton.addEventListener('click', toggleDropdown);
 
-    document.getElementById('minus-button').addEventListener('click', () => {
-      hourOffset--;
-      updateCountdown();
-    });
+// Timezone buttons
+document.addEventListener('click', event => {
+if (event.target.id === 'plus-button') {
+hourOffset++;
+updateCountdown();
+} else if (event.target.id === 'minus-button') {
+hourOffset--;
+updateCountdown();
+}
+});
 
-    // Close the dropdown menu when the user clicks outside of it
-    window.onclick = function (event) {
-      if (!event.target.matches('.dropdown-toggle')) {
-        const dropdowns = document.getElementsByClassName('dropdown-menu');
-        for (let i = 0; i < dropdowns.length; i++) {
-          const openDropdown = dropdowns[i];
-          if (openDropdown.classList.contains('show')) {
-            openDropdown.classList.remove('show');
-          }
-        }
-      }
-    };
+// Close the dropdown menu when the user clicks outside of it
+document.addEventListener('click', event => {
+if (!event.target.matches('.dropdown-toggle')) {
+const dropdowns = document.getElementsByClassName('dropdown-menu');
+for (let i = 0; i < dropdowns.length; i++) {
+const openDropdown = dropdowns[i];
+if (openDropdown.classList.contains('show')) {
+openDropdown.classList.remove('show');
+}
+}
+}
+});
 
-    // Add a fade-in effect to the dropdown menu
-    $('.dropdown-menu').on('show.bs.dropdown', function () {
-      $(this).find('.dropdown-item').addClass('animated fadeInDown');
-    });
-  } catch (error) {
-    console.error('Error initializing:', error);
-  }
+// Add a fade-in effect to the dropdown menu
+$('.dropdown-menu').on('show.bs.dropdown', function () {
+$(this).find('.dropdown-item').addClass('animated fadeInDown');
+});
+} catch (error) {
+console.error('Error initializing: ' + error.message);
+}
 }
