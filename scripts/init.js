@@ -3,8 +3,10 @@ try {
 // Create fullscreen button
 const fullscreenButton = document.createElement('button');
 fullscreenButton.textContent = 'Fullscreen';
+fullscreenButton.classList.add('btn', 'btn-primary', 'btn-sm');
 fullscreenButton.style.position = 'fixed';
 fullscreenButton.style.bottom = '20px';
+fullscreenButton.style.right = '20px';
 fullscreenButton.style.opacity = 0;
 
 // Show on hover
@@ -57,8 +59,9 @@ const date = new Date();
 const day = date.getDay();
 
 // Create day element
-const dayElement = document.createElement('h2');
+const dayElement = document.createElement('h3');
 dayElement.textContent = days[day];
+dayElement.classList.add('text-center', 'mt-4', 'mb-4');
 
 // Fade in animation
 fadeIn(dayElement, '1s');
@@ -68,10 +71,11 @@ document.body.appendChild(dayElement);
 
 // Create dots
 const dotsContainer = document.createElement('div');
+dotsContainer.classList.add('d-flex', 'justify-content-center', 'mb-4');
 
 for (let i = 0; i < 7; i++) {
 const dot = document.createElement('div');
-dot.classList.add('dot');
+dot.classList.add('dot', 'mx-1');
 if (i === day) {
 dot.classList.add('active');
 }
@@ -92,6 +96,7 @@ element.style.animation = `fadeIn ${duration} forwards`;
 // Add schedule options
 eventFiles.forEach(file => {
 const anchor = document.createElement('a');
+anchor.classList.add('dropdown-item');
 anchor.innerText = file.name;
 anchor.onclick = () => {
 loadEventFile(file.url, () => {
