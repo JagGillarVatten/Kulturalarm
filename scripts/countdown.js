@@ -1,7 +1,5 @@
 // Funktion för att uppdatera nedräkningen
 function updateCountdown() {
-
-
   if (events.length === 0) {
     setTimeout(updateCountdown, 1000);
     return;
@@ -126,7 +124,25 @@ function updateCountdown() {
     const progressBar = document.getElementById("progress-bar");
     progressBar.style.display = "block";
   }
+
+  // Add event timestamps to a file
+  if (todaysEvents.length > 0 && document.addEventListener) {
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 't') {
+        const eventTimestamps = todaysEvents.map(event => `${event.name}: ${event.start.toLocaleString()} - ${event.end.toLocaleString()}`);
+        const eventTimestampsText = eventTimestamps.join('\n');
+        const blob = new Blob([eventTimestampsText], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'event-timestamps.txt';
+        link.click();
+        URL.revokeObjectURL(url);
+      }
+    });
+  }
 }
+
 // Function to format seconds to a time string
 function formatSeconds(seconds) {
   // Log error if seconds is not a number

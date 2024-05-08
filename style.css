@@ -38,7 +38,7 @@ body {
 }
 
 .name {
-	
+
 	font-size: 5.5rem;
 	background-color: rgba(255, 255, 255, 0.254);
 	color: white;
@@ -47,7 +47,7 @@ body {
 	animation: fadeInUp 0.8s ease-in-out;
 	text-align: center;
 	letter-spacing: 0.003cm;
-	animation: shake 0.2s  ease-in-out;
+	animation: shake 0.2s ease-in-out;
 }
 
 /* Countdown Styles */
@@ -73,6 +73,21 @@ body {
 	position: static;
 	text-align: center;
 	font-size: 6em;
+}
+
+ window {
+	background - color: #f8f8f8;
+	border: 2px solid #ddd;
+	border - radius: 8px;
+	box - shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	padding: 10px;
+	font - family: Arial, sans - serif;
+	font - size: 14px;
+	color: #333;
+	position: fixed;
+	bottom: 20px;
+	left: 20px;
+	z - index: 9999;
 }
 
 /* Progress Bar Styles */
@@ -251,6 +266,7 @@ div#rss-container {
 		font-size: 1rem;
 	}
 }
+
 /* Animation Keyframes */
 @keyframes shake {
 	0% {

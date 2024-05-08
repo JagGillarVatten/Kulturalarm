@@ -73,20 +73,41 @@ return { name: event.name, start: startTime, end: endTime, location: event.locat
 
 return null;
 }
-
 // Function to handle key press events
 function handleKeyPress(event) {
 if (event.key === '.') {
 hourOffset++;
-console.log(`You are now offsetted to UTC+${hourOffset + 2} (${hourOffset === 0 ? 'Sweden' : ''})`);
+const offsetStatus = document.createElement('div');
+offsetStatus.textContent = `You are now offsetted to UTC+${hourOffset + 2} (${hourOffset === 0 ? 'Sweden' : ''})`;
+offsetStatus.classList.add('offset-status', 'window');
+document.body.appendChild(offsetStatus);
+setTimeout(() => {
+offsetStatus.remove();
+}, 2000);
 } else if (event.key === ',') {
 hourOffset--;
-console.log(`You are now offsetted to UTC+${hourOffset + 2} (${hourOffset === 0 ? 'Sweden' : ''})`);
+const offsetStatus = document.createElement('div');
+offsetStatus.textContent = `You are now offsetted to UTC+${hourOffset + 2} (${hourOffset === 0 ? 'Sweden' : ''})`;
+offsetStatus.classList.add('offset-status', 'window');
+document.body.appendChild(offsetStatus);
+setTimeout(() => {
+offsetStatus.remove();
+}, 2000);
 } else if (event.key === 'r') {
 hourOffset = 0;
-console.log(`You are now offsetted to UTC+2 (Sweden)`);
+const offsetStatus = document.createElement('div');
+offsetStatus.textContent = `You are now offsetted to UTC+2 (Sweden)`;
+offsetStatus.classList.add('offset-status', 'window');
+document.body.appendChild(offsetStatus);
+setTimeout(() => {
+offsetStatus.remove();
+}, 2000);
 }
 }
+
+/* CSS for cute window */
+
+
 
 // Add event listener for key press events
 document.addEventListener('keydown', handleKeyPress);
