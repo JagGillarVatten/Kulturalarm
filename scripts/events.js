@@ -45,7 +45,8 @@ request.send(null);
 function getTodaysEvents() {
 const today = new Date();
 const dayOfWeek = today.getDay();
-return events.filter((event) => event.startDay === dayOfWeek);
+const todaysSpecialEvents = specialDates.filter(event => event.date.toDateString() === today.toDateString());
+return todaysSpecialEvents.length > 0 ? todaysSpecialEvents : events.filter((event) => event.startDay === dayOfWeek);
 }
 
 // Function to get the next event
@@ -55,8 +56,8 @@ const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 const todaysEvents = getTodaysEvents();
 
 for (const event of todaysEvents) {
-const startTime = new Date(`${today.toDateString()} ${event.startTime}`);
-const endTime = new Date(`${today.toDateString()} ${event.endTime}`);
+const startTime = new Date(`${today.toDateString()} ${event.startTime || event.date.toTimeString().slice(0, 5)}`);
+const endTime = new Date(`${today.toDateString()} ${event.endTime || event.date.toTimeString().slice(0, 5)}`);
 
 // Apply hourOffset to startTime and endTime
 startTime.setHours(startTime.getHours() + hourOffset);
@@ -73,6 +74,7 @@ return { name: event.name, start: startTime, end: endTime, location: event.locat
 
 return null;
 }
+
 // Function to handle key press events
 function handleKeyPress(event) {
 if (event.key === '.') {
@@ -96,7 +98,7 @@ offsetStatus.remove();
 } else if (event.key === 'r') {
 hourOffset = 0;
 const offsetStatus = document.createElement('div');
-offsetStatus.textContent = `You are now offsetted to UTC+2 (Sweden)`;
+offsetStatus.textContent = `Reset to UTC+2 (Sweden)`;
 offsetStatus.classList.add('offset-status', 'window');
 document.body.appendChild(offsetStatus);
 setTimeout(() => {
