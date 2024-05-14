@@ -16,12 +16,9 @@ body {
 	background-color: rgb(246, 94, 39);
 	color: var(--text-color);
 	margin: 0;
-	
 	cursor: url('path/to/custom-cursor.png'), auto;
-	position: relative;
 	padding: 1rem 0;
 	font-family: 'Afacad', sans-serif;
-	z-index: 1;
 	font-size: 2.2rem;
 	transition: background-color 1.5s ease;
 	display: flex;
@@ -29,17 +26,14 @@ body {
 	align-items: center;
 }
 
-/* Header Styles */
 #location {
 	font-size: 4rem;
-	position: relative;
 	margin: 0;
 	animation: fadeInUp 0.6s;
 	text-align: center;
 }
 
 .name {
-
 	font-size: 5.5rem;
 	background-color: rgba(255, 255, 255, 0.254);
 	color: white;
@@ -51,7 +45,6 @@ body {
 	animation: shake 0.2s ease-in-out;
 }
 
-/* Countdown Styles */
 #countdown-container {
 	text-align: center;
 	margin-top: 20px;
@@ -67,31 +60,81 @@ body {
 #countdown-text {
 	font-size: 24px;
 	font-weight: 700;
-	z-index: 0;
 }
 
 #countdown-number {
-	position: static;
-	text-align: center;
 	font-size: 6em;
 }
 
- window {
-	background - color: #f8f8f8;
-	border: 2px solid #ddd;
-	border - radius: 8px;
-	box - shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	padding: 10px;
-	font - family: Arial, sans - serif;
-	font - size: 14px;
-	color: #333;
+#snackbar {
+	visibility: hidden;
+	min-width: 250px;
+	margin-left: -125px;
+	background-color: #333;
+	color: #fff;
+	text-align: center;
+	border-radius: 2px;
+	padding: 16px;
 	position: fixed;
-	bottom: 20px;
-	left: 20px;
-	z - index: 9999;
+	z-index: 1;
+	left: 50%;
+	bottom: 30px;
 }
 
-/* Progress Bar Styles */
+#snackbar.show {
+	visibility: visible;
+	-webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+	animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+	from {
+		bottom: 0;
+		opacity: 0;
+	}
+
+	to {
+		bottom: 30px;
+		opacity: 1;
+	}
+}
+
+@keyframes fadein {
+	from {
+		bottom: 0;
+		opacity: 0;
+	}
+
+	to {
+		bottom: 30px;
+		opacity: 1;
+	}
+}
+
+@-webkit-keyframes fadeout {
+	from {
+		bottom: 30px;
+		opacity: 1;
+	}
+
+	to {
+		bottom: 0;
+		opacity: 0;
+	}
+}
+
+@keyframes fadeout {
+	from {
+		bottom: 30px;
+		opacity: 1;
+	}
+
+	to {
+		bottom: 0;
+		opacity: 0;
+	}
+}
+
 .progress-bar {
 	width: 80%;
 	animation: fadeInUp 0.1s ease-in-out;
@@ -127,11 +170,9 @@ body {
 	width: 0%;
 }
 
-/* Button Styles */
 .button {
 	color: var(--text-color);
 	font-size: 2rem;
-	
 	font-family: 'Afacad', sans-serif;
 	background-color: var(--button-bg-color);
 	border: none;
@@ -143,13 +184,10 @@ body {
 }
 
 .button:hover {
-
 	transform: scale(1.1);
 }
 
-/* Dropdown Styles */
 .dropdown {
-
 	position: relative;
 	margin: 2rem auto;
 	display: flex;
@@ -158,7 +196,6 @@ body {
 
 .dropdown-content {
 	position: absolute;
-
 	display: none;
 	z-index: 1;
 	background-color: var(--dropdown-bg-color);
@@ -196,11 +233,6 @@ body {
 	transform: scale(1.1);
 }
 
-.dropdown-content.show {
-	display: block;
-}
-
-/* List Styles */
 ul {
 	list-style: none;
 	margin: 0;
@@ -211,7 +243,6 @@ li {
 	margin-bottom: 4px;
 }
 
-/* Miscellaneous Styles */
 strong {
 	font-weight: 700;
 }
@@ -223,7 +254,6 @@ div#rss-container {
 	align-self: center;
 }
 
-/* Media Queries for Responsive Design */
 @media screen and (max-width: 768px) {
 	body {
 		font-size: 1.5rem;
@@ -272,7 +302,6 @@ div#rss-container {
 	}
 }
 
-/* Animation Keyframes */
 @keyframes shake {
 	0% {
 		transform: translateX(0);
@@ -295,8 +324,6 @@ div#rss-container {
 	}
 }
 
-
-/* Button Hover Effects */
 button {
 	color: var(--text-color);
 	display: block;
@@ -319,7 +346,6 @@ button:active {
 	box-shadow: 2px 2px 4px rgba(63, 33, 33, 0.1);
 }
 
-/* Animated Dots Styles */
 .dot {
 	width: 2rem;
 	height: 2rem;

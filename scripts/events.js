@@ -40,6 +40,20 @@ reject(`Error loading JSON from ${fileUrl}.`);
 request.send(null);
 });
 }
+// Function to show a snackbar
+function showSnackbar(message) {
+const snackbar = document.getElementById("snackbar");
+if (!snackbar) {
+const snackbar = document.createElement('div');
+snackbar.id = "snackbar";
+document.body.appendChild(snackbar);
+}
+snackbar.textContent = message;
+snackbar.className = "show";
+setTimeout(function () {
+snackbar.className = snackbar.className.replace("show", "");
+}, 3000);
+}
 
 // Function to get today's events
 function getTodaysEvents() {
@@ -79,31 +93,13 @@ return null;
 function handleKeyPress(event) {
 if (event.key === '.') {
 hourOffset++;
-const offsetStatus = document.createElement('div');
-offsetStatus.textContent = `You are now offsetted to UTC+${hourOffset + 2} (${hourOffset === 0 ? 'Sweden' : ''})`;
-offsetStatus.classList.add('offset-status', 'window');
-document.body.appendChild(offsetStatus);
-setTimeout(() => {
-offsetStatus.remove();
-}, 2000);
+showSnackbar(`You are now offsetted to UTC+${hourOffset + 2} (${hourOffset === 0 ? 'Sweden' : ''})`);
 } else if (event.key === ',') {
 hourOffset--;
-const offsetStatus = document.createElement('div');
-offsetStatus.textContent = `You are now offsetted to UTC+${hourOffset + 2} (${hourOffset === 0 ? 'Sweden' : ''})`;
-offsetStatus.classList.add('offset-status', 'window');
-document.body.appendChild(offsetStatus);
-setTimeout(() => {
-offsetStatus.remove();
-}, 2000);
+showSnackbar(`You are now offsetted to UTC+${hourOffset + 2} (${hourOffset === 0 ? 'Sweden' : ''})`);
 } else if (event.key === 'r') {
 hourOffset = 0;
-const offsetStatus = document.createElement('div');
-offsetStatus.textContent = `Reset to UTC+2 (Sweden)`;
-offsetStatus.classList.add('offset-status', 'window');
-document.body.appendChild(offsetStatus);
-setTimeout(() => {
-offsetStatus.remove();
-}, 2000);
+showSnackbar(`Reset to UTC+2 (Sweden)`);
 }
 }
 
