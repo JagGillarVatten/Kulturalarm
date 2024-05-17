@@ -167,7 +167,7 @@ body {
 
 .progress-bar span {
 	display: block;
-	height: 4rem;
+	height: 100%;
 	animation: shake infinite, progressBarFill 2s infinite;
 	border-radius: 2rem;
 	background-color: var(--highlight-color);
