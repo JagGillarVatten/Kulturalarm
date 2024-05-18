@@ -30,6 +30,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	position: relative;
 }
 
 #location {
@@ -145,14 +146,26 @@ body {
 	width: 80%;
 	animation: fadeInUp 0.1s ease-in-out;
 	border-style: none;
-	height: 10%;
+	height: 12%;
 	border-radius: 2rem;
 	background-color: var(--secondary-bg-color);
-	position: relative;
+	position: static;
 	transition: 300ms linear;
 	margin: 2rem auto;
 	overflow: hidden;
 	animation: intro 0.3s ease-out;
+}
+
+@media (max-width: 768px) {
+	.progress-bar {
+		height: 1.5rem;
+	}
+}
+
+@media (max-width: 480px) {
+	.progress-bar {
+		height: 1rem;
+	}
 }
 
 @keyframes intro {
@@ -167,7 +180,7 @@ body {
 
 .progress-bar span {
 	display: block;
-	height: 100%;
+	height:100%;
 	animation: shake infinite, progressBarFill 2s infinite;
 	border-radius: 2rem;
 	background-color: var(--highlight-color);
@@ -271,10 +284,6 @@ div#rss-container {
 		font-size: 3rem;
 	}
 
-	.progress-bar {
-		height: 1.5rem;
-	}
-
 	.button {
 		font-size: 1.2rem;
 		padding: 0.8rem 1.6rem;
@@ -293,10 +302,6 @@ div#rss-container {
 	#countdown-number,
 	.name {
 		font-size: 2rem;
-	}
-
-	.progress-bar {
-		height: 1rem;
 	}
 
 	.button {
@@ -380,4 +385,10 @@ button:active {
 
 .night {
 	background-color: var(--night-bg-color);
+}
+
+#language-switcher {
+	position: fixed;
+	bottom: 1rem;
+	left: 1rem;
 }

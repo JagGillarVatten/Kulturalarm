@@ -1,13 +1,15 @@
 [
   {
     "name": "Stuga",
+    "englishName": "Study Group",
     "startDay": 1,
     "startTime": "09:45",
     "endTime": "10:45",
     "location": "714"
-    },
+  },
   {
     "name": "Mentorsgrupp",
+    "englishName": "Mentor Group",
     "startDay": 1,
     "startTime": "11:00",
     "endTime": "12:00",
@@ -15,6 +17,7 @@
   },
   {
     "name": "Lunch",
+    "englishName": "Lunch",
     "startDay": 1,
     "startTime": "12:25",
     "endTime": "12:55",
@@ -22,6 +25,7 @@
   },
   {
     "name": "Engelska",
+    "englishName": "English",
     "startDay": 1,
     "startTime": "12:55",
     "endTime": "14:10",
@@ -29,6 +33,7 @@
   },
   {
     "name": "Matematik",
+    "englishName": "Mathematics",
     "startDay": 1,
     "startTime": "14:20",
     "endTime": "15:20",
@@ -36,6 +41,7 @@
   },
   {
     "name": "Idrott (Praktisk)",
+    "englishName": "Physical Education (Practical)",
     "startDay": 1,
     "startTime": "15:30",
     "endTime": "17:00",
@@ -43,16 +49,15 @@
   },
   {
     "name": "Medieproduktion",
+    "englishName": "Media Production",
     "startDay": 2,
     "startTime": "10:25",
     "endTime": "11:55",
     "location": "314"
-    
   },
-
-
   {
     "name": "Lunch",
+    "englishName": "Lunch",
     "startDay": 2,
     "startTime": "12:20",
     "endTime": "12:50",
@@ -60,12 +65,14 @@
   },
   {
     "name": "Ensemble med körsång",
+    "englishName": "Ensemble with Choir Singing",
     "startDay": 2,
     "startTime": "12:55",
     "endTime": "14:10"
   },
   {
     "name": "Svenska 1 ",
+    "englishName": "Swedish 1",
     "startDay": 2,
     "startTime": "14:25",
     "endTime": "15:40",
@@ -73,6 +80,7 @@
   },
   {
     "name": "Matematik   ",
+    "englishName": "Mathematics",
     "startDay": 2,
     "startTime": "15:45",
     "endTime": "16:45",
@@ -80,21 +88,23 @@
   },
   {
     "name": "Instrument",
+    "englishName": "Instrument",
     "startDay": 2,
     "startTime": "09:00",
-    "location":"414",
+    "location": "414",
     "endTime": "10:00"
   },
   {
     "name": "Musikproduktion 1 M",
+    "englishName": "Music Production 1 M",
     "startDay": 3,
     "startTime": "10:35",
     "endTime": "12:05",
     "location": "305"
   },
-
   {
     "name": "Lunch",
+    "englishName": "Lunch",
     "startDay": 3,
     "startTime": "12:30",
     "endTime": "13:00",
@@ -102,6 +112,7 @@
   },
   {
     "name": "Historia",
+    "englishName": "History",
     "startDay": 3,
     "startTime": "13:00",
     "endTime": "14:15",
@@ -109,6 +120,7 @@
   },
   {
     "name": "Svenska",
+    "englishName": "Swedish",
     "startDay": 4,
     "startTime": "11:00",
     "endTime": "12:20",
@@ -116,6 +128,7 @@
   },
   {
     "name": "Lunch",
+    "englishName": "Lunch",
     "startDay": 4,
     "startTime": "12:15",
     "endTime": "12:45",
@@ -123,12 +136,14 @@
   },
   {
     "name": "Gehörs- och musiklära",
+    "englishName": "Ear Training and Music Theory",
     "startDay": 4,
     "startTime": "13:05",
     "endTime": "14:20"
   },
   {
     "name": "Engelska",
+    "englishName": "English",
     "startDay": 4,
     "startTime": "14:30",
     "endTime": "15:45",
@@ -136,21 +151,23 @@
   },
   {
     "name": "Stuga",
+    "englishName": "Study Group",
     "startDay": 4,
     "startTime": "15:45",
     "endTime": "17:00",
     "location": "Överallt"
   },
-
   {
     "name": "Idrott (Teoretisk)",
-    "startDay": 5,
+    "englishName": "Physical Education (Theoretical)",
+    "startDay": 6,
     "startTime": "09:45",
     "endTime": "10:50",
     "location": "705"
   },
   {
     "name": "Matematik",
+    "englishName": "Mathematics",
     "startDay": 5,
     "startTime": "11:00",
     "endTime": "12:00",
@@ -158,6 +175,7 @@
   },
   {
     "name": "Lunch",
+    "englishName": "Lunch",
     "startDay": 5,
     "startTime": "12:00",
     "endTime": "12:30",
@@ -165,12 +183,14 @@
   },
   {
     "name": "Ensemble med körsång",
+    "englishName": "Ensemble with Choir Singing",
     "startDay": 5,
     "startTime": "13:00",
     "endTime": "14:00"
   },
   {
     "name": "Historia",
+    "englishName": "History",
     "startDay": 5,
     "startTime": "14:25",
     "endTime": "15:40",

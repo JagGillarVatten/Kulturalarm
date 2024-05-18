@@ -20,12 +20,12 @@ function updateCountdown() {
     return;
   }
 
-  const { name, location, start, end } = nextEvent;
+  const { name, englishName, location, start, end } = nextEvent;
 
   if (now < start) {
-    displayUpcomingEvent(name, location, start, end, now);
+    displayUpcomingEvent(name, englishName, location, start, end, now);
   } else {
-    displayOngoingEvent(name, location, start, end, now);
+    displayOngoingEvent(name, englishName, location, start, end, now);
   }
 
   // Add event timestamps to a file
@@ -36,49 +36,51 @@ function updateCountdown() {
 
 function displayNoEventsMessage() {
   currentEventName = "";
+  currentEventEnglishName = "";
   currentEventStart = null;
   currentEventLocation = "";
   currentEventSentNotification = false;
 
   const countdownText = document.getElementById("countdown-text");
-  countdownText.textContent = "Inga fler händelser idag.";
+  countdownText.textContent = isSwedish ? "Inga fler händelser idag." : "No more events today.";
 
   const locationEl = document.getElementById("location");
   locationEl.textContent = "";
 
   const countdownNumber = document.getElementById("countdown-number");
-  countdownNumber.textContent = "Hejdå!";
+  countdownNumber.textContent = isSwedish ? "Hejdå!" : "Goodbye!";
 
   const progressBar = document.getElementById("progress-bar");
   progressBar.style.display = "none";
 }
 
-function displayUpcomingEvent(name, location, start, end, now) {
+function displayUpcomingEvent(name, englishName, location, start, end, now) {
   const remainingTime = formatSeconds((start - now) / 1000);
 
   if (
     currentEventName !== name ||
+    currentEventEnglishName !== englishName ||
     currentEventStart !== start ||
     currentEventLocation !== location
   ) {
-    updateEventDetails(name, location, start);
+    updateEventDetails(name, englishName, location, start);
 
-    document.title = `${remainingTime} tills | ${name}`;
+    document.title = `${remainingTime} ${isSwedish ? 'tills' : 'until'} | ${isSwedish ? name : englishName}`;
 
     const countdownText = document.getElementById("countdown-text");
-    countdownText.textContent = `${name} börjar om:`;
+    countdownText.textContent = `${isSwedish ? name : englishName} ${isSwedish ? 'börjar om' : 'starts in'}:`;
 
     const countdownNumber = document.getElementById("countdown-number");
     countdownNumber.textContent = remainingTime;
 
     const locationEl = document.getElementById("location");
-    locationEl.textContent = "Plats: " + currentEventLocation;
+    locationEl.textContent = `${isSwedish ? 'Plats' : 'Location'}: ${currentEventLocation}`;
 
     const progressBar = document.getElementById("progress-bar");
     progressBar.style.display = "block";
 
     if (!sentNotifications.includes(name)) {
-      sendNotification(name, location, remainingTime);
+      sendNotification(name, englishName, location, remainingTime);
       sentNotifications.push(name);
       currentEventSentNotification = true;
     }
@@ -88,26 +90,27 @@ function displayUpcomingEvent(name, location, start, end, now) {
   updateProgressBar(progressWidth);
 }
 
-function displayOngoingEvent(name, location, start, end, now) {
+function displayOngoingEvent(name, englishName, location, start, end, now) {
   const remainingTime = formatSeconds((end - now) / 1000);
 
   if (
     currentEventName !== name ||
+    currentEventEnglishName !== englishName ||
     currentEventStart !== start ||
     currentEventLocation !== location
   ) {
-    updateEventDetails(name, location, start);
+    updateEventDetails(name, englishName, location, start);
 
     const countdownText = document.getElementById("countdown-text");
-    countdownText.textContent = `Tid kvar för ${name}:`;
+    countdownText.textContent = `${isSwedish ? 'Tid kvar för' : 'Time left for'} ${isSwedish ? name : englishName}:`;
 
     const countdownNumber = document.getElementById("countdown-number");
     countdownNumber.textContent = remainingTime;
 
     const locationEl = document.getElementById("location");
-    locationEl.textContent = `Plats: ${location}`;
+    locationEl.textContent = `${isSwedish ? 'Plats' : 'Location'}: ${location}`;
 
-    document.title = `${remainingTime} kvar | ${name}`;
+    document.title = `${remainingTime} ${isSwedish ? 'kvar' : 'left'} | ${isSwedish ? name : englishName}`;
   }
 
   if (
@@ -115,7 +118,7 @@ function displayOngoingEvent(name, location, start, end, now) {
     now >= start &&
     !sentNotifications.includes(name)
   ) {
-    sendNotification(name, location, "Pågår just nu");
+    sendNotification(name, englishName, location, isSwedish ? "Pågår just nu" : "Ongoing");
     sentNotifications.push(name);
     currentEventSentNotification = true;
   }
@@ -127,16 +130,17 @@ function displayOngoingEvent(name, location, start, end, now) {
   progressBar.style.display = "block";
 }
 
-function updateEventDetails(name, location, start) {
+function updateEventDetails(name, englishName, location, start) {
   currentEventName = name;
+  currentEventEnglishName = englishName;
   currentEventStart = start;
   currentEventLocation = location;
   currentEventSentNotification = false;
 }
 
-function sendNotification(name, location, body) {
-  new Notification(name, {
-    body: `${body} vid ${location}`,
+function sendNotification(name, englishName, location, body) {
+  new Notification(isSwedish ? name : englishName, {
+    body: `${body} ${isSwedish ? 'vid' : 'at'} ${location}`,
   });
 }
 
@@ -147,7 +151,7 @@ function updateProgressBar(width) {
 
 function saveEventTimestamps(todaysEvents, event) {
   if (event.key === 's') {
-    const eventTimestamps = todaysEvents.map(event => `${event.name}: ${event.start.toLocaleString()} - ${event.end.toLocaleString()}`);
+    const eventTimestamps = todaysEvents.map(event => `${isSwedish ? event.name : event.englishName}: ${event.start.toLocaleString()} - ${event.end.toLocaleString()}`);
     const eventTimestampsText = eventTimestamps.join('\n');
     const blob = new Blob([eventTimestampsText], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
@@ -214,3 +218,12 @@ async function loadEventFile(filename) {
     console.error(error);
   }
 }
+// Add event listener for language switching
+const languageSwitcher = document.getElementById('language-switcher');
+let isSwedish = true;
+
+languageSwitcher.addEventListener('click', () => {
+  isSwedish = !isSwedish;
+  languageSwitcher.textContent = isSwedish ? 'Svenska' : 'English';
+  updateCountdown();
+});
