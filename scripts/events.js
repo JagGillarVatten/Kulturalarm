@@ -41,18 +41,16 @@ function loadJSON(fileUrl) {
         request.send(null);
     });
 }
+
 // Function to show a snackbar
 function showSnackbar(message) {
-    const snackbar = document.getElementById("snackbar");
-    if (!snackbar) {
-        const snackbar = document.createElement('div');
-        snackbar.id = "snackbar";
-        document.body.appendChild(snackbar);
-    }
+    const snackbar = document.getElementById("snackbar") || document.createElement('div');
+    snackbar.id = "snackbar";
     snackbar.textContent = message;
-    snackbar.className = "show";
+    document.body.appendChild(snackbar);
+    snackbar.classList.add("show");
     setTimeout(function () {
-        snackbar.className = snackbar.className.replace("show", "");
+        snackbar.classList.remove("show");
     }, 3000);
 }
 
@@ -94,13 +92,13 @@ function getNextEvent() {
 function handleKeyPress(event) {
     if (event.key === '.') {
         hourOffset++;
-        showSnackbar(`You are now offsetted to UTC+${hourOffset + 2} (${hourOffset === 0 ? 'Sweden' : ''})`);
+        showSnackbar(`You are now offsetted to UTC+${hourOffset + 2}`);
     } else if (event.key === ',') {
         hourOffset--;
-        showSnackbar(`You are now offsetted to UTC+${hourOffset + 2} (${hourOffset === 0 ? 'Sweden' : ''})`);
+        showSnackbar(`You are now offsetted to UTC+${hourOffset + 2}`);
     } else if (event.key === 'r') {
         hourOffset = 0;
-        showSnackbar(`Reset to UTC+2 (Sweden)`);
+        showSnackbar(`Reset to UTC+2`);
     }
 }
 
