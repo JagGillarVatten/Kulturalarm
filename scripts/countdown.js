@@ -28,7 +28,6 @@ function updateCountdown() {
     displayOngoingEvent(name, englishName, location, start, end, now);
   }
 
-  // Add event timestamps to a file
   if (todaysEvents.length > 0 && document.addEventListener) {
     document.addEventListener('keydown', saveEventTimestamps.bind(null, todaysEvents));
   }
@@ -56,13 +55,9 @@ function displayNoEventsMessage() {
 
 function displayUpcomingEvent(name, englishName, location, start, end, now) {
   const remainingTime = formatSeconds((start - now) / 1000);
+  const eventDetailsChanged = currentEventName !== name || currentEventEnglishName !== englishName || currentEventStart !== start || currentEventLocation !== location;
 
-  if (
-    currentEventName !== name ||
-    currentEventEnglishName !== englishName ||
-    currentEventStart !== start ||
-    currentEventLocation !== location
-  ) {
+  if (eventDetailsChanged) {
     updateEventDetails(name, englishName, location, start);
 
     document.title = `${remainingTime} ${isSwedish ? 'tills' : 'until'} | ${isSwedish ? name : englishName}`;
@@ -92,13 +87,9 @@ function displayUpcomingEvent(name, englishName, location, start, end, now) {
 
 function displayOngoingEvent(name, englishName, location, start, end, now) {
   const remainingTime = formatSeconds((end - now) / 1000);
+  const eventDetailsChanged = currentEventName !== name || currentEventEnglishName !== englishName || currentEventStart !== start || currentEventLocation !== location;
 
-  if (
-    currentEventName !== name ||
-    currentEventEnglishName !== englishName ||
-    currentEventStart !== start ||
-    currentEventLocation !== location
-  ) {
+  if (eventDetailsChanged) {
     updateEventDetails(name, englishName, location, start);
 
     const countdownText = document.getElementById("countdown-text");
@@ -113,11 +104,7 @@ function displayOngoingEvent(name, englishName, location, start, end, now) {
     document.title = `${remainingTime} ${isSwedish ? 'kvar' : 'left'} | ${isSwedish ? name : englishName}`;
   }
 
-  if (
-    !currentEventSentNotification &&
-    now >= start &&
-    !sentNotifications.includes(name)
-  ) {
+  if (!currentEventSentNotification && now >= start && !sentNotifications.includes(name)) {
     sendNotification(name, englishName, location, isSwedish ? "Pågår just nu" : "Ongoing");
     sentNotifications.push(name);
     currentEventSentNotification = true;
@@ -148,7 +135,6 @@ function updateProgressBar(width) {
   const progress = document.getElementById("progress");
   progress.style.width = `${width}%`;
 }
-
 function saveEventTimestamps(todaysEvents, event) {
   if (event.key === 's') {
     const eventTimestamps = todaysEvents.map(event => `${isSwedish ? event.name : event.englishName}: ${event.start.toLocaleString()} - ${event.end.toLocaleString()}`);
@@ -158,7 +144,9 @@ function saveEventTimestamps(todaysEvents, event) {
     const link = document.createElement('a');
     link.href = url;
     link.download = 'event-timestamps.txt';
+    document.body.appendChild(link); // Add this line to append the link to the document
     link.click();
+    document.body.removeChild(link); // Add this line to remove the link from the document
     URL.revokeObjectURL(url);
   }
 }
