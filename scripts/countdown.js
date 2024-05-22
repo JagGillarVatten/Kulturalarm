@@ -5,12 +5,12 @@ function updateCountdown() {
     return;
   }
 
-  const now = Date.now();
+  const now = new Date();
   let nextEvent;
   const todaysEvents = getTodaysEvents();
 
-  if (isSpecialDate(new Date(now))) {
-    nextEvent = getSpecialDate(new Date(now));
+  if (isSpecialDate(now)) {
+    nextEvent = getSpecialDate(now);
   } else {
     nextEvent = getNextEvent();
   }
@@ -28,6 +28,7 @@ function updateCountdown() {
     displayOngoingEvent(name, englishName, location, start, end, now);
   }
 
+  // Add event timestamps to a file
   if (todaysEvents.length > 0 && document.addEventListener) {
     document.addEventListener('keydown', saveEventTimestamps.bind(null, todaysEvents));
   }
@@ -85,7 +86,7 @@ function displayUpcomingEvent(name, englishName, location, start, end, now) {
     }
   }
 
-  const progressWidth = Math.max(0, ((start - now) / 1000 / ((start - now + 60 * 1000) / 1000)) * 100);
+  const progressWidth = Math.max(0, ((start - now) / 1000 / (start - (start - 60 * 1000))) * 100);
   updateProgressBar(progressWidth);
 }
 

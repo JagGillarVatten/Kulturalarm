@@ -41,16 +41,18 @@ function loadJSON(fileUrl) {
         request.send(null);
     });
 }
-
 // Function to show a snackbar
 function showSnackbar(message) {
-    const snackbar = document.getElementById("snackbar") || document.createElement('div');
-    snackbar.id = "snackbar";
+    const snackbar = document.getElementById("snackbar");
+    if (!snackbar) {
+        const snackbar = document.createElement('div');
+        snackbar.id = "snackbar";
+        document.body.appendChild(snackbar);
+    }
     snackbar.textContent = message;
-    document.body.appendChild(snackbar);
-    snackbar.classList.add("show");
+    snackbar.className = "show";
     setTimeout(function () {
-        snackbar.classList.remove("show");
+        snackbar.className = snackbar.className.replace("show", "");
     }, 3000);
 }
 
@@ -92,13 +94,13 @@ function getNextEvent() {
 function handleKeyPress(event) {
     if (event.key === '.') {
         hourOffset++;
-        showSnackbar(`You are now offsetted to UTC+${hourOffset + 2}`);
+        showSnackbar(`You are now offsetted to UTC+${hourOffset + 2} (${hourOffset === 0 ? 'Sweden' : ''})`);
     } else if (event.key === ',') {
         hourOffset--;
-        showSnackbar(`You are now offsetted to UTC+${hourOffset + 2}`);
+        showSnackbar(`You are now offsetted to UTC+${hourOffset + 2} (${hourOffset === 0 ? 'Sweden' : ''})`);
     } else if (event.key === 'r') {
         hourOffset = 0;
-        showSnackbar(`Reset to UTC+2`);
+        showSnackbar(`Reset to UTC+2 (Sweden)`);
     }
 }
 
