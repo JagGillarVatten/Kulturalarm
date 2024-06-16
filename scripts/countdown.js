@@ -195,10 +195,8 @@ async function loadEventFile(filename) {
     }
 
     events = data.filter(entry => !entry.specialDate);
-    specialDates = data.filter(entry => entry.specialDate);
 
     console.log('Vanliga händelser:', events);
-    console.log('Speciella datum:', specialDates);
 
     updateCountdown();
 
