@@ -23,9 +23,9 @@ function updateCountdown() {
   const { name, englishName, location, start, end } = nextEvent;
 
   if (now < start) {
-    displayUpcomingEvent(name, englishName, location, start, end, now);
+    displayEvent(name, englishName, location, start, end, now, true);
   } else {
-    displayOngoingEvent(name, englishName, location, start, end, now);
+    displayEvent(name, englishName, location, start, end, now, false);
   }
 
   if (todaysEvents.length > 0 && document.addEventListener) {
@@ -53,17 +53,17 @@ function displayNoEventsMessage() {
   progressBar.style.display = "none";
 }
 
-function displayUpcomingEvent(name, englishName, location, start, end, now) {
-  const remainingTime = formatSeconds((start - now) / 1000);
+function displayEvent(name, englishName, location, start, end, now, isUpcoming) {
+  const remainingTime = formatSeconds((isUpcoming ? start - now : end - now) / 1000);
   const eventDetailsChanged = currentEventName !== name || currentEventEnglishName !== englishName || currentEventStart !== start || currentEventLocation !== location;
 
   if (eventDetailsChanged) {
     updateEventDetails(name, englishName, location, start);
 
-    document.title = `${remainingTime} ${isSwedish ? 'tills' : 'until'} | ${isSwedish ? name : englishName}`;
-
     const countdownText = document.getElementById("countdown-text");
-    countdownText.textContent = `${isSwedish ? name : englishName} ${isSwedish ? 'börjar om' : 'starts in'}:`;
+    countdownText.textContent = isUpcoming
+      ? `${isSwedish ? name : englishName} ${isSwedish ? 'börjar om' : 'starts in'}:`
+      : `${isSwedish ? 'Tid kvar för' : 'Time left for'} ${isSwedish ? name : englishName}:`;
 
     const countdownNumber = document.getElementById("countdown-number");
     countdownNumber.textContent = remainingTime;
@@ -71,50 +71,20 @@ function displayUpcomingEvent(name, englishName, location, start, end, now) {
     const locationEl = document.getElementById("location");
     locationEl.textContent = `${isSwedish ? 'Plats' : 'Location'}: ${currentEventLocation}`;
 
+    document.title = `${remainingTime} ${isUpcoming ? (isSwedish ? 'tills' : 'until') : (isSwedish ? 'kvar' : 'left')} | ${isSwedish ? name : englishName}`;
+
     const progressBar = document.getElementById("progress-bar");
     progressBar.style.display = "block";
 
     if (!sentNotifications.includes(name)) {
-      sendNotification(name, englishName, location, remainingTime);
+      sendNotification(name, englishName, location, isUpcoming ? remainingTime : (isSwedish ? "Pågår just nu" : "Ongoing"));
       sentNotifications.push(name);
       currentEventSentNotification = true;
     }
   }
 
-  const progressWidth = Math.max(0, ((start - now) / 1000 / (start - (start - 60 * 1000))) * 100);
+  const progressWidth = Math.max(0, (isUpcoming ? ((start - now) / 1000 / (start - (start - 60 * 1000))) : ((now - start) / 1000 / ((end - start) / 1000))) * 100);
   updateProgressBar(progressWidth);
-}
-
-function displayOngoingEvent(name, englishName, location, start, end, now) {
-  const remainingTime = formatSeconds((end - now) / 1000);
-  const eventDetailsChanged = currentEventName !== name || currentEventEnglishName !== englishName || currentEventStart !== start || currentEventLocation !== location;
-
-  if (eventDetailsChanged) {
-    updateEventDetails(name, englishName, location, start);
-
-    const countdownText = document.getElementById("countdown-text");
-    countdownText.textContent = `${isSwedish ? 'Tid kvar för' : 'Time left for'} ${isSwedish ? name : englishName}:`;
-
-    const countdownNumber = document.getElementById("countdown-number");
-    countdownNumber.textContent = remainingTime;
-
-    const locationEl = document.getElementById("location");
-    locationEl.textContent = `${isSwedish ? 'Plats' : 'Location'}: ${location}`;
-
-    document.title = `${remainingTime} ${isSwedish ? 'kvar' : 'left'} | ${isSwedish ? name : englishName}`;
-  }
-
-  if (!currentEventSentNotification && now >= start && !sentNotifications.includes(name)) {
-    sendNotification(name, englishName, location, isSwedish ? "Pågår just nu" : "Ongoing");
-    sentNotifications.push(name);
-    currentEventSentNotification = true;
-  }
-
-  const progressWidth = Math.max(0, ((now - start) / 1000 / ((end - start) / 1000)) * 100);
-  updateProgressBar(progressWidth);
-
-  const progressBar = document.getElementById("progress-bar");
-  progressBar.style.display = "block";
 }
 
 function updateEventDetails(name, englishName, location, start) {
@@ -195,8 +165,10 @@ async function loadEventFile(filename) {
     }
 
     events = data.filter(entry => !entry.specialDate);
+    specialDates = data.filter(entry => entry.specialDate);
 
     console.log('Vanliga händelser:', events);
+    console.log('Speciella datum:', specialDates);
 
     updateCountdown();
 

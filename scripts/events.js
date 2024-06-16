@@ -26,17 +26,21 @@ const eventFiles = [
 
 // Function to load JSON data from a given file URL
 async function loadJSON(fileUrl) {
-    const response = await fetch(fileUrl);
-    if (response.ok) {
-        const data = await response.text();
-        if (fileUrl.endsWith(".ics")) {
-            return parseICSFile(data);
+    try {
+        const response = await fetch(fileUrl);
+        if (response.ok) {
+            const data = await response.text();
+            if (fileUrl.endsWith(".ics")) {
+                return parseICSFile(data);
+            }
+            return JSON.parse(data);
         }
-        return JSON.parse(data);
+        throw new Error(`Error fetching event file: ${fileUrl}. Status: ${response.status}`);
+    } catch (error) {
+        console.error(`Error loading JSON: ${error.message}`);
+        return [];
     }
-    throw new Error(`Error fetching event file: ${fileUrl}. Status: ${response.status}`);
 }
-
 
 // Function to parse ICS file and convert to JSON
 function parseICSFile(icsData) {
@@ -65,7 +69,6 @@ function parseICSFile(icsData) {
     }
 }
 
-// Function to get English name for a Swedish name
 function getEnglishName(name) {
     const englishNames = {
         'Programmering': 'Programming',
@@ -78,31 +81,19 @@ function getEnglishName(name) {
         'Media Produktion': 'Media Production',
     };
 
-    for (const swedishName in englishNames) {
-        if (name.includes(swedishName)) {
-            return englishNames[swedishName];
-        }
-    }
-
-    return '';
+    const matchingEnglishName = Object.entries(englishNames).find(([swedishName, englishName]) => name.includes(swedishName));
+    return matchingEnglishName ? matchingEnglishName[1] : '';
 }
 
-// Function to show a snackbar
 function showSnackbar(message) {
-    const snackbar = document.getElementById("snackbar");
-    if (!snackbar) {
-        const snackbar = document.createElement('div');
-        snackbar.id = "snackbar";
-        document.body.appendChild(snackbar);
-    }
+    const snackbar = document.getElementById("snackbar") || document.createElement('div');
+    snackbar.id = "snackbar";
     snackbar.textContent = message;
     snackbar.className = "show";
-    setTimeout(function () {
-        snackbar.className = snackbar.className.replace("show", "");
-    }, 3000);
+    document.body.appendChild(snackbar);
+    setTimeout(() => snackbar.className = snackbar.className.replace("show", ""), 3000);
 }
 
-// Function to get today's events
 function getTodaysEvents() {
     const today = new Date();
     const dayOfWeek = today.getDay();
@@ -116,7 +107,7 @@ function getNextEvent() {
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const todaysEvents = getTodaysEvents();
 
-    for (const event of todaysEvents) {
+    return todaysEvents.find((event) => {
         const startTime = new Date(`${today.toDateString()} ${event.startTime || event.date.toTimeString().slice(0, 5)}`);
         const endTime = new Date(`${today.toDateString()} ${event.endTime || event.date.toTimeString().slice(0, 5)}`);
 
@@ -131,9 +122,7 @@ function getNextEvent() {
         if (now < startTime) {
             return { name: event.name, englishName: event.englishName, start: startTime, end: endTime, location: event.location };
         }
-    }
-
-    return null;
+    }) || null;
 }
 
 // Function to handle key press events
