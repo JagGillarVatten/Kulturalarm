@@ -7,3 +7,4 @@ index2.html
 .DS_Store
 .DS_Store
 .deepsource.toml
+__tests__/

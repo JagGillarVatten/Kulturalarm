@@ -7,30 +7,14 @@ function init() {
         fullscreenButton.style.position = 'fixed';
         fullscreenButton.style.bottom = '20px';
         fullscreenButton.style.right = '20px';
-        let opacity = 0;
 
-        // Show on hover
-        fullscreenButton.addEventListener('mouseover', () => {
-            opacity = 1;
-            fullscreenButton.style.opacity = opacity;
-        });
-
-        // Hide on mouseout
-        fullscreenButton.addEventListener('mouseout', () => {
-            opacity = 0;
-            fullscreenButton.style.opacity = opacity;
-            fullscreenButton.style.transition = 'opacity 0.2s';
-        });
-        
         // Toggle fullscreen on click
         fullscreenButton.addEventListener('click', handleFullscreenToggle);
-        // skipcq: JS-0016
         function handleFullscreenToggle() {
             try {
                 if (!document.fullscreenElement) {
                     document.documentElement.requestFullscreen();
                     fullscreenButton.textContent = 'Exit Fullscreen';
-                    document.addEventListener('fullscreenchange', handleFullscreenChange);
                 } else {
                     document.exitFullscreen();
                     fullscreenButton.textContent = 'Fullscreen';
@@ -38,10 +22,6 @@ function init() {
             } catch (error) {
                 console.error(`Error toggling fullscreen: ${error.message}`);
             }
-        }
-
-        function handleFullscreenChange() {
-            fullscreenButton.textContent = document.fullscreenElement ? 'Exit Fullscreen' : 'Fullscreen';
         }
 
         // Add button to DOM
@@ -63,9 +43,6 @@ function init() {
         dayElement.textContent = days[day];
         dayElement.classList.add('text-center', 'mt-4', 'mb-4');
 
-        // Fade in animation
-        fadeIn(dayElement, '1s');
-
         // Add to DOM
         document.body.appendChild(dayElement);
 
@@ -80,22 +57,15 @@ function init() {
                 dot.classList.add('active');
             }
 
-            // Fade in animation
-            fadeIn(dot, '0.5s');
-
             dotsContainer.appendChild(dot);
         }
 
         // Add to DOM
         document.body.appendChild(dotsContainer);
 
-        function fadeIn(element, duration) {
-            element.style.animation = `fadeIn ${duration} forwards`;
-        }
         // Add schedule options
-        let anchor;
         eventFiles.forEach(file => {
-            anchor = document.createElement('a');
+            const anchor = document.createElement('a');
             anchor.classList.add('dropdown-item');
             anchor.innerText = file.name;
             anchor.onclick = () => {
@@ -116,12 +86,11 @@ function init() {
 
         // Timezone buttons
         document.addEventListener('click', event => {
+            let hourOffset = 0;
             if (event.target.id === 'plus-button') {
-                let hourOffset = 0;
                 hourOffset++;
                 updateCountdown();
             } else if (event.target.id === 'minus-button') {
-                let hourOffset = 0;
                 hourOffset--;
                 updateCountdown();
             }

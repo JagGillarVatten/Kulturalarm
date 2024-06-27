@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
 
 :root {
-	--primary-bg-color: rgb(138, 94, 94);
+	--primary-bg-color: #8a5e5e;
 	--text-color: #ffffff;
-	--secondary-bg-color: rgb(143, 112, 122);
+	--secondary-bg-color: #8f7072;
 	--highlight-color: #ddffb4;
 	--button-bg-color: #752222;
 	--dropdown-bg-color: #44221c;
@@ -46,10 +46,9 @@ body {
 	color: var(--text-color);
 	font-weight: 910;
 	margin-top: 0;
-	animation: fadeInUp 0.8s ease-in-out;
+	animation: fadeInUp 0.8s ease-in-out, shake 0.2s ease-in-out;
 	text-align: center;
 	letter-spacing: 0.003cm;
-	animation: shake 0.2s ease-in-out;
 }
 
 #countdown-container {
@@ -86,12 +85,12 @@ body {
 	z-index: 1;
 	left: 50%;
 	bottom: 30px;
+	-webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+	animation: fadein 0.5s, fadeout 0.5s 2.5s;
 }
 
 #snackbar.show {
 	visibility: visible;
-	-webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-	animation: fadein 0.5s, fadeout 0.5s 2.5s;
 }
 
 @-webkit-keyframes fadein {
@@ -99,7 +98,6 @@ body {
 		bottom: 0;
 		opacity: 0;
 	}
-
 	to {
 		bottom: 30px;
 		opacity: 1;
@@ -111,7 +109,6 @@ body {
 		bottom: 0;
 		opacity: 0;
 	}
-
 	to {
 		bottom: 30px;
 		opacity: 1;
@@ -123,7 +120,6 @@ body {
 		bottom: 30px;
 		opacity: 1;
 	}
-
 	to {
 		bottom: 0;
 		opacity: 0;
@@ -135,7 +131,6 @@ body {
 		bottom: 30px;
 		opacity: 1;
 	}
-
 	to {
 		bottom: 0;
 		opacity: 0;
@@ -144,7 +139,7 @@ body {
 
 .progress-bar {
 	width: 80%;
-	animation: fadeInUp 0.1s ease-in-out;
+	animation: fadeInUp 0.1s ease-in-out, intro 0.3s ease-out;
 	border-style: none;
 	height: 10%;
 	border-radius: 2rem;
@@ -153,14 +148,12 @@ body {
 	transition: 300ms linear;
 	margin: 2rem auto;
 	overflow: hidden;
-	animation: intro 0.3s ease-out;
 }
 
 @keyframes intro {
 	0% {
 		opacity: 0;
 	}
-
 	100% {
 		opacity: 1;
 	}
@@ -176,7 +169,6 @@ body {
 	transition: width 0.1s, background-color 2s ease;
 	width: 0%;
 }
-
 
 .button {
 	color: var(--text-color);
@@ -267,17 +259,14 @@ div#rss-container {
 	body {
 		font-size: 1.5rem;
 	}
-
 	#countdown-number,
 	.name {
 		font-size: 3rem;
 	}
-
 	.button {
 		font-size: 1.2rem;
 		padding: 0.8rem 1.6rem;
 	}
-
 	.dropdown-content a {
 		font-size: 1.5rem;
 	}
@@ -287,17 +276,14 @@ div#rss-container {
 	body {
 		font-size: 1rem;
 	}
-
 	#countdown-number,
 	.name {
 		font-size: 2rem;
 	}
-
 	.button {
 		font-size: 1rem;
 		padding: 0.6rem 1.2rem;
 	}
-
 	.dropdown-content a {
 		font-size: 1rem;
 	}
@@ -307,19 +293,15 @@ div#rss-container {
 	0% {
 		transform: translateX(0);
 	}
-
 	25% {
 		transform: translateX(-5px) rotate(-1deg);
 	}
-
 	50% {
 		transform: translateX(5px) rotate(1deg);
 	}
-
 	75% {
 		transform: translateX(-3px) rotate(-2deg);
 	}
-
 	100% {
 		transform: translateX(0) rotate(0);
 	}
