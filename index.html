@@ -1,66 +1,58 @@
 <!DOCTYPE html>
 <html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kulturalarm</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kulturalarm</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <!-- Styles -->
+    <link rel="preload" href="style.css" as="style" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-  <!-- Styles -->
-  <link rel="preload" href="style.css" as="style" />
-  <link rel="stylesheet" href="style.css" />
-</head>
+  <body onload="init()">
+    <!-- Main Content -->
+    <div class="name">Kulturalarm</div>
 
-<body onload="init()">
-
-
-  <!-- Main Content -->
-  <div class="name">Kulturalarm</div>
-
-  <div id="countdown">
-    <div id="countdown-text"></div>
-    <div id="countdown-number"></div>
-  </div>
-
-  <p id="day-of-week"></p>
-
-  <div class="progress-bar" id="progress-bar">
-    <span id="progress"></span>
-  </div>
-
-  <p id="location"></p>
-
-  <!-- Dropdown -->
-  <div class="dropdown">
-    <button class="dropdown-button button" title="Byt schema">
-      Byt schema
-    </button>
-    <div class="dropdown-content"></div>
-  </div>
-
-  <!-- Language Switcher -->
-  <button id="language-switcher">English</button>
-
-  </div>
-  <div class=<div class="footer">
-
-    <!-- Page Visit Count -->
-    <div id="page-visit-count">
-      Du är besökare nummer <span id="visit-count"></span>!
+    <div id="countdown">
+      <div id="countdown-text"></div>
+      <div id="countdown-number"></div>
     </div>
 
-    <!-- Scripts -->
-    <script type="text/javascript" src="scripts/events.js"></script>
-    <script type="text/javascript" src="scripts/countdown.js"></script>
-    <script type="text/javascript" src="scripts/init.js"></script>
-    <script type="text/javascript" src="scripts/gfx.js"></script>
-    <script type="text/javascript" src="pagevisit.js"></script>
+    <p id="day-of-week"></p>
 
-  </div>
+    <div class="progress-bar" id="progress-bar">
+      <span id="progress"></span>
+    </div>
 
-</body>
+    <p id="location"></p>
 
+    <!-- Dropdown -->
+    <div class="dropdown">
+      <button class="dropdown-button button" title="Byt schema">
+        Byt schema
+      </button>
+      <div class="dropdown-content"></div>
+    </div>
+
+    <!-- Language Switcher -->
+    <button id="language-switcher">English</button>
+
+    <div class="footer">
+      <!-- Page Visit Count -->
+      <div id="page-visit-count">
+        Du är besökare nummer <span id="visit-count"></span>!
+      </div>
+
+      <!-- Scripts -->
+      <script type="text/javascript" src="scripts/events.js"></script>
+      <script type="text/javascript" src="scripts/countdown.js"></script>
+      <script type="text/javascript" src="scripts/init.js"></script>
+      <script type="text/javascript" src="scripts/gfx.js"></script>
+      <script type="text/javascript" src="pagevisit.js"></script>
+    </div>
+  </body>
 </html>

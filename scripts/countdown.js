@@ -1,215 +1,233 @@
-// Funktion för att uppdatera nedräkningen
 function updateCountdown() {
-  if (!events.length) {
-    setTimeout(updateCountdown, 1000);
-    return;
-  }
+    // If there are no events, try again in 1 second
+    if (!events.length) {
+        setTimeout(updateCountdown, 1000);
+        return;
+    }
 
-  const now = new Date();
-  let nextEvent;
-  const todaysEvents = getTodaysEvents();
+    // Get the next event or special date
+    const currentDate = new Date();
+    const nextEvent = isSpecialDate(currentDate)
+        ? getSpecialDate(currentDate)
+        : getNextEvent();
 
-  if (isSpecialDate(now)) {
-    nextEvent = getSpecialDate(now);
-  } else {
-    nextEvent = getNextEvent();
-  }
+    // If there are no upcoming events, display a message
+    if (!nextEvent) {
+        return displayNoEventsMessage();
+    }
 
-  if (!nextEvent) {
-    displayNoEventsMessage();
-    return;
-  }
+    // Destructure the event details
+    const { name, englishName, location, start, end } = nextEvent;
 
-  const { name, englishName, location, start, end } = nextEvent;
-
-  if (now < start) {
-    displayUpcomingEvent(name, englishName, location, start, end, now);
-  } else {
-    displayOngoingEvent(name, englishName, location, start, end, now);
-  }
-
-  if (todaysEvents.length > 0 && document.addEventListener) {
-    document.addEventListener('keydown', saveEventTimestamps.bind(null, todaysEvents));
-  }
+    // Display the event details based on whether it has started or not
+    displayEvent(name, englishName, location, start, end, currentDate, currentDate < start);
+    
+    // Add an event listener for saving event timestamps if there are events today
+    if (getTodaysEvents().length > 0 && document.addEventListener) {
+        document.addEventListener(
+            "keydown",
+            saveEventTimestamps.bind(null, getTodaysEvents())
+        );
+    }
 }
 
 function displayNoEventsMessage() {
-  currentEventName = "";
-  currentEventEnglishName = "";
-  currentEventStart = null;
-  currentEventLocation = "";
-  currentEventSentNotification = false;
+    // Reset event details
+    currentEventName = "";
+    currentEventEnglishName = "";
+    currentEventStart = null;
+    currentEventLocation = "";
 
-  const countdownText = document.getElementById("countdown-text");
-  countdownText.textContent = isSwedish ? "Inga fler händelser idag." : "No more events today.";
-
-  const locationEl = document.getElementById("location");
-  locationEl.textContent = "";
-
-  const countdownNumber = document.getElementById("countdown-number");
-  countdownNumber.textContent = isSwedish ? "Hejdå!" : "Goodbye!";
-
-  const progressBar = document.getElementById("progress-bar");
-  progressBar.style.display = "none";
-}
-
-function displayUpcomingEvent(name, englishName, location, start, end, now) {
-  const remainingTime = formatSeconds((start - now) / 1000);
-  const eventDetailsChanged = currentEventName !== name || currentEventEnglishName !== englishName || currentEventStart !== start || currentEventLocation !== location;
-
-  if (eventDetailsChanged) {
-    updateEventDetails(name, englishName, location, start);
-
-    document.title = `${remainingTime} ${isSwedish ? 'tills' : 'until'} | ${isSwedish ? name : englishName}`;
-
+    // Update UI elements
     const countdownText = document.getElementById("countdown-text");
-    countdownText.textContent = `${isSwedish ? name : englishName} ${isSwedish ? 'börjar om' : 'starts in'}:`;
+    countdownText.textContent = isSwedish
+        ? "Inga fler händelser idag."
+        : "No more events today.";
+
+    const locationElement = document.getElementById("location");
+    locationElement.textContent = "";
 
     const countdownNumber = document.getElementById("countdown-number");
-    countdownNumber.textContent = remainingTime;
-
-    const locationEl = document.getElementById("location");
-    locationEl.textContent = `${isSwedish ? 'Plats' : 'Location'}: ${currentEventLocation}`;
+    countdownNumber.textContent = isSwedish ? "Hejdå!" : "Goodbye!";
 
     const progressBar = document.getElementById("progress-bar");
-    progressBar.style.display = "block";
-
-    if (!sentNotifications.includes(name)) {
-      sendNotification(name, englishName, location, remainingTime);
-      sentNotifications.push(name);
-      currentEventSentNotification = true;
-    }
-  }
-
-  const progressWidth = Math.max(0, ((start - now) / 1000 / (start - (start - 60 * 1000))) * 100);
-  updateProgressBar(progressWidth);
+    progressBar.style.display = "none";
 }
 
-function displayOngoingEvent(name, englishName, location, start, end, now) {
-  const remainingTime = formatSeconds((end - now) / 1000);
-  const eventDetailsChanged = currentEventName !== name || currentEventEnglishName !== englishName || currentEventStart !== start || currentEventLocation !== location;
+function displayEvent(name, englishName, location, start, end, currentDate, isUpcoming) {
+    // Format the time remaining or elapsed
+    const timeString = formatSeconds(
+        (isUpcoming ? start - currentDate : end - currentDate) / 1000
+    );
 
-  if (eventDetailsChanged) {
-    updateEventDetails(name, englishName, location, start);
+    // Check if event details have changed
+    const detailsChanged =
+        currentEventName !== name ||
+        currentEventEnglishName !== englishName ||
+        currentEventStart !== start ||
+        currentEventLocation !== location;
 
-    const countdownText = document.getElementById("countdown-text");
-    countdownText.textContent = `${isSwedish ? 'Tid kvar för' : 'Time left for'} ${isSwedish ? name : englishName}:`;
+    if (detailsChanged) {
+        // Update event details
+        updateEventDetails(name, englishName, location, start);
 
-    const countdownNumber = document.getElementById("countdown-number");
-    countdownNumber.textContent = remainingTime;
+        // Update UI elements
+        const countdownText = document.getElementById("countdown-text");
+        countdownText.textContent = isUpcoming
+            ? `${isSwedish ? name : englishName} ${isSwedish ? "börjar om" : "starts in"}:`
+            : `${isSwedish ? "Tid kvar för" : "Time left for"} ${isSwedish ? name : englishName}:`;
 
-    const locationEl = document.getElementById("location");
-    locationEl.textContent = `${isSwedish ? 'Plats' : 'Location'}: ${location}`;
+        const countdownNumber = document.getElementById("countdown-number");
+        countdownNumber.textContent = timeString;
 
-    document.title = `${remainingTime} ${isSwedish ? 'kvar' : 'left'} | ${isSwedish ? name : englishName}`;
-  }
+        const locationElement = document.getElementById("location");
+        locationElement.textContent = `${isSwedish ? "Plats" : "Location"}: ${currentEventLocation}`;
 
-  if (!currentEventSentNotification && now >= start && !sentNotifications.includes(name)) {
-    sendNotification(name, englishName, location, isSwedish ? "Pågår just nu" : "Ongoing");
-    sentNotifications.push(name);
-    currentEventSentNotification = true;
-  }
+        document.title = `${timeString} ${isUpcoming ? (isSwedish ? "tills" : "until") : isSwedish ? "kvar" : "left"} | ${isSwedish ? name : englishName}`;
 
-  const progressWidth = Math.max(0, ((now - start) / 1000 / ((end - start) / 1000)) * 100);
-  updateProgressBar(progressWidth);
+        const progressBar = document.getElementById("progress-bar");
+        progressBar.style.display = "block";
 
-  const progressBar = document.getElementById("progress-bar");
-  progressBar.style.display = "block";
+        // Send a notification if not already sent
+        if (!sentNotifications.includes(name)) {
+            sendNotification(
+                name,
+                englishName,
+                location,
+                isUpcoming ? timeString : isSwedish ? "Pågår just nu" : "Ongoing"
+            );
+            sentNotifications.push(name);
+            currentEventSentNotification = true;
+        }
+    }
+
+    // Calculate and update the progress bar
+    const progress = Math.max(
+        0,
+        isUpcoming
+            ? (start - currentDate) / 1000 / (start - (start - 60000)) * 100
+            : ((currentDate - start) / 1000 / ((end - start) / 1000)) * 100
+    );
+    updateProgressBar(progress);
 }
 
 function updateEventDetails(name, englishName, location, start) {
-  currentEventName = name;
-  currentEventEnglishName = englishName;
-  currentEventStart = start;
-  currentEventLocation = location;
-  currentEventSentNotification = false;
+    // Update event details
+    currentEventName = name;
+    currentEventEnglishName = englishName;
+    currentEventStart = start;
+    currentEventLocation = location;
+    currentEventSentNotification = false;
 }
 
-function sendNotification(name, englishName, location, body) {
-  new Notification(isSwedish ? name : englishName, {
-    body: `${body} ${isSwedish ? 'vid' : 'at'} ${location}`,
-  });
+function sendNotification(name, englishName, location, message) {
+    // Send a notification with the event details
+    new Notification(isSwedish ? name : englishName, {
+        body: `${message} ${isSwedish ? "vid" : "at"} ${location}`,
+    });
 }
 
-function updateProgressBar(width) {
-  const progress = document.getElementById("progress");
-  progress.style.width = `${width}%`;
-}
-function saveEventTimestamps(todaysEvents, event) {
-  if (event.key === 's') {
-    const eventTimestamps = todaysEvents.map(event => `${isSwedish ? event.name : event.englishName}: ${event.start.toLocaleString()} - ${event.end.toLocaleString()}`);
-    const eventTimestampsText = eventTimestamps.join('\n');
-    const blob = new Blob([eventTimestampsText], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'event-timestamps.txt';
-    document.body.appendChild(link); // Add this line to append the link to the document
-    link.click();
-    document.body.removeChild(link); // Add this line to remove the link from the document
-    URL.revokeObjectURL(url);
-  }
+function updateProgressBar(progress) {
+    // Update the progress bar width
+    const progressElement = document.getElementById("progress");
+    progressElement.style.width = `${progress}%`;
 }
 
-// Function to format seconds to a time string
+function saveEventTimestamps(events, event) {
+    // Save event timestamps to a file if the "s" key is pressed
+    if (event.key === "s") {
+        const timestamps = events.map(
+            (event) =>
+                `${isSwedish ? event.name : event.englishName}: ${event.start.toLocaleString()} - ${event.end.toLocaleString()}`
+        );
+        const content = timestamps.join("\n");
+        const blob = new Blob([content], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "event-timestamps.txt";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    }
+}
+
 function formatSeconds(seconds) {
-  if (typeof seconds !== 'number' || isNaN(seconds)) {
-    console.error('Invalid seconds value:', seconds);
-    return '';
-  }
+    // Format seconds into a human-readable string
+    if (typeof seconds !== "number" || isNaN(seconds)) {
+        console.error("Invalid seconds value:", seconds);
+        return "";
+    }
 
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
-  const paddedSeconds = pad(Math.floor(seconds) % 60, 2);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const remainingSeconds = pad(Math.floor(seconds) % 60, 2);
 
-  return hours > 0
-    ? `${hours}:${pad(minutes % 60, 2)}:${paddedSeconds}`
-    : `${pad(minutes, 2)}:${paddedSeconds}`;
+    if (hours > 0) {
+        return `${hours}:${pad(minutes % 60, 2)}:${remainingSeconds}`;
+    } else {
+        return `${pad(minutes, 2)}:${remainingSeconds}`;
+    }
 }
 
-// Function to pad a value with leading zeros
 function pad(value, length) {
-  if (typeof value !== 'number' || isNaN(value)) {
-    console.error('Invalid value for padding:', value);
-    return '';
-  }
+    // Pad a number with leading zeros
+    if (typeof value !== "number" || isNaN(value)) {
+        console.error("Invalid value for padding:", value);
+        return "";
+    }
 
-  return ("000000000" + value).substr(-length);
+    return ("000000000" + value).substr(-length);
 }
 
-// Function to load event file
 async function loadEventFile(filename) {
-  try {
-    const response = await fetch(`scheman/${filename}`);
+    try {
+        // Fetch the event file
+        const response = await fetch(`scheman/${filename}`);
 
-    if (!response.ok) {
-      console.error('Error fetching event file:', response.status, response.statusText);
-      throw new Error('Could not fetch file');
+        // Check if the fetch was successful
+        if (!response.ok) {
+            console.error(
+                "Error fetching event file:",
+                response.status,
+                response.statusText
+            );
+            throw new Error("Could not fetch file");
+        }
+
+        // Parse the JSON data
+        const data = await response.json();
+
+        // Check if the data is an array
+        if (!Array.isArray(data)) {
+            console.error("Invalid data format:", data);
+            throw new Error("Invalid data format");
+        }
+
+        // Filter events and special dates
+        events = data.filter((event) => !event.specialDate);
+        specialDates = data.filter((event) => event.specialDate);
+
+        console.log("Regular events:", events);
+        console.log("Special dates:", specialDates);
+
+        // Update the countdown
+        updateCountdown();
+    } catch (error) {
+        console.error(error);
     }
-
-    const data = await response.json();
-
-    if (!Array.isArray(data)) {
-      console.error('Invalid data format:', data);
-      throw new Error('Invalid data format');
-    }
-
-    events = data.filter(entry => !entry.specialDate);
-
-    console.log('Vanliga händelser:', events);
-
-    updateCountdown();
-
-  } catch (error) {
-    console.error(error);
-  }
 }
-// Add event listener for language switching
-const languageSwitcher = document.getElementById('language-switcher');
+
+// Language switcher
+const languageSwitcher = document.getElementById("language-switcher");
 let isSwedish = true;
 
-languageSwitcher.addEventListener('click', () => {
-  isSwedish = !isSwedish;
-  languageSwitcher.textContent = isSwedish ? 'Svenska' : 'English';
-  updateCountdown();
+languageSwitcher.addEventListener("click", () => {
+    // Toggle the language
+    isSwedish = !isSwedish;
+    languageSwitcher.textContent = isSwedish ? "Svenska" : "English";
+
+    // Update the countdown with the new language
+    updateCountdown();
 });
