@@ -54,6 +54,7 @@ function displayNoEventsMessage() {
     progressBar.style.display = "none";
 }
 
+// Todo: improve logic
 function displayEvent(name, englishName, location, start, end, currentDate, isUpcoming) {
     // Format the time remaining or elapsed
     const timeString = formatSeconds(
@@ -87,7 +88,7 @@ function displayEvent(name, englishName, location, start, end, currentDate, isUp
 
         const progressBar = document.getElementById("progress-bar");
         progressBar.style.display = "block";
-
+// TODO: make this more intelligent and reactive.
         // Send a notification if not already sent
         if (!sentNotifications.includes(name)) {
             sendNotification(
@@ -126,7 +127,7 @@ function sendNotification(name, englishName, location, message) {
         body: `${message} ${isSwedish ? "vid" : "at"} ${location}`,
     });
 }
-
+// Todo: improve logic
 function updateProgressBar(progress) {
     // Update the progress bar width
     const progressElement = document.getElementById("progress");
@@ -134,7 +135,7 @@ function updateProgressBar(progress) {
 }
 
 function saveEventTimestamps(events, event) {
-    // Save event timestamps to a file if the "s" key is pressed
+    // TODO Save event timestamps to a file if the "s" key is pressed
     if (event.key === "s") {
         const timestamps = events.map(
             (event) =>

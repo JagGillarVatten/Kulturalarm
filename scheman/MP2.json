@@ -1,241 +1,184 @@
 [
-	{
-        "name": "Stuga",
-        "startDay": 1,
-        "startTime": "09:45",
-        "endTime": "10:45",
-        "location": "714"
-    },
-    {
-        "name": "Stuga",
-        "startDay": 1,
-        "startTime": "10:00",
-        "endTime": "11:00",
-        "location": "608"
-    },
     {
         "name": "Mentorsgrupp",
         "startDay": 1,
         "startTime": "11:00",
         "endTime": "12:00",
-        "location": " "
+        "location": "705"
     },
     {
-        "name": "Lunch",
+        "name": "Svenska",
         "startDay": 1,
-        "startTime": "12:20",
-        "endTime": "12:50",
-        "location": " "
+        "startTime": "12:50",
+        "endTime": "14:05",
+        "location": "705"
     },
     {
         "name": "Ensemble med körsång",
         "startDay": 1,
-        "startTime": "12:50",
-        "endTime": "14:05",
+        "startTime": "14:20",
+        "endTime": "15:35",
+        "location": "320"
+    },
+    {
+        "name": "Ensemble med körsång",
+        "startDay": 1,
+        "startTime": "14:20",
+        "endTime": "15:35",
+        "location": "316"
+    },
+    {
+        "name": "Ensemble med körsång",
+        "startDay": 1,
+        "startTime": "14:20",
+        "endTime": "15:35",
         "location": "319"
     },
     {
         "name": "Ensemble med körsång",
         "startDay": 1,
-        "startTime": "12:50",
-        "endTime": "14:05",
-        "location": "314"
+        "startTime": "14:20",
+        "endTime": "15:35",
+        "location": "315"
     },
     {
         "name": "Ensemble med körsång",
         "startDay": 1,
-        "startTime": "12:50",
-        "endTime": "14:05",
-        "location": "320"
-    },
-    {
-        "name": "Svenska",
-        "startDay": 1,
-        "startTime": "14:15",
-        "endTime": "15:30",
-        "location": "616"
+        "startTime": "14:20",
+        "endTime": "15:35",
+        "location": "313"
     },
     {
         "name": "Naturkunskap",
         "startDay": 1,
-        "startTime": "15:40",
-        "endTime": "16:55",
+        "startTime": "15:45",
+        "endTime": "17:00",
         "location": "705"
     },
     {
-        "name": "Stuga",
-        "startDay": 1,
-        "startTime": "17:00",
-        "endTime": "18:15",
-        "location": "705"
-    },
-    {
-        "name": "Historia",
+        "name": "Musikproduktion",
         "startDay": 2,
-        "startTime": "08:10",
-        "endTime": "09:25",
-        "location": "606"
+        "startTime": "08:20",
+        "endTime": "09:20",
+        "location": "306"
     },
     {
         "name": "Gehörs- och musiklära",
         "startDay": 2,
-        "startTime": "09:30",
-        "endTime": "10:45",
+        "startTime": "11:00",
+        "endTime": "12:15",
         "location": "415"
     },
     {
-        "name": "Engelska",
-        "startDay": 2,
-        "startTime": "10:55",
-        "endTime": "12:10",
-        "location": "709"
-    },
-    {
-        "name": "Lunch",
-        "startDay": 2,
-        "startTime": "12:20",
-        "endTime": "12:50",
-        "location": " "
-    },
-    {
-        "name": "Matematik",
-        "startDay": 2,
-        "startTime": "12:55",
-        "endTime": "14:10",
-        "location": "715"
-    },
-    {
-        "name": "Psykologi",
+        "name": "Animation",
         "startDay": 2,
         "startTime": "13:00",
-        "endTime": "14:15",
-        "location": "610"
+        "endTime": "15:30",
+        "location": "705"
     },
     {
-        "name": "Entreprenörsskap",
+        "name": "Idrott & Hälsa",
         "startDay": 2,
-        "startTime": "14:15",
-        "endTime": "15:40",
-        "location": "606"
+        "startTime": "14:30",
+        "endTime": "16:30",
+        "location": "Sjöstadshallen"
     },
     {
         "name": "Naturkunskap",
         "startDay": 3,
-        "startTime": "09:00",
-        "endTime": "10:15",
-        "location": "723"
+        "startTime": "09:35",
+        "endTime": "10:45",
+        "location": "705"
+    },
+    {
+        "name": "Medieproduktion",
+        "startDay": 3,
+        "startTime": "10:55",
+        "endTime": "12:10",
+        "location": "323"
     },
     {
         "name": "Svenska",
         "startDay": 3,
-        "startTime": "10:55",
-        "endTime": "12:10",
-        "location": "2"
+        "startTime": "12:55",
+        "endTime": "14:10",
+        "location": "705"
     },
-	{
-		"name": "Estetisk kommunikation",
-		"startDay": 3,
-		"startTime": "13:00",
-		"endTime": "14:15",
-		"location": "308"
-	},
-
-	{
-		"name": "Musikproduktion",
-		"startDay": 3,
-		"startTime": "14:20",
-		"endTime": "15:50",
-		"location": "305"
-	},
-	{
-		"name": "Medieproduktion",
-		"startDay": 4,
-		"startTime": "10:55",
-		"endTime": "12:10",
-		"location": "313"
-	},
-	{
-		"name": "Lunch",
-		"startDay": 4,
-		"startTime": "12:15",
-		"endTime": "12:45",
-		"location": "2 "
-	},
-	{
-		"name": "Historia",
-		"startDay": 4,
-		"startTime": "13:00",
-		"endTime": "14:15",
-		"location": "705"
-	},
-	{
-		"name": "Engelska",
-		"startDay": 4,
-		"startTime": "14:25",
-		"endTime": "15:40",
-		"location": "709"
-	},
-	{
-		"name": "Stuga",
-		"startDay": 4,
-		"startTime": "15:45",
-		"endTime": "17:00",
-		"location": " "
-	},
-	{
-		"name": "Ensemble med körsång",
-		"startDay": 5,
-		"startTime": "10:05",
-		"endTime": "11:20",
-		"location": "316"
-	},
-	{
-		"name": "Ensemble med körsång",
-		"startDay": 5,
-		"startTime": "10:05",
-		"endTime": "11:20",
-		"location": "319"
-	},
-	{
-		"name": "Ensemble med körsång",
-		"startDay": 5,
-		"startTime": "10:05",
-		"endTime": "11:20",
-		"location": "315"
-	},
-	{
-		"name": "Gehörs- och musiklära",
-		"startDay": 5,
-		"startTime": "11:35",
-		"endTime": "12:50",
-		"location": "416"
-	},
-	{
-		"name": "Psykologi",
-		"startDay": 5,
-		"startTime": "12:55",
-		"endTime": "14:10",
-		"location": "606"
-	},
-	{
-		"name": "Lunch",
-		"startDay": 5,
-		"startTime": "13:00",
-		"endTime": "13:30",
-		"location": "200"
-	},
-	{
-		"name": "Entreprenörsskap",
-		"startDay": 5,
-		"startTime": "14:20",
-		"endTime": "15:50",
-		"location": "616"
-	},
-	{
-		"name": "Matematik",
-		"startDay": 5,
-		"startTime": "14:25",
-		"endTime": "15:40",
-		"location": "617"
-	}
+    {
+        "name": "Historia",
+        "startDay": 3,
+        "startTime": "14:20",
+        "endTime": "15:35",
+        "location": "705"
+    },
+    {
+        "name": "Musikproduktion",
+        "startDay": 3,
+        "startTime": "15:45",
+        "endTime": "17:00",
+        "location": "306"
+    },
+    {
+        "name": "Engelska",
+        "startDay": 4,
+        "startTime": "09:25",
+        "endTime": "10:40",
+        "location": "705"
+    },
+    {
+        "name": "Historia",
+        "startDay": 4,
+        "startTime": "13:00",
+        "endTime": "14:15",
+        "location": "705"
+    },
+    {
+        "name": "Estetisk kommunikation",
+        "startDay": 4,
+        "startTime": "14:25",
+        "endTime": "15:40",
+        "location": "308"
+    },
+    {
+        "name": "Stuga",
+        "startDay": 4,
+        "startTime": "15:50",
+        "endTime": "17:00",
+        "location": " "
+    },
+    {
+        "name": "Engelska",
+        "startDay": 5,
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "location": "705"
+    },
+    {
+        "name": "Ensemble med körsång",
+        "startDay": 5,
+        "startTime": "10:40",
+        "endTime": "11:55",
+        "location": "320"
+    },
+    {
+        "name": "Ensemble med körsång",
+        "startDay": 5,
+        "startTime": "10:40",
+        "endTime": "11:55",
+        "location": "319"
+    },
+    {
+        "name": "Ensemble med körsång",
+        "startDay": 5,
+        "startTime": "10:40",
+        "endTime": "11:55",
+        "location": "315"
+    },
+    {
+        "name": "Ensemble med körsång",
+        "startDay": 5,
+        "startTime": "10:40",
+        "endTime": "11:55",
+        "location": "313"
+    }
 ]

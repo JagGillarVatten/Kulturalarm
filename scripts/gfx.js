@@ -4,6 +4,8 @@ const dropdownContent = document.querySelector(".dropdown-content");
 dropdownContent.classList.toggle("show");
 dropdownContent.style.animation = dropdownContent.classList.contains("show") ? "fadeIn 0.5s" : "fadeOut 0.5s";
 document.body.style.filter = dropdownContent.classList.contains("show") ? "blur(5px)" : "none";
+const dropdownButton = document.querySelector(".dropdown-button");
+dropdownButton.style.animation = dropdownContent.classList.contains("show") ? "pulse 0.5s" : "";
 }
 
 // Adjust timezone
@@ -57,8 +59,21 @@ body.classList.add("night");
 }
 }
 
+// Function to update the background color every second
+setInterval(updateBackground, 1000);
+
+// Function to create snowflakes every 50 milliseconds
+setInterval(createSnowflake, 50);
+
 // Function to update the countdown every 50 milliseconds
 setInterval(updateCountdown, 50);
 
-// Function to update the background color every second
-setInterval(updateBackground, 1000);
+// Parallax scrolling
+window.addEventListener("scroll", () => {
+const scrollPosition = window.scrollY;
+document.body.style.backgroundPosition = `center ${scrollPosition * 0.3}px`;
+document.querySelector(".name").style.transform = `translateY(${scrollPosition * 0.2}px)`;
+document.querySelector("#countdown").style.transform = `translateY(${scrollPosition * 0.2}px)`;
+document.querySelector(".progress-bar").style.transform = `translateY(${scrollPosition * 0.2}px)`;
+});
+

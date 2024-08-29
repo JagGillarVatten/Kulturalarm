@@ -1,41 +1,16 @@
 function init() {
     try {
-        const fullscreenButton = document.createElement('button');
-        fullscreenButton.textContent = 'Fullscreen';
-        fullscreenButton.classList.add('btn', 'btn-primary', 'btn-sm');
-        fullscreenButton.style.cssText = 'position:fixed;bottom:20px;right:20px;';
-
-        fullscreenButton.addEventListener('click', () => {
-            try {
-                if (!document.fullscreenElement) {
-                    document.documentElement.requestFullscreen();
-                    fullscreenButton.textContent = 'Exit Fullscreen';
-                } else {
-                    document.exitFullscreen();
-                    fullscreenButton.textContent = 'Fullscreen';
-                }
-            } catch (error) {
-                console.error(`Error toggling fullscreen: ${error.message}`);
-            }
-        });
-
-        document.body.appendChild(fullscreenButton);
-
         const dropdownContent = document.querySelector('.dropdown-content');
         const dropdownButton = document.querySelector('.dropdown-button');
-
         const days = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
-
         const date = new Date();
         const day = date.getDay();
-
         const dayElement = document.createElement('h3');
+        const dotsContainer = document.createElement('div');
+
         dayElement.textContent = days[day];
         dayElement.classList.add('text-center', 'mt-4', 'mb-4');
 
-        document.body.appendChild(dayElement);
-
-        const dotsContainer = document.createElement('div');
         dotsContainer.classList.add('d-flex', 'justify-content-center', 'mb-4');
 
         for (let i = 0; i < 7; i++) {
@@ -45,6 +20,7 @@ function init() {
             dotsContainer.appendChild(dot);
         }
 
+        document.body.appendChild(dayElement);
         document.body.appendChild(dotsContainer);
 
         eventFiles.forEach(file => {
@@ -79,3 +55,4 @@ function init() {
         console.error(`Error initializing: ${error.message}`);
     }
 }
+

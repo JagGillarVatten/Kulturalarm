@@ -14,34 +14,40 @@
   </head>
 
   <body onload="init()">
+    <!-- Header -->
+    <header>
+      <div class="name">Kulturalarm</div>
+    </header>
+
     <!-- Main Content -->
-    <div class="name">Kulturalarm</div>
 
-    <div id="countdown">
-      <div id="countdown-text"></div>
-      <div id="countdown-number"></div>
-    </div>
+      <div id="countdown">
+        <div id="countdown-text"></div>
+        <div id="countdown-number"></div>
+      </div>
 
-    <p id="day-of-week"></p>
+      <p id="day-of-week"></p>
 
-    <div class="progress-bar" id="progress-bar">
-      <span id="progress"></span>
-    </div>
+      <div class="progress-bar" id="progress-bar">
+        <span id="progress"></span>
+      </div>
 
-    <p id="location"></p>
+      <p id="location"></p>
+    
 
-    <!-- Dropdown -->
-    <div class="dropdown">
-      <button class="dropdown-button button" title="Byt schema">
-        Byt schema
-      </button>
-      <div class="dropdown-content"></div>
-    </div>
+    <!-- Footer -->
+    <footer>
+      <!-- Dropdown -->
+      <div class="dropdown">
+        <button class="dropdown-button button" title="Byt schema">
+          Byt schema
+        </button>
+        <div class="dropdown-content"></div>
+      </div>
 
-    <!-- Language Switcher -->
-    <button id="language-switcher">English</button>
+      <!-- Language Switcher -->
+      <button id="language-switcher">English</button>
 
-    <div class="footer">
       <!-- Page Visit Count -->
       <div id="page-visit-count">
         Du är besökare nummer <span id="visit-count"></span>!
@@ -53,6 +59,7 @@
       <script type="text/javascript" src="scripts/init.js"></script>
       <script type="text/javascript" src="scripts/gfx.js"></script>
       <script type="text/javascript" src="pagevisit.js"></script>
-    </div>
+    </footer>
   </body>
 </html>
+

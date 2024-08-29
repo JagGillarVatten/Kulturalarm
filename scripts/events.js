@@ -3,7 +3,28 @@
  *
  * The module loads event data from various JSON and ICS files, and provides functions to retrieve the current and upcoming events.
  * It also includes a function to handle key press events, allowing the user to adjust the time offset.
+ *
+ * The global variables are:
+ * - events: An array of objects containing information about events, such as name, start time, end time, and location.
+ * - sentNotifications: An array of strings containing the names of events that have already been sent as notifications.
+ * - specialDates: An array of objects containing information about special dates, such as holidays or other events.
+ * - currentEventName: A string containing the name of the current event.
+ * - currentEventEnglishName: A string containing the English name of the current event.
+ * - currentEventStart: A Date object containing the start time of the current event.
+ * - currentEventLocation: A string containing the location of the current event.
+ * - currentEventSentNotification: A boolean indicating whether a notification has already been sent for the current event.
+ * - hourOffset: An integer indicating the number of hours to offset the start time of events.
+ *
+ * The functions are:
+ * - loadJSON(fileUrl): Loads event data from a given file URL.
+ * - parseICSFile(icsData): Parses an ICS file and converts it to a JSON array of events.
+ * - getEnglishName(name): Takes a Swedish name and returns the English name.
+ * - showSnackbar(message): Shows a snackbar with a given message.
+ * - getTodaysEvents(): Returns an array of events for the current day.
+ * - getNextEvent(): Returns the next event for the current day.
+ * - handleKeyPress(event): Handles key press events, allowing the user to adjust the time offset.
  */
+
 // Define global variables with appropriate initialization
 let events = [];
 let sentNotifications = [];
@@ -24,23 +45,38 @@ const eventFiles = [
    // { name: "Live Schedule", url: "https://cloud.timeedit.net/medborgarskolan/web/kulturama/ri6655eyYn00b4QZ88Q6ZuQQZZ8Q1209.ics" }//
 ];
 
+// Get the last used event file from localStorage
+const lastUsedEventFile = localStorage.getItem('lastUsedEventFile') || eventFiles[0].url;
+
 // Function to load JSON data from a given file URL
 async function loadJSON(fileUrl) {
+    console.log(`Loading JSON data from ${fileUrl}`);
+    // Get the previous file name
+    const previousFileName = eventFiles.find(file => file.url === lastUsedEventFile)?.name || 'Unknown';
+    // Get the current file name
+    const currentFileName = eventFiles.find(file => file.url === fileUrl)?.name || 'Unknown';
+    // Save the current file URL as the last used one
+    localStorage.setItem('lastUsedEventFile', fileUrl);
+    // Show snackbar notification
+    showSnackbar(`Switched from ${previousFileName} to ${currentFileName}`);
+    // Fetch the event file
     const response = await fetch(fileUrl);
     if (response.ok) {
         const data = await response.text();
         if (fileUrl.endsWith(".ics")) {
+            console.log(`Parsing ICS file: ${fileUrl}`);
             return parseICSFile(data);
         }
+        console.log(`Parsing JSON file: ${fileUrl}`);
         return JSON.parse(data);
     }
     throw new Error(`Error fetching event file: ${fileUrl}. Status: ${response.status}`);
 }
 
-
 // Function to parse ICS file and convert to JSON
 function parseICSFile(icsData) {
     try {
+        console.log(`Parsing ICS file: ${icsData.length} bytes`);
         const cal = icalendar.Calendar.from_ical(icsData);
         const classSchedule = [];
 
@@ -80,10 +116,12 @@ function getEnglishName(name) {
 
     for (const swedishName in englishNames) {
         if (name.includes(swedishName)) {
+            console.log(`Found English name for ${swedishName}: ${englishNames[swedishName]}`);
             return englishNames[swedishName];
         }
     }
 
+    console.log(`No English name found for ${name}`);
     return '';
 }
 
@@ -141,12 +179,15 @@ function handleKeyPress(event) {
     try {
         if (event.key === '.') {
             hourOffset++;
+            console.log(`You are now offsetted to UTC+${hourOffset + 2}`);
             showSnackbar(`You are now offsetted to UTC+${hourOffset + 2} (${hourOffset === 0 ? 'Sweden' : ''})`);
         } else if (event.key === ',') {
             hourOffset--;
+            console.log(`You are now offsetted to UTC+${hourOffset + 2}`);
             showSnackbar(`You are now offsetted to UTC+${hourOffset + 2} (${hourOffset === 0 ? 'Sweden' : ''})`);
         } else if (event.key === 'r') {
             hourOffset = 0;
+            console.log(`Reset to UTC+2 (Sweden)`);
             showSnackbar(`Reset to UTC+2 (Sweden)`);
         } else {
             console.log(`Unhandled key press: ${event.key}`);
@@ -158,3 +199,7 @@ function handleKeyPress(event) {
 
 // Add event listener for key press events
 document.addEventListener('keydown', handleKeyPress);
+
+// Load the last used event file by default
+loadJSON(lastUsedEventFile);
+
