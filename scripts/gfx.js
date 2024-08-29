@@ -1,16 +1,15 @@
 // Toggle dropdown
 function toggleDropdown() {
 const dropdownContent = document.querySelector(".dropdown-content");
+const animationDuration = 0.5;
+
 dropdownContent.classList.toggle("show");
-dropdownContent.style.animation = dropdownContent.classList.contains("show") ? "fadeIn 0.5s" : "fadeOut 0.5s";
-document.body.style.filter = dropdownContent.classList.contains("show") ? "blur(5px)" : "none";
-const dropdownButton = document.querySelector(".dropdown-button");
-dropdownButton.style.animation = dropdownContent.classList.contains("show") ? "pulse 0.5s" : "";
+dropdownContent.style.animation = dropdownContent.classList.contains("show") ? `fadeIn ${animationDuration}s` : `fadeOut ${animationDuration}s`;
 }
 
 // Adjust timezone
 function adjustTimezone(date) {
-return new Date(date.getTime() + (userTimeZoneOffset + ukTimeZoneOffset + hourOffset) * 60 * 60 * 1000);
+return new Date(date.getTime() + (userTimeZoneOffset + ukTimeZoneOffset + (hourOffset || 0)) * 60 * 60 * 1000);
 }
 
 // Check if special date
@@ -25,8 +24,9 @@ return specialDates.find(entry => entry.date === date.toISOString().split("T")[0
 
 // Check if snowfall period
 function isSnowfallPeriod() {
-const currentDate = new Date();
-return currentDate >= new Date(currentDate.getFullYear(), 10, 23) && currentDate <= new Date(currentDate.getFullYear(), 11, 31);
+const startDate = new Date(new Date().getFullYear(), 10, 23);
+const endDate = new Date(new Date().getFullYear(), 11, 31);
+return new Date() >= startDate && new Date() <= endDate;
 }
 
 // Create snowflake
@@ -43,37 +43,33 @@ document.body.removeChild(snowflake);
 
 // Function to update the background color every second
 function updateBackground() {
-const body = document.body;
 const currentHour = new Date().getHours();
 
-body.classList.remove("morning", "afternoon", "evening", "night");
-
+document.body.className = "";
 if (currentHour >= 6 && currentHour < 12) {
-body.classList.add("morning");
+document.body.classList.add("morning");
 } else if (currentHour >= 12 && currentHour < 18) {
-body.classList.add("afternoon");
+document.body.classList.add("afternoon");
 } else if (currentHour >= 18 && currentHour < 22) {
-body.classList.add("evening");
+document.body.classList.add("evening");
 } else {
-body.classList.add("night");
+document.body.classList.add("night");
 }
 }
-
-// Function to update the background color every second
+// Set interval for updating background
 setInterval(updateBackground, 1000);
 
-// Function to create snowflakes every 50 milliseconds
+// Set interval for creating snowflakes
 setInterval(createSnowflake, 50);
 
-// Function to update the countdown every 50 milliseconds
+// Set interval for updating countdown
 setInterval(updateCountdown, 50);
 
 // Parallax scrolling
 window.addEventListener("scroll", () => {
-const scrollPosition = window.scrollY;
-document.body.style.backgroundPosition = `center ${scrollPosition * 0.3}px`;
-document.querySelector(".name").style.transform = `translateY(${scrollPosition * 0.2}px)`;
-document.querySelector("#countdown").style.transform = `translateY(${scrollPosition * 0.2}px)`;
-document.querySelector(".progress-bar").style.transform = `translateY(${scrollPosition * 0.2}px)`;
+document.body.style.backgroundPosition = `center ${window.scrollY * 0.3}px`;
+document.querySelector(".name").style.transform = `translateY(${window.scrollY * 0.2}px)`;
+document.querySelector("#countdown").style.transform = `translateY(${window.scrollY * 0.2}px)`;
+document.querySelector(".progress-bar").style.transform = `translateY(${window.scrollY * 0.2}px)`;
 });
 

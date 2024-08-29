@@ -61,14 +61,8 @@ body {
 	text-align: center;
 }
 
-#countdown-text {
-	font-size: 24px;
-	font-weight: 700;
-}
-
-#countdown-number {
-	font-size: 6em;
-}
+#countdown-text { font-size: 24px; font-weight: 700; }
+#countdown-number { font-size: 6em; }
 
 #snackbar {
 	visibility: hidden;
@@ -83,57 +77,10 @@ body {
 	z-index: 1;
 	left: 50%;
 	bottom: 30px;
-	-webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
 	animation: fadein 0.5s, fadeout 0.5s 2.5s;
 }
 
-#snackbar.show {
-	visibility: visible;
-}
-
-@-webkit-keyframes fadein {
-	from {
-		bottom: 0;
-		opacity: 0;
-	}
-	to {
-		bottom: 30px;
-		opacity: 1;
-	}
-}
-
-@keyframes fadein {
-	from {
-		bottom: 0;
-		opacity: 0;
-	}
-	to {
-		bottom: 30px;
-		opacity: 1;
-	}
-}
-
-@-webkit-keyframes fadeout {
-	from {
-		bottom: 30px;
-		opacity: 1;
-	}
-	to {
-		bottom: 0;
-		opacity: 0;
-	}
-}
-
-@keyframes fadeout {
-	from {
-		bottom: 30px;
-		opacity: 1;
-	}
-	to {
-		bottom: 0;
-		opacity: 0;
-	}
-}
+#snackbar.show { visibility: visible; }
 
 .progress-bar {
 	width: 80%;
@@ -146,15 +93,6 @@ body {
 	transition: 300ms linear;
 	margin: 2rem auto;
 	overflow: hidden;
-}
-
-@keyframes intro {
-	0% {
-		opacity: 0;
-	}
-	100% {
-		opacity: 1;
-	}
 }
 
 .progress-bar span {
@@ -181,9 +119,7 @@ body {
 	cursor: pointer;
 }
 
-.button:hover {
-	transform: scale(1.1);
-}
+.button:hover { transform: scale(1.1); }
 
 .dropdown {
 	position: relative;
@@ -206,9 +142,7 @@ body {
 	border-radius: 1rem;
 }
 
-.dropdown:hover .dropdown-content {
-	display: block;
-}
+.dropdown:hover .dropdown-content { display: block; }
 
 .dropdown-content a {
 	color: var(--dropdown-text-color);
@@ -238,71 +172,14 @@ ul {
 	padding: 0;
 }
 
-li {
-	margin-bottom: 4px;
-}
-
-strong {
-	font-weight: 700;
-}
+li { margin-bottom: 4px; }
+strong { font-weight: 700; }
 
 div#rss-container {
 	border-radius: 2rem;
 	box-shadow: 2px 2px 5px rgba(255, 246, 246, 0.1);
 	padding: 1px;
 	align-self: center;
-}
-
-@media screen and (max-width: 768px) {
-	body {
-		font-size: 1.5rem;
-	}
-	#countdown-number,
-	.name {
-		font-size: 3rem;
-	}
-	.button {
-		font-size: 1.2rem;
-		padding: 0.8rem 1.6rem;
-	}
-	.dropdown-content a {
-		font-size: 1.5rem;
-	}
-}
-
-@media screen and (max-width: 480px) {
-	body {
-		font-size: 1rem;
-	}
-	#countdown-number,
-	.name {
-		font-size: 2rem;
-	}
-	.button {
-		font-size: 1rem;
-		padding: 0.6rem 1.2rem;
-	}
-	.dropdown-content a {
-		font-size: 1rem;
-	}
-}
-
-@keyframes shake {
-	0% {
-		transform: translateX(0);
-	}
-	25% {
-		transform: translateX(-5px) rotate(-1deg);
-	}
-	50% {
-		transform: translateX(5px) rotate(1deg);
-	}
-	75% {
-		transform: translateX(-3px) rotate(-2deg);
-	}
-	100% {
-		transform: translateX(0) rotate(0);
-	}
 }
 
 button {
@@ -336,25 +213,12 @@ button:active {
 	border-radius: 100%;
 }
 
-.dot.active {
-	background-color: var(--text-color);
-}
+.dot.active { background-color: var(--text-color); }
 
-.morning {
-	background-color: var(--morning-bg-color);
-}
-
-.afternoon {
-	background-color: var(--afternoon-bg-color);
-}
-
-.evening {
-	background-color: var(--evening-bg-color);
-}
-
-.night {
-	background-color: var(--night-bg-color);
-}
+.morning { background-color: var(--morning-bg-color); }
+.afternoon { background-color: var(--afternoon-bg-color); }
+.evening { background-color: var(--evening-bg-color); }
+.night { background-color: var(--night-bg-color); }
 
 #language-switcher {
 	position: fixed;
@@ -362,3 +226,45 @@ button:active {
 	left: 1rem;
 }
 
+@keyframes fadein {
+	from { bottom: 0; opacity: 0; }
+	to { bottom: 30px; opacity: 1; }
+}
+
+@keyframes fadeout {
+	from { bottom: 30px; opacity: 1; }
+	to { bottom: 0; opacity: 0; }
+}
+
+@keyframes intro {
+	0% { opacity: 0; }
+	100% { opacity: 1; }
+}
+
+@keyframes shake {
+	0% { transform: translateX(0); }
+	25% { transform: translateX(-5px) rotate(-1deg); }
+	50% { transform: translateX(5px) rotate(1deg); }
+	75% { transform: translateX(-3px) rotate(-2deg); }
+	100% { transform: translateX(0) rotate(0); }
+}
+
+@media screen and (max-width: 768px) {
+	body { font-size: 1.5rem; }
+	#countdown-number, .name { font-size: 3rem; }
+	.button {
+		font-size: 1.2rem;
+		padding: 0.8rem 1.6rem;
+	}
+	.dropdown-content a { font-size: 1.5rem; }
+}
+
+@media screen and (max-width: 480px) {
+	body { font-size: 1rem; }
+	#countdown-number, .name { font-size: 2rem; }
+	.button {
+		font-size: 1rem;
+		padding: 0.6rem 1.2rem;
+	}
+	.dropdown-content a { font-size: 1rem; }
+}

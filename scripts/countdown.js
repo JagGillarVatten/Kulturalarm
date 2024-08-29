@@ -76,7 +76,7 @@ function displayEvent(name, englishName, location, start, end, currentDate, isUp
         const countdownText = document.getElementById("countdown-text");
         countdownText.textContent = isUpcoming
             ? `${isSwedish ? name : englishName} ${isSwedish ? "börjar om" : "starts in"}:`
-            : `${isSwedish ? "Tid kvar för" : "Time left for"} ${isSwedish ? name : englishName}:`;
+            : `${isSwedish ? "Tid kvar för" : "Time left for"} ${isSwedish ? name : englishName}:`
 
         const locationElement = document.getElementById("location");
         locationElement.textContent = `${isSwedish ? "Plats" : "Location"}: ${currentEventLocation}`;
