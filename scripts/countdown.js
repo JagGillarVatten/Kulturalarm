@@ -78,17 +78,13 @@ function displayEvent(name, englishName, location, start, end, currentDate, isUp
             ? `${isSwedish ? name : englishName} ${isSwedish ? "börjar om" : "starts in"}:`
             : `${isSwedish ? "Tid kvar för" : "Time left for"} ${isSwedish ? name : englishName}:`;
 
-        const countdownNumber = document.getElementById("countdown-number");
-        countdownNumber.textContent = timeString;
-
         const locationElement = document.getElementById("location");
         locationElement.textContent = `${isSwedish ? "Plats" : "Location"}: ${currentEventLocation}`;
 
-        document.title = `${timeString} ${isUpcoming ? (isSwedish ? "tills" : "until") : isSwedish ? "kvar" : "left"} | ${isSwedish ? name : englishName}`;
-
         const progressBar = document.getElementById("progress-bar");
         progressBar.style.display = "block";
-// TODO: make this more intelligent and reactive.
+
+        // TODO: make this more intelligent and reactive.
         // Send a notification if not already sent
         if (!sentNotifications.includes(name)) {
             sendNotification(
@@ -101,6 +97,12 @@ function displayEvent(name, englishName, location, start, end, currentDate, isUp
             currentEventSentNotification = true;
         }
     }
+
+    // Update countdown number
+    updateCountdownNumber(timeString);
+
+    // Update document title
+    document.title = `${timeString} ${isUpcoming ? (isSwedish ? "tills" : "until") : isSwedish ? "kvar" : "left"} | ${isSwedish ? name : englishName}`;
 
     // Calculate and update the progress bar
     const progress = Math.max(
@@ -121,12 +123,52 @@ function updateEventDetails(name, englishName, location, start) {
     currentEventSentNotification = false;
 }
 
+function updateCountdownNumber(timeString) {
+    const countdownNumber = document.getElementById("countdown-number");
+    const [hours, minutes, seconds] = timeString.split(':');
+    
+    // Update hours
+    const hoursSpan = countdownNumber.querySelector('.hours') || document.createElement('span');
+    hoursSpan.className = 'hours';
+    if (hoursSpan.textContent !== hours) {
+        hoursSpan.textContent = hours;
+    }
+    
+    // Update minutes
+    const minutesSpan = countdownNumber.querySelector('.minutes') || document.createElement('span');
+    minutesSpan.className = 'minutes';
+    if (minutesSpan.textContent !== minutes) {
+        minutesSpan.textContent = minutes;
+    }
+    
+    // Update seconds
+    const secondsSpan = countdownNumber.querySelector('.seconds') || document.createElement('span');
+    secondsSpan.className = 'seconds';
+    if (secondsSpan.textContent !== seconds) {
+        secondsSpan.textContent = seconds;
+    }
+    
+    // Append spans if they're new
+    if (!countdownNumber.contains(hoursSpan)) {
+        countdownNumber.appendChild(hoursSpan);
+        countdownNumber.appendChild(document.createTextNode(':'));
+    }
+    if (!countdownNumber.contains(minutesSpan)) {
+        countdownNumber.appendChild(minutesSpan);
+        countdownNumber.appendChild(document.createTextNode(':'));
+    }
+    if (!countdownNumber.contains(secondsSpan)) {
+        countdownNumber.appendChild(secondsSpan);
+    }
+}
+
 function sendNotification(name, englishName, location, message) {
     // Send a notification with the event details
     new Notification(isSwedish ? name : englishName, {
         body: `${message} ${isSwedish ? "vid" : "at"} ${location}`,
     });
 }
+
 // Todo: improve logic
 function updateProgressBar(progress) {
     // Update the progress bar width
