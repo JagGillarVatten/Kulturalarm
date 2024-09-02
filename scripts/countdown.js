@@ -161,7 +161,6 @@ function updateCountdownNumber(timeString) {
         countdownNumber.appendChild(secondsSpan);
     }
 }
-
 function sendNotification(name, englishName, location, message) {
     // Send a notification with the event details
     new Notification(isSwedish ? name : englishName, {
@@ -274,3 +273,4 @@ languageSwitcher.addEventListener("click", () => {
     // Update the countdown with the new language
     updateCountdown();
 });
+

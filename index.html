@@ -20,7 +20,7 @@
     </header>
 
     <!-- Main Content -->
-
+    <main>
       <div id="countdown">
         <div id="countdown-text"></div>
         <div id="countdown-number"></div>
@@ -33,33 +33,78 @@
       </div>
 
       <p id="location"></p>
-    
 
+   
     <!-- Footer -->
     <footer>
-      <!-- Dropdown -->
-      <div class="dropdown">
-        <button class="dropdown-button button" title="Byt schema">
-          Byt schema
-        </button>
-        <div class="dropdown-content"></div>
+      <div class="footer-content">
+        <!-- Dropdown -->
+        <div class="dropdown">
+          <button class="dropdown-button button" title="Byt schema">
+            Byt schema
+          </button>
+          <div class="dropdown-content"></div>
+        </div>
+
+        <!-- Language Switcher -->
+        <button id="language-switcher">English</button>
+
+        <!-- Page Visit Count -->
+        <div id="page-visit-count">
+          Du är besökare nummer <span id="visit-count"></span>!
+        </div>
       </div>
-
-      <!-- Language Switcher -->
-      <button id="language-switcher">English</button>
-
-      <!-- Page Visit Count -->
-      <div id="page-visit-count">
-        Du är besökare nummer <span id="visit-count"></span>!
-      </div>
-
-      <!-- Scripts -->
-      <script type="text/javascript" src="scripts/events.js"></script>
-      <script type="text/javascript" src="scripts/countdown.js"></script>
-      <script type="text/javascript" src="scripts/init.js"></script>
-      <script type="text/javascript" src="scripts/gfx.js"></script>
-      <script type="text/javascript" src="pagevisit.js"></script>
     </footer>
+   <!-- Button to show today's events -->
+   <button id="show-events-button" onclick="showTodayEvents()">Visa dagens händelser</button>
+  </main>
+
+    <!-- Modal for displaying today's events -->
+    <div id="events-modal" class="modal">
+      <div class="modal-content">
+        <span class="close">×</span>
+        <h2>Dagens händelser</h2>
+        <div id="events-list"></div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="text/javascript" src="scripts/events.js"></script>
+    <script type="text/javascript" src="scripts/countdown.js"></script>
+    <script type="text/javascript" src="scripts/init.js"></script>
+    <script type="text/javascript" src="scripts/gfx.js"></script>
+    <script type="text/javascript" src="pagevisit.js"></script>
+    <script type="text/javascript">
+      function showTodayEvents() {
+        var modal = document.getElementById("events-modal");
+        var span = document.getElementsByClassName("close")[0];
+        var eventsList = document.getElementById("events-list");
+
+        // Clear previous events
+        eventsList.innerHTML = "";
+
+        // Get today's events (you'll need to implement this function in your events.js)
+        var todayEvents = getTodayEvents();
+
+        // Populate the events list
+        todayEvents.forEach(function(event) {
+          var eventItem = document.createElement("p");
+          eventItem.textContent = event.time + " - " + event.name;
+          eventsList.appendChild(eventItem);
+        });
+
+        modal.style.display = "block";
+
+        span.onclick = function() {
+          modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        }
+      }
+    </script>
   </body>
 </html>
-

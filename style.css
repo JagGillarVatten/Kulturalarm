@@ -16,6 +16,8 @@
 	--afternoon-bg-color: #d0a88d;
 	--evening-bg-color: #c1687a;
 	--night-bg-color: #563769;
+	--modal-bg-color: rgba(0, 0, 0, 0.7);
+	--modal-content-bg-color: #44221c;
 }
 
 body {
@@ -29,63 +31,68 @@ body {
 	flex-direction: column;
 	align-items: center;
 	position: relative;
+	min-height: 100vh;
+}
+
+header {
+	width: 100%;
+	text-align: center;
+}
+
+main {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+}
+
+footer {
+	width: 100%;
+	padding: 1rem 0;
+}
+
+.footer-content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+#location, .name, #countdown, #countdown-number, #countdown-text {
+	text-align: center;
+	animation: fadeInUp 0.6s;
 }
 
 #location {
 	font-size: 4rem;
 	margin: 0;
-	animation: fadeInUp 0.6s;
-	text-align: center;
 }
 
 .name {
 	font-size: 5.5rem;
 	background-color: rgba(255, 255, 255, 0.254);
-	color: var(--text-color);
 	font-weight: 910;
 	margin-top: 0;
 	animation: fadeInUp 0.8s ease-in-out, shake 0.2s ease-in-out;
-	text-align: center;
 	letter-spacing: 0.003cm;
 }
 
-#countdown-container {
-	text-align: center;
+#countdown {
 	margin-top: 20px;
-	font-family: 'Fredoka One', cursive;
-}
-
-#countdown-number,
-#countdown-text {
-	animation: fadeInUp 0.6s;
-	text-align: center;
 }
 
 #countdown-text { font-size: 24px; font-weight: 700; }
 #countdown-number { font-size: 6em; }
 
-#snackbar {
-	visibility: hidden;
-	min-width: 250px;
-	margin-left: -125px;
-	background-color: var(--snackbar-bg-color);
-	color: var(--snackbar-text-color);
+#day-of-week {
 	text-align: center;
-	border-radius: 2rem;
-	padding: 16px;
-	position: fixed;
-	z-index: 1;
-	left: 50%;
-	bottom: 30px;
-	animation: fadein 0.5s, fadeout 0.5s 2.5s;
+	font-size: 2rem;
+	margin: 1rem 0;
 }
-
-#snackbar.show { visibility: visible; }
 
 .progress-bar {
 	width: 80%;
 	animation: fadeInUp 0.1s ease-in-out, intro 0.3s ease-out;
-	border-style: none;
 	height: 10%;
 	border-radius: 2rem;
 	background-color: var(--secondary-bg-color);
@@ -106,20 +113,41 @@ body {
 	width: 0%;
 }
 
-.button {
+.button, button {
 	color: var(--text-color);
-	font-size: 2rem;
 	font-family: 'Fredoka One', cursive;
 	background-color: var(--button-bg-color);
 	border: none;
-	padding: 1rem 2rem;
 	border-radius: 2rem;
 	transition: 0.7s ease;
-	margin-top: 1rem;
 	cursor: pointer;
 }
 
+.button {
+	font-size: 2rem;
+	padding: 1rem 2rem;
+	margin-top: 1rem;
+}
+
 .button:hover { transform: scale(1.1); }
+
+button {
+	display: block;
+	padding: 0.5rem 1rem;
+	font-size: 1.2rem;
+	box-shadow: 2px 2px 4px rgba(255, 204, 204, 0.1);
+	transition: all 0.2s ease-in-out;
+}
+
+button:hover {
+	transform: translateY(-2px);
+	box-shadow: 4px 4px 6px rgba(255, 204, 204, 0.2);
+}
+
+button:active {
+	transform: translateY(0);
+	box-shadow: 2px 2px 4px rgba(255, 204, 204, 0.1);
+}
 
 .dropdown {
 	position: relative;
@@ -129,8 +157,8 @@ body {
 }
 
 .dropdown-content {
-	position: absolute;
 	display: none;
+	position: absolute;
 	z-index: 1;
 	background-color: var(--dropdown-bg-color);
 	min-width: 160px;
@@ -166,64 +194,65 @@ body {
 	transform: scale(1.1);
 }
 
-ul {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-
-li { margin-bottom: 4px; }
-strong { font-weight: 700; }
-
-div#rss-container {
-	border-radius: 2rem;
-	box-shadow: 2px 2px 5px rgba(255, 246, 246, 0.1);
-	padding: 1px;
-	align-self: center;
-}
-
-button {
-	color: var(--text-color);
-	display: block;
-	background-color: var(--button-bg-color);
-	border-radius: 2rem;
-	padding: 0.5rem 1rem;
-	font-size: 1.2rem;
-	border: none;
-	box-shadow: 2px 2px 4px rgba(255, 204, 204, 0.1);
-	transition: all 0.2s ease-in-out;
-}
-
-button:hover {
-	transform: translateY(-2px);
-	box-shadow: 4px 4px 6px rgba(255, 204, 204, 0.2);
-}
-
-button:active {
-	transform: translateY(0);
-	box-shadow: 2px 2px 4px rgba(255, 204, 204, 0.1);
-}
-
-.dot {
-	width: 2rem;
-	height: 2rem;
-	display: inline-grid;
-	transform: translateY(1rem);
-	background-color: rgba(255, 255, 255, 0.255);
-	border-radius: 100%;
-}
-
-.dot.active { background-color: var(--text-color); }
-
-.morning { background-color: var(--morning-bg-color); }
-.afternoon { background-color: var(--afternoon-bg-color); }
-.evening { background-color: var(--evening-bg-color); }
-.night { background-color: var(--night-bg-color); }
-
 #language-switcher {
+	margin-top: 1rem;
+}
+
+#page-visit-count {
+	margin-top: 1rem;
+	font-size: 1.2rem;
+	text-align: center;
+}
+
+.modal {
+	display: none;
 	position: fixed;
-	bottom: 1rem;
-	left: 1rem;
+	z-index: 1000;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: var(--modal-bg-color);
+}
+
+.modal-content {
+	background-color: var(--modal-content-bg-color);
+	margin: 15% auto;
+	padding: 20px;
+	border: 1px solid var(--accent-color);
+	width: 80%;
+	max-width: 600px;
+	border-radius: 1rem;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.close {
+	color: var(--text-color);
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+	color: var(--highlight-color);
+	text-decoration: none;
+	cursor: pointer;
+}
+
+#events-list {
+	margin-top: 20px;
+}
+
+#events-list p {
+	font-size: 1.2rem;
+	margin: 10px 0;
+	padding: 10px;
+	background-color: rgba(255, 255, 255, 0.1);
+	border-radius: 5px;
 }
 
 @keyframes fadein {
@@ -237,34 +266,39 @@ button:active {
 }
 
 @keyframes intro {
-	0% { opacity: 0; }
-	100% { opacity: 1; }
+	from { opacity: 0; }
+	to { opacity: 1; }
 }
 
 @keyframes shake {
-	0% { transform: translateX(0); }
+	0%, 100% { transform: translateX(0); }
 	25% { transform: translateX(-5px) rotate(-1deg); }
 	50% { transform: translateX(5px) rotate(1deg); }
 	75% { transform: translateX(-3px) rotate(-2deg); }
-	100% { transform: translateX(0) rotate(0); }
 }
 
 @media screen and (max-width: 768px) {
 	body { font-size: 1.5rem; }
 	#countdown-number, .name { font-size: 3rem; }
-	.button {
+	.button, .dropdown-content a {
 		font-size: 1.2rem;
 		padding: 0.8rem 1.6rem;
 	}
-	.dropdown-content a { font-size: 1.5rem; }
+	.modal-content {
+		width: 90%;
+		margin: 20% auto;
+	}
 }
 
 @media screen and (max-width: 480px) {
 	body { font-size: 1rem; }
 	#countdown-number, .name { font-size: 2rem; }
-	.button {
+	.button, .dropdown-content a {
 		font-size: 1rem;
 		padding: 0.6rem 1.2rem;
 	}
-	.dropdown-content a { font-size: 1rem; }
+	.modal-content {
+		width: 95%;
+		margin: 10% auto;
+	}
 }

@@ -23,6 +23,7 @@
  * - getTodaysEvents(): Returns an array of events for the current day.
  * - getNextEvent(): Returns the next event for the current day.
  * - handleKeyPress(event): Handles key press events, allowing the user to adjust the time offset.
+ * - getTodayEvents(): Returns an array of events for today with time and name.
  */
 
 // Define global variables with appropriate initialization
@@ -41,8 +42,7 @@ const eventFiles = [
     { name: "MP1", url: "MP1.json" },
     { name: "AM1", url: "AM1.json" },
     { name: "MP2", url: "MP2.json" },
-    { name: "AM2", url: "AM2.json" }
-   // { name: "Live Schedule", url: "https://cloud.timeedit.net/medborgarskolan/web/kulturama/ri6655eyYn00b4QZ88Q6ZuQQZZ8Q1209.ics" }//
+    { name: "AM2", url: "AM2.json" } 
 ];
 
 // Get the last used event file from localStorage
@@ -203,3 +203,11 @@ document.addEventListener('keydown', handleKeyPress);
 // Load the last used event file by default
 loadJSON(lastUsedEventFile);
 
+// Function to get today's events for the modal
+function getTodayEvents() {
+    const todaysEvents = getTodaysEvents();
+    return todaysEvents.map(event => ({
+        time: event.startTime,
+        name: event.name
+    }));
+}
