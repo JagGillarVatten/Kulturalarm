@@ -200,14 +200,16 @@ function handleKeyPress(event) {
 // Add event listener for key press events
 document.addEventListener('keydown', handleKeyPress);
 
+// Function to get today's events for the modal
+function getTodayEvents() {
+    const currentEventName = getNextEvent()?.name;
+    return getTodaysEvents().map(event => ({
+        time: event.startTime,
+        name: event.name,
+        isCurrent: currentEventName === event.name ? '➤ ' : ''
+    }));
+}
+
 // Load the last used event file by default
 loadJSON(lastUsedEventFile);
 
-// Function to get today's events for the modal
-function getTodayEvents() {
-    const todaysEvents = getTodaysEvents();
-    return todaysEvents.map(event => ({
-        time: event.startTime,
-        name: event.name
-    }));
-}

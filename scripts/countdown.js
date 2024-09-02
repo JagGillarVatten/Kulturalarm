@@ -51,7 +51,17 @@ function displayNoEventsMessage() {
     countdownNumber.textContent = isSwedish ? "Hejdå!" : "Goodbye!";
 
     const progressBar = document.getElementById("progress-bar");
-    progressBar.style.display = "none";
+    progressBar.style.display = "block";
+
+    // Get the next event
+    const nextEvent = getNextEvent();
+    if (nextEvent) {
+        const timeUntilNextEvent = (nextEvent.start - new Date()) / 1000;
+        const progress = 100 - (timeUntilNextEvent / (24 * 60 * 60)) * 100; // Assuming 24 hours max
+        updateProgressBar(progress);
+    } else {
+        progressBar.style.display = "none";
+    }
 }
 
 // Todo: improve logic
@@ -168,11 +178,35 @@ function sendNotification(name, englishName, location, message) {
     });
 }
 
-// Todo: improve logic
-function updateProgressBar(progress) {
-    // Update the progress bar width
-    const progressElement = document.getElementById("progress");
-    progressElement.style.width = `${progress}%`;
+
+
+
+
+
+let lastProgress = 0;
+let animationFrameId = null;
+
+function updateProgressBar(targetProgress) {
+    if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+    }
+
+    function animate() {
+        const progressElement = document.getElementById("progress");
+        const diff = targetProgress - lastProgress;
+        const step = diff * 0.1; // Adjust this value to change the speed of interpolation
+
+        if (Math.abs(diff) > 0.1) {
+            lastProgress += step;
+            progressElement.style.width = `${lastProgress}%`;
+            animationFrameId = requestAnimationFrame(animate);
+        } else {
+            lastProgress = targetProgress;
+            progressElement.style.width = `${targetProgress}%`;
+        }
+    }
+
+    animate();
 }
 
 function saveEventTimestamps(events, event) {
@@ -273,4 +307,3 @@ languageSwitcher.addEventListener("click", () => {
     // Update the countdown with the new language
     updateCountdown();
 });
-
