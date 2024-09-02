@@ -47,7 +47,7 @@
         </div>
 
         <!-- Language Switcher -->
-        <button id="language-switcher">English</button>
+        <button id="language-switcher" title="Switch language">English</button>
 
         <!-- Page Visit Count -->
         <div id="page-visit-count">
@@ -56,13 +56,13 @@
       </div>
     </footer>
    <!-- Button to show today's events -->
-   <button id="show-events-button" onclick="showTodayEvents()">Visa dagens händelser</button>
+   <button id="show-events-button" onclick="showTodayEvents()" title="Visa dagens händelser">Visa dagens händelser</button>
   </main>
 
     <!-- Modal for displaying today's events -->
     <div id="events-modal" class="modal">
       <div class="modal-content">
-        <span class="close">×</span>
+        <span class="close" title="Stäng">×</span>
         <h2>Dagens händelser</h2>
         <div id="events-list"></div>
       </div>
