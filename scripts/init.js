@@ -46,7 +46,8 @@ function init() {
             if (hourOffset) updateCountdown();
 
             if (!event.target.matches('.dropdown-toggle')) {
-                document.querySelectorAll('.dropdown-menu.show').forEach(dropdown => dropdown.classList.remove('show'));
+                const dropdowns = document.querySelectorAll('.dropdown-menu.show');
+                if (dropdowns.length) dropdowns.forEach(dropdown => dropdown.classList.remove('show'));
             }
         });
 
