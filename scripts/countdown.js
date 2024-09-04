@@ -49,6 +49,7 @@ function displayNoEventsMessage() {
 
     const countdownNumber = document.getElementById("countdown-number");
     countdownNumber.textContent = isSwedish ? "Hejdå!" : "Goodbye!";
+    countdownNumber.innerHTML = ''; // Clear any existing spans
 
     const progressBar = document.getElementById("progress-bar");
     progressBar.style.display = "block";
@@ -135,42 +136,32 @@ function updateEventDetails(name, englishName, location, start) {
 
 function updateCountdownNumber(timeString) {
     const countdownNumber = document.getElementById("countdown-number");
+    countdownNumber.innerHTML = ''; // Clear existing content
     const [hours, minutes, seconds] = timeString.split(':');
     
     // Update hours
-    const hoursSpan = countdownNumber.querySelector('.hours') || document.createElement('span');
+    const hoursSpan = document.createElement('span');
     hoursSpan.className = 'hours';
-    if (hoursSpan.textContent !== hours) {
-        hoursSpan.textContent = hours;
-    }
+    hoursSpan.textContent = hours;
     
     // Update minutes
-    const minutesSpan = countdownNumber.querySelector('.minutes') || document.createElement('span');
+    const minutesSpan = document.createElement('span');
     minutesSpan.className = 'minutes';
-    if (minutesSpan.textContent !== minutes) {
-        minutesSpan.textContent = minutes;
-    }
+    minutesSpan.textContent = minutes;
     
     // Update seconds
-    const secondsSpan = countdownNumber.querySelector('.seconds') || document.createElement('span');
+    const secondsSpan = document.createElement('span');
     secondsSpan.className = 'seconds';
-    if (secondsSpan.textContent !== seconds) {
-        secondsSpan.textContent = seconds;
-    }
+    secondsSpan.textContent = seconds;
     
-    // Append spans if they're new
-    if (!countdownNumber.contains(hoursSpan)) {
-        countdownNumber.appendChild(hoursSpan);
-        countdownNumber.appendChild(document.createTextNode(':'));
-    }
-    if (!countdownNumber.contains(minutesSpan)) {
-        countdownNumber.appendChild(minutesSpan);
-        countdownNumber.appendChild(document.createTextNode(':'));
-    }
-    if (!countdownNumber.contains(secondsSpan)) {
-        countdownNumber.appendChild(secondsSpan);
-    }
+    // Append spans
+    countdownNumber.appendChild(hoursSpan);
+    countdownNumber.appendChild(document.createTextNode(':'));
+    countdownNumber.appendChild(minutesSpan);
+    countdownNumber.appendChild(document.createTextNode(':'));
+    countdownNumber.appendChild(secondsSpan);
 }
+
 function sendNotification(name, englishName, location, message) {
     // Send a notification with the event details
     new Notification(isSwedish ? name : englishName, {
