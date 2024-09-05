@@ -1,51 +1,45 @@
 @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
 
 :root {
-	--primary-bg-color: #8a5e5e;
+	--primary-bg-color: #915119;
 	--text-color: #ffffff;
-	--secondary-bg-color: #8f7072;
+	--secondary-bg-color: #bc8e919b;
 	--highlight-color: #ddffb4;
 	--button-bg-color: #752222;
-	--dropdown-bg-color: #44221c;
-	--dropdown-hover-color: #fffaf938;
+	--dropdown-bg-color: #000000;
+	--dropdown-hover-color: #d5a89f;
 	--dropdown-text-color: #d9a4a4;
 	--accent-color: #7d462e;
 	--snackbar-bg-color: #FF9AA2;
 	--snackbar-text-color: #fff0e2;
-	--morning-bg-color: #9a5500;
+	--morning-bg-color: #e2af71;
 	--afternoon-bg-color: #d0a88d;
 	--evening-bg-color: #c1687a;
 	--night-bg-color: #563769;
-	--modal-bg-color: rgba(0, 0, 0, 0.7);
+	--modal-bg-color: rgba(0, 0, 0, 0.452);
 	--modal-content-bg-color: #44221c;
 }
 
 body {
-	background-color: #17120e;
-	background-image: 
-		linear-gradient(1deg, #ffffff03 12%, transparent 12.5%, transparent 20%, #ffffff03 10.5%, #ffffff03),
-		linear-gradient(150deg, #ffffff03 12%, transparent 12.5%, transparent 87%, #ffffff03 87.5%, #ffffff03),
-		linear-gradient(30deg, #ffffff03 12%, transparent 12.5%, transparent 87%, #ffffff03 87.5%, #ffffff03),
-		linear-gradient(150deg, #ffffff03 12%, transparent 12.5%, transparent 87%, #ffffff03 87.5%, #ffffff03),
-		linear-gradient(60deg, #ffffff08 25%, transparent 25.5%, transparent 75%, #ffffff08 75%, #ffffff08);
-	background-size: 80px 140px;
+	background-color:rgb(87, 50, 33);
+	
 	background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0;
-	animation: moveBackground 20s ease-in-out infinite;
+	
 	color: var(--text-color);
 	margin: 0;
 	font-family: 'Fredoka One', cursive;
-	font-size: 2.2rem;
+	font-size: clamp(1rem, 2.5vw, 2.2rem);
 	transition: background-color 0.5s ease;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	position: relative;
 	min-height: 100vh;
 }
 
-header {
+header, main, footer {
 	width: 100%;
-	text-align: center;
+	padding: 1rem;
+	box-sizing: border-box;
 }
 
 main {
@@ -53,12 +47,6 @@ main {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	width: 100%;
-}
-
-footer {
-	width: 100%;
-	padding: 1rem 0;
 }
 
 .footer-content {
@@ -73,12 +61,12 @@ footer {
 }
 
 #location {
-	font-size: 4rem;
+	font-size: clamp(2rem, 5vw, 4rem);
 	margin: 0;
 }
 
 .name {
-	font-size: 5.5rem;
+	font-size: clamp(2.5rem, 6vw, 5.5rem);
 	background-color: rgba(255, 255, 255, 0.254);
 	font-weight: 910;
 	margin-top: 0;
@@ -90,20 +78,21 @@ footer {
 	margin-top: 20px;
 }
 
-#countdown-text { font-size: 24px; font-weight: 700; }
-#countdown-number { font-size: 6em; }
+#countdown-text { font-size: clamp(1rem, 3vw, 24px); font-weight: 700; }
+#countdown-number { font-size: clamp(3rem, 8vw, 6em); }
 
 #day-of-week {
 	text-align: center;
-	font-size: 2rem;
+	font-size: clamp(1rem, 3vw, 2rem);
 	margin: 1rem 0;
 }
 
 .progress-bar {
 	width: 80%;
+	max-width: 100%;
 	animation: fadeInUp 0.1s ease-in-out, intro 0.3s ease-out;
-	height: 10%;
-	border-radius: 2rem;
+	height: 1.4cm;
+	border-radius: 0.5rem;
 	background-color: var(--secondary-bg-color);
 	position: relative;
 	transition: 300ms linear;
@@ -113,9 +102,9 @@ footer {
 
 .progress-bar span {
 	display: block;
-	height: 4rem;
+	height: 100%;
 	animation: shake infinite, progressBarFill 2s infinite;
-	border-radius: 2rem;
+	border-radius: 0.5rem;
 	background-color: var(--highlight-color);
 	position: relative;
 	transition: width 0.1s, background-color 2s ease;
@@ -133,8 +122,8 @@ footer {
 }
 
 .button {
-	font-size: 2rem;
-	padding: 1rem 2rem;
+	font-size: clamp(1rem, 2.5vw, 2rem);
+	padding: 0.5em 1em;
 	margin-top: 1rem;
 }
 
@@ -142,8 +131,8 @@ footer {
 
 button {
 	display: block;
-	padding: 0.5rem 1rem;
-	font-size: 1.2rem;
+	padding: 0.5em 1em;
+	font-size: clamp(0.8rem, 2vw, 1.2rem);
 	box-shadow: 2px 2px 4px rgba(255, 204, 204, 0.1);
 	transition: all 0.2s ease-in-out;
 }
@@ -183,7 +172,7 @@ button:active {
 
 .dropdown-content a {
 	color: var(--dropdown-text-color);
-	font-size: 2rem;
+	font-size: clamp(1rem, 2.5vw, 2rem);
 	border-radius: 1rem;
 	text-align: center;
 	background-color: rgba(255, 255, 255, 0.226);
@@ -192,8 +181,8 @@ button:active {
 	text-decoration: none;
 	display: block;
 	position: relative;
-	padding: 0.5rem;
-	margin-top: 0.5rem;
+	padding: 0.5em;
+	margin-top: 0.5em;
 	cursor: pointer;
 }
 
@@ -209,7 +198,7 @@ button:active {
 
 #page-visit-count {
 	margin-top: 1rem;
-	font-size: 1.2rem;
+	font-size: clamp(0.8rem, 2vw, 1.2rem);
 	text-align: center;
 }
 
@@ -230,7 +219,7 @@ button:active {
 	margin: 15% auto;
 	padding: 20px;
 	border: 1px solid var(--accent-color);
-	width: 80%;
+	width: 90%;
 	max-width: 600px;
 	border-radius: 1rem;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -242,7 +231,7 @@ button:active {
 	font-size: 28px;
 	font-weight: bold;
 	cursor: pointer;
-	transition: 0.3s;
+	transition: 1s;
 }
 
 .close:hover,
@@ -257,10 +246,10 @@ button:active {
 }
 
 #events-list p {
-	font-size: 1.2rem;
+	font-size: clamp(0.8rem, 2vw, 1.2rem);
 	margin: 10px 0;
 	padding: 10px;
-	background-color: rgba(255, 255, 255, 0.1);
+	background-color: rgba(255, 255, 255, 0.541);
 	border-radius: 5px;
 }
 
@@ -291,31 +280,6 @@ button:active {
 	to { background-position: 80px 140px, 80px 140px, 120px 210px, 120px 210px, 80px 140px; }
 }
 
-@media screen and (max-width: 768px) {
-	body { font-size: 1.5rem; }
-	#countdown-number, .name { font-size: 3rem; }
-	.button, .dropdown-content a {
-		font-size: 1.2rem;
-		padding: 0.8rem 1.6rem;
-	}
-	.modal-content {
-		width: 90%;
-		margin: 20% auto;
-	}
-}
-
-@media screen and (max-width: 480px) {
-	body { font-size: 1rem; }
-	#countdown-number, .name { font-size: 2rem; }
-	.button, .dropdown-content a {
-		font-size: 1rem;
-		padding: 0.6rem 1.2rem;
-	}
-	.modal-content {
-		width: 95%;
-		margin: 10% auto;
-	}
-}
 #snackbar {
 	visibility: hidden;
 	min-width: 250px;

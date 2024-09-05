@@ -11,28 +11,36 @@
     <!-- Styles -->
     <link rel="preload" href="style.css" as="style" />
     <link rel="stylesheet" href="style.css" />
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
   </head>
 
-  <body onload="init()">
+  <body onload="init()" class="light-theme">
     <!-- Header -->
     <header>
       <div class="name">Kulturalarm</div>
+      <nav>
+    
     </header>
 
     <!-- Main Content -->
     <main>
-      <div id="countdown">
+      <div id="countdown" class="card">
         <div id="countdown-text"></div>
         <div id="countdown-number"></div>
       </div>
 
-      <p id="day-of-week"></p>
+      <p id="day-of-week" class="highlight"></p>
 
       <div class="progress-bar" id="progress-bar">
         <span id="progress"></span>
       </div>
 
-      <p id="location"></p>
+      <p id="location" class="info-text"></p>
 
    
     <!-- Footer -->
@@ -41,32 +49,35 @@
         <!-- Dropdown -->
         <div class="dropdown">
           <button class="dropdown-button button" title="Byt schema">
-            Byt schema
+            <i class="fas fa-calendar-alt"></i> Byt schema
           </button>
           <div class="dropdown-content"></div>
         </div>
 
         <!-- Language Switcher -->
-        <button id="language-switcher" title="Switch language">English</button>
+        <button id="language-switcher" class="button" title="Switch language"><i class="fas fa-globe"></i> English</button>
 
         <!-- Page Visit Count -->
-        <div id="page-visit-count">
-          Du är besökare nummer <span id="visit-count"></span>!
+        <div id="page-visit-count" class="info-text">
+          Du är besökare nummer <span id="visit-count" class="highlight"></span>!
         </div>
       </div>
     </footer>
    <!-- Button to show today's events -->
-   <button id="show-events-button" onclick="showTodayEvents()" title="Visa dagens händelser">Visa dagens händelser</button>
+   <button id="show-events-button" onclick="showTodayEvents()" class="button primary-button" title="Visa dagens händelser"><i class="fas fa-list-ul"></i> Visa dagens händelser</button>
   </main>
 
     <!-- Modal for displaying today's events -->
     <div id="events-modal" class="modal">
-      <div class="modal-content">
+      <div class="modal-content card">
         <span class="close" title="Stäng">×</span>
         <h2>Dagens händelser</h2>
         <div id="events-list"></div>
       </div>
     </div>
+
+    <!-- Theme Switcher -->
+   
 
     <!-- Scripts -->
     <script type="text/javascript" src="scripts/events.js"></script>
@@ -105,6 +116,8 @@
           }
         }
       }
+
+    
     </script>
   </body>
 </html>

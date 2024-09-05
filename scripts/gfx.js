@@ -21,10 +21,11 @@ return specialDates.some(entry => entry.date === date.toISOString().split("T")[0
 function getSpecialDate(date) {
 return specialDates.find(entry => entry.date === date.toISOString().split("T")[0]);
 }
+
 // Check if snowfall period
 function isSnowfallPeriod() {
-    const startDate = new Date(new Date().getFullYear(),10 , 23);
-    const endDate = new Date(new Date().getFullYear(), 12, 31);
+    const startDate = new Date(new Date().getFullYear(), 10, 23);
+    const endDate = new Date(new Date().getFullYear(), 11, 31);  // Changed from 12 to 11 (December is 11 in JavaScript)
     return new Date() >= startDate && new Date() <= endDate;
 }
 
@@ -37,7 +38,7 @@ function createSnowflake() {
     snowflake.style.top = "-10px";
     snowflake.style.fontSize = "20px";
     snowflake.style.color = "white";
-    snowflake.style.opacity = "4030";
+    snowflake.style.opacity = "0.7";  // Changed from "4030" to "0.7"
     snowflake.style.userSelect = "none";
     snowflake.style.zIndex = "1000";
     snowflake.innerHTML = "❄";
@@ -68,33 +69,33 @@ function startSnowfall() {
 
 // Call startSnowfall when the page loads
 window.addEventListener('load', startSnowfall);
+
 // Function to update the background color every second
 function updateBackground() {
-const currentHour = new Date().getHours();
+    const currentHour = new Date().getHours();
 
-document.body.className = "";
-if (currentHour >= 6 && currentHour < 12) {
-document.body.classList.add("morning");
-} else if (currentHour >= 12 && currentHour < 18) {
-document.body.classList.add("afternoon");
-} else if (currentHour >= 18 && currentHour < 22) {
-document.body.classList.add("evening");
-} else {
-document.body.classList.add("night");
+    document.body.className = "";
+    if (currentHour >= 6 && currentHour < 12) {
+        document.body.classList.add("morning");
+    } else if (currentHour >= 12 && currentHour < 18) {
+        document.body.classList.add("afternoon");
+    } else if (currentHour >= 18 && currentHour < 22) {
+        document.body.classList.add("evening");
+    } else {
+        document.body.classList.add("night");
+    }
 }
-}
+
 // Set interval for updating background
 setInterval(updateBackground, 1000);
-
 
 // Set interval for updating countdown
 setInterval(updateCountdown, 50);
 
 // Parallax scrolling
 window.addEventListener("scroll", () => {
-document.body.style.backgroundPosition = `center ${window.scrollY * 0.3}px`;
-document.querySelector(".name").style.transform = `translateY(${window.scrollY * 0.2}px)`;
-document.querySelector("#countdown").style.transform = `translateY(${window.scrollY * 0.2}px)`;
-document.querySelector(".progress-bar").style.transform = `translateY(${window.scrollY * 0.2}px)`;
+    document.body.style.backgroundPosition = `center ${window.scrollY * 0.3}px`;
+    document.querySelector(".name").style.transform = `translateY(${window.scrollY * 0.2}px)`;
+    document.querySelector("#countdown").style.transform = `translateY(${window.scrollY * 0.2}px)`;
+    document.querySelector(".progress-bar").style.transform = `translateY(${window.scrollY * 0.2}px)`;
 });
-

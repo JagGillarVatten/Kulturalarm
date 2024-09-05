@@ -71,7 +71,7 @@ async function loadJSON(fileUrl) {
     const previousFileName = eventFiles.find(file => file.url === lastUsedEventFile)?.name || 'Unknown';
     const currentFileName = eventFiles.find(file => file.url === fileUrl)?.name || 'Unknown';
     localStorage.setItem('lastUsedEventFile', fileUrl);
-    showSnackbar(`Switched from ${previousFileName} to ${currentFileName}`);
+    
     const response = await fetch(fileUrl);
     if (!response.ok) throw new Error(`Error fetching event file: ${fileUrl}. Status: ${response.status}`);
     const data = await response.text();
