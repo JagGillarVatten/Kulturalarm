@@ -195,6 +195,7 @@ function getTodayEvents() {
     const currentEventName = getNextEvent()?.name;
     return getTodaysEvents().map(event => ({
         time: event.startTime,
+        endTime: event.endTime,
         name: event.name,
         isCurrent: currentEventName === event.name ? '➤ ' : ''
     }));

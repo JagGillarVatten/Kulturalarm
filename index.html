@@ -89,7 +89,7 @@
         // Populate the events list
         todayEvents.forEach(function(event) {
           var eventItem = document.createElement("p");
-          eventItem.textContent = event.time + " - " + event.name;
+          eventItem.textContent = event.time + " - " + event.endTime + " " + event.name;
           eventsList.appendChild(eventItem);
         });
 
