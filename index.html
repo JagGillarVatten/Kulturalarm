@@ -11,12 +11,7 @@
     <!-- Styles -->
     <link rel="preload" href="style.css" as="style" />
     <link rel="stylesheet" href="style.css" />
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
   </head>
 
   <body onload="init()" >
@@ -95,119 +90,7 @@
       }
 
       // Function to get the next event
-      function getNextEvent() {
-        const now = new Date();
-        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        const todaysEvents = getTodaysEvents();
-
-        for (const event of todaysEvents) {
-          const startTime = new Date(`${today.toDateString()} ${event.startTime || event.date.toTimeString().slice(0, 5)}`);
-          const endTime = new Date(`${today.toDateString()} ${event.endTime || event.date.toTimeString().slice(0, 5)}`);
-
-          startTime.setHours(startTime.getHours() + hourOffset);
-          endTime.setHours(endTime.getHours() + hourOffset);
-
-          if (now >= startTime && now < endTime || now < startTime) {
-            return { name: event.name, englishName: event.englishName, start: startTime, end: endTime, location: event.location };
-          }
-        }
-
-        return null;
-      }
-
-      // Function to handle key press events
-      function handleKeyPress(event) {
-        try {
-          switch (event.key) {
-            case '.':
-              hourOffset++;
-              break;
-            case ',':
-              hourOffset--;
-              break;
-            case 'r':
-              hourOffset = 0;
-              break;
-            default:
-              console.log(`Unhandled key press: ${event.key}`);
-              return;
-          }
-          console.log(`You are now offsetted to UTC+${hourOffset + 2}${hourOffset === 0 ? ' (Sweden)' : ''}`);
-          showSnackbar(`You are now offsetted to UTC+${hourOffset + 2}${hourOffset === 0 ? ' (Sweden)' : ''}`);
-        } catch (error) {
-          console.error(`Error handling key press: ${error.message}`);
-        }
-      }
-
-      // Add event listener for key press events
-      document.addEventListener('keydown', handleKeyPress);
-
-      // Function to get today's events for the modal
-      function getTodayEvents() {
-        const now = new Date();
-        const currentEventName = getNextEvent()?.name;
-        const events = getTodaysEvents();
-
-        // Group events by time and name
-        const groupedEvents = events.reduce((acc, event) => {
-          const key = `${event.startTime}-${event.endTime}-${event.name}`;
-          if (!acc[key]) {
-            acc[key] = { ...event, count: 1 };
-          } else {
-            acc[key].count++;
-          }
-          return acc;
-        }, {});
-
-        return Object.values(groupedEvents).map(event => {
-          const startTime = new Date(`${now.toDateString()} ${event.startTime}`);
-          const endTime = new Date(`${now.toDateString()} ${event.endTime}`);
-          startTime.setHours(startTime.getHours() + hourOffset);
-          endTime.setHours(endTime.getHours() + hourOffset);
-
-          return {
-            time: event.startTime,
-            endTime: event.endTime,
-            name: event.count > 1 ? `${event.name} (x${event.count})` : event.name,
-            isCurrent: currentEventName === event.name ? '➤ ' : '',
-            isCompleted: now > endTime ? '✓ ' : ''
-          };
-        });
-      }
-
-      function showTodayEvents() {
-        var modal = document.getElementById("events-modal");
-        var span = document.getElementsByClassName("close")[0];
-        var eventsList = document.getElementById("events-list");
-
-        // Clear previous events
-        eventsList.innerHTML = "";
-
-        // Get today's events
-        var todayEvents = getTodayEvents();
-
-        // Populate the events list
-        todayEvents.forEach(function(event) {
-          var eventItem = document.createElement("p");
-          eventItem.textContent = `${event.isCurrent}${event.isCompleted}${event.time} - ${event.endTime} ${event.name}`;
-          eventsList.appendChild(eventItem);
-        });
-
-        modal.style.display = "block";
-
-        span.onclick = function() {
-          modal.style.display = "none";
-        }
-
-        window.onclick = function(event) {
-          if (event.target == modal) {
-            modal.style.display = "none";
-          }
-        }
-      }
-
-      // Load the last used event file by default
-      loadJSON(lastUsedEventFile);
+      
     </script>
   </body>
 </html>
