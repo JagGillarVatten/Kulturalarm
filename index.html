@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
   </head>
 
-  <body onload="init()" class="light-theme">
+  <body onload="init()" >
     <!-- Header -->
     <header>
       <div class="name">Kulturalarm</div>
@@ -64,14 +64,14 @@
       </div>
     </footer>
    <!-- Button to show today's events -->
-   <button id="show-events-button" onclick="showTodayEvents()" class="button primary-button" title="Visa dagens händelser"><i class="fas fa-list-ul"></i> Visa dagens händelser</button>
+   <button id="show-events-button" onclick="showTodayEvents()" class="button primary-button" title="Visa dagens lektioner"><i class="fas fa-list-ul"></i> Visa dagens lektioner</button>
   </main>
 
     <!-- Modal for displaying today's events -->
     <div id="events-modal" class="modal">
       <div class="modal-content card">
         <span class="close" title="Stäng">×</span>
-        <h2>Dagens händelser</h2>
+        <h2>Dagens lektioner</h2>
         <div id="events-list"></div>
       </div>
     </div>
@@ -86,6 +86,95 @@
     <script type="text/javascript" src="scripts/gfx.js"></script>
     <script type="text/javascript" src="pagevisit.js"></script>
     <script type="text/javascript">
+      // Function to get today's events
+      function getTodaysEvents() {
+        const today = new Date();
+        const dayOfWeek = today.getDay();
+        const todaysSpecialEvents = specialDates.filter(event => event.date.toDateString() === today.toDateString());
+        return todaysSpecialEvents.length > 0 ? todaysSpecialEvents : events.filter(event => event.startDay === dayOfWeek);
+      }
+
+      // Function to get the next event
+      function getNextEvent() {
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const todaysEvents = getTodaysEvents();
+
+        for (const event of todaysEvents) {
+          const startTime = new Date(`${today.toDateString()} ${event.startTime || event.date.toTimeString().slice(0, 5)}`);
+          const endTime = new Date(`${today.toDateString()} ${event.endTime || event.date.toTimeString().slice(0, 5)}`);
+
+          startTime.setHours(startTime.getHours() + hourOffset);
+          endTime.setHours(endTime.getHours() + hourOffset);
+
+          if (now >= startTime && now < endTime || now < startTime) {
+            return { name: event.name, englishName: event.englishName, start: startTime, end: endTime, location: event.location };
+          }
+        }
+
+        return null;
+      }
+
+      // Function to handle key press events
+      function handleKeyPress(event) {
+        try {
+          switch (event.key) {
+            case '.':
+              hourOffset++;
+              break;
+            case ',':
+              hourOffset--;
+              break;
+            case 'r':
+              hourOffset = 0;
+              break;
+            default:
+              console.log(`Unhandled key press: ${event.key}`);
+              return;
+          }
+          console.log(`You are now offsetted to UTC+${hourOffset + 2}${hourOffset === 0 ? ' (Sweden)' : ''}`);
+          showSnackbar(`You are now offsetted to UTC+${hourOffset + 2}${hourOffset === 0 ? ' (Sweden)' : ''}`);
+        } catch (error) {
+          console.error(`Error handling key press: ${error.message}`);
+        }
+      }
+
+      // Add event listener for key press events
+      document.addEventListener('keydown', handleKeyPress);
+
+      // Function to get today's events for the modal
+      function getTodayEvents() {
+        const now = new Date();
+        const currentEventName = getNextEvent()?.name;
+        const events = getTodaysEvents();
+
+        // Group events by time and name
+        const groupedEvents = events.reduce((acc, event) => {
+          const key = `${event.startTime}-${event.endTime}-${event.name}`;
+          if (!acc[key]) {
+            acc[key] = { ...event, count: 1 };
+          } else {
+            acc[key].count++;
+          }
+          return acc;
+        }, {});
+
+        return Object.values(groupedEvents).map(event => {
+          const startTime = new Date(`${now.toDateString()} ${event.startTime}`);
+          const endTime = new Date(`${now.toDateString()} ${event.endTime}`);
+          startTime.setHours(startTime.getHours() + hourOffset);
+          endTime.setHours(endTime.getHours() + hourOffset);
+
+          return {
+            time: event.startTime,
+            endTime: event.endTime,
+            name: event.count > 1 ? `${event.name} (x${event.count})` : event.name,
+            isCurrent: currentEventName === event.name ? '➤ ' : '',
+            isCompleted: now > endTime ? '✓ ' : ''
+          };
+        });
+      }
+
       function showTodayEvents() {
         var modal = document.getElementById("events-modal");
         var span = document.getElementsByClassName("close")[0];
@@ -94,13 +183,13 @@
         // Clear previous events
         eventsList.innerHTML = "";
 
-        // Get today's events (you'll need to implement this function in your events.js)
+        // Get today's events
         var todayEvents = getTodayEvents();
 
         // Populate the events list
         todayEvents.forEach(function(event) {
           var eventItem = document.createElement("p");
-          eventItem.textContent = event.time + " - " + event.endTime + " " + event.name;
+          eventItem.textContent = `${event.isCurrent}${event.isCompleted}${event.time} - ${event.endTime} ${event.name}`;
           eventsList.appendChild(eventItem);
         });
 
@@ -117,7 +206,8 @@
         }
       }
 
-    
+      // Load the last used event file by default
+      loadJSON(lastUsedEventFile);
     </script>
   </body>
 </html>

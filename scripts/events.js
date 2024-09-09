@@ -186,19 +186,40 @@ function handleKeyPress(event) {
         console.error(`Error handling key press: ${error.message}`);
     }
 }
-
 // Add event listener for key press events
 document.addEventListener('keydown', handleKeyPress);
 
 // Function to get today's events for the modal
 function getTodayEvents() {
+    const now = new Date();
     const currentEventName = getNextEvent()?.name;
-    return getTodaysEvents().map(event => ({
-        time: event.startTime,
-        endTime: event.endTime,
-        name: event.name,
-        isCurrent: currentEventName === event.name ? '➤ ' : ''
-    }));
+    const events = getTodaysEvents();
+    
+    // Group events by time and name
+    const groupedEvents = events.reduce((acc, event) => {
+        const key = `${event.startTime}-${event.endTime}-${event.name}`;
+        if (!acc[key]) {
+            acc[key] = { ...event, count: 1 };
+        } else {
+            acc[key].count++;
+        }
+        return acc;
+    }, {});
+
+    return Object.values(groupedEvents).map(event => {
+        const startTime = new Date(`${now.toDateString()} ${event.startTime}`);
+        const endTime = new Date(`${now.toDateString()} ${event.endTime}`);
+        startTime.setHours(startTime.getHours() + hourOffset);
+        endTime.setHours(endTime.getHours() + hourOffset);
+
+        return {
+            time: event.startTime,
+            endTime: event.endTime,
+            name: event.count > 1 ? `${event.name} (x${event.count})` : event.name,
+            isCurrent: currentEventName === event.name ? '➤ ' : '',
+            isCompleted: now > endTime ? '✓ ' : ''
+        };
+    });
 }
 
 // Load the last used event file by default
