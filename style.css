@@ -313,3 +313,17 @@ button:active {
 }
 
 #snackbar.show { visibility: visible; }
+
+#github-button {
+	position: fixed;
+	bottom: 20px;
+	left: 20px;
+	font-size: clamp(0.8rem, 2vw, 1.2rem);
+	padding: 0.5em;
+	opacity: 0.7;
+	transition: opacity 0.3s ease;
+}
+
+#github-button:hover {
+	opacity: 1;
+}
