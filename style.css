@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
 
 :root {
-	--primary-bg-color: #915119;
+	--default-bg-color: #ba4f4f;
 	--text-color: #ffffff;
 	--secondary-bg-color: #bc8e919b;
 	--highlight-color: #ddffb4;
@@ -21,7 +21,7 @@
 }
 
 body {
-	background-color:rgb(87, 50, 33);
+	background-color:var(--default-bg-color);
 	
 	background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0;
 	

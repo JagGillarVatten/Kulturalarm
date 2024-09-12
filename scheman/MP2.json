@@ -8,6 +8,14 @@
         "location": "705"
     },
     {
+        "name": "Lunch",
+        "englishName": "Lunch",
+        "startDay": 1,
+        "startTime": "12:00",
+        "endTime": "12:40",
+        "location": "Matsal plan 2"
+    },
+    {
         "name": "Svenska",
         "englishName": "Swedish",
         "startDay": 1,
@@ -72,6 +80,14 @@
         "location": "306"
     },
     {
+        "name": "Lunch",
+        "englishName": "Lunch",
+        "startDay": 2,
+        "startTime": "12:05",
+        "endTime": "12:55",
+        "location": "Matsal plan 2"
+    },
+    {
         "name": "Gehörs- och musiklära",
         "englishName": "Ear Training and Music Theory",
         "startDay": 2,
@@ -79,22 +95,7 @@
         "endTime": "12:15",
         "location": "415"
     },
-    {
-        "name": "Animation",
-        "englishName": "Animation",
-        "startDay": 2,
-        "startTime": "13:00",
-        "endTime": "15:30",
-        "location": "705"
-    },
-    {
-        "name": "Idrott & Hälsa",
-        "englishName": "Physical Education & Health",
-        "startDay": 2,
-        "startTime": "14:30",
-        "endTime": "16:30",
-        "location": "Sjöstadshallen"
-    },
+
     {
         "name": "Naturkunskap",
         "englishName": "Natural Science",
@@ -110,6 +111,14 @@
         "startTime": "10:55",
         "endTime": "12:10",
         "location": "323"
+    },
+    {
+        "name": "Lunch",
+        "englishName": "Lunch",
+        "startDay": 3,
+        "startTime": "12:10",
+        "endTime": "12:50",
+        "location": "Matsal plan 2"
     },
     {
         "name": "Svenska",
@@ -142,6 +151,14 @@
         "startTime": "09:25",
         "endTime": "10:40",
         "location": "705"
+    },
+    {
+        "name": "Lunch",
+        "englishName": "Lunch",
+        "startDay": 4,
+        "startTime": "12:05",
+        "endTime": "12:45",
+        "location": "Matsal plan 2"
     },
     {
         "name": "Historia",
@@ -206,5 +223,13 @@
         "startTime": "10:40",
         "endTime": "11:55",
         "location": "313"
+    },
+    {
+        "name": "Lunch",
+        "englishName": "Lunch",
+        "startDay": 5,
+        "startTime": "12:05",
+        "endTime": "12:45",
+        "location": "Matsal plan 2"
     }
 ]

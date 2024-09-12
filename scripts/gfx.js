@@ -74,15 +74,14 @@ window.addEventListener('load', startSnowfall);
 function updateBackground() {
     const currentHour = new Date().getHours();
 
-    document.body.className = "";
     if (currentHour >= 6 && currentHour < 12) {
-        document.body.classList.add("morning");
+        document.body.style.backgroundColor = 'var(--morning-bg-color)';
     } else if (currentHour >= 12 && currentHour < 18) {
-        document.body.classList.add("afternoon");
+        document.body.style.backgroundColor = 'var(--afternoon-bg-color)';
     } else if (currentHour >= 18 && currentHour < 22) {
-        document.body.classList.add("evening");
+        document.body.style.backgroundColor = 'var(--evening-bg-color)';
     } else {
-        document.body.classList.add("night");
+        document.body.style.backgroundColor = 'var(--night-bg-color)';
     }
 }
 

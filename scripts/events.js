@@ -45,8 +45,9 @@ const eventFiles = [
     { name: "AM2", url: "AM2.json" } 
 ];
 
-// Get the last used event file from localStorage or use the first event file as default
-const lastUsedEventFile = localStorage.getItem('lastUsedEventFile') || eventFiles[0].url;
+// Get the last used event file from URL parameter or use the first event file as default
+const urlParams = new URLSearchParams(window.location.search);
+const lastUsedEventFile = urlParams.get('lastUsedEventFile') || eventFiles[0].url;
 
 // Find the index of the last used event file in the eventFiles array
 const lastUsedEventIndex = eventFiles.findIndex(file => file.url === lastUsedEventFile);
@@ -57,20 +58,25 @@ const currentEventFileIndex = lastUsedEventIndex !== -1 ? lastUsedEventIndex : 0
 // Set the current event file
 const currentEventFile = eventFiles[currentEventFileIndex];
 
-// Save the current event file URL to localStorage
-
+// Update the URL with the current event file
+function updateURLWithEventFile(fileUrl) {
+    const newUrl = new URL(window.location.href);
+    newUrl.searchParams.set('lastUsedEventFile', fileUrl);
+    window.history.pushState({}, '', newUrl);
+}
 
 // Use currentEventFile.url for loading the events
 loadJSON(currentEventFile.url).then(data => {
     events = data;
     // Additional logic for handling the loaded events
 });
+
 // Function to load JSON data from a given file URL
 async function loadJSON(fileUrl) {
     console.log(`Loading JSON data from ${fileUrl}`);
     const previousFileName = eventFiles.find(file => file.url === lastUsedEventFile)?.name || 'Unknown';
     const currentFileName = eventFiles.find(file => file.url === fileUrl)?.name || 'Unknown';
-    localStorage.setItem('lastUsedEventFile', fileUrl);
+    updateURLWithEventFile(fileUrl);
     
     const response = await fetch(fileUrl);
     if (!response.ok) throw new Error(`Error fetching event file: ${fileUrl}. Status: ${response.status}`);
@@ -137,21 +143,20 @@ function showSnackbar(message) {
 // Function to get today's events
 function getTodaysEvents() {
     const today = new Date();
+    today.setHours(today.getHours() + hourOffset);
     const dayOfWeek = today.getDay();
     const todaysSpecialEvents = specialDates.filter(event => event.date.toDateString() === today.toDateString());
     return todaysSpecialEvents.length > 0 ? todaysSpecialEvents : events.filter(event => event.startDay === dayOfWeek);
 }
 function getNextEvent() {
     const now = new Date();
+    now.setHours(now.getHours() + hourOffset);
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const todaysEvents = getTodaysEvents();
 
     for (const event of todaysEvents) {
       const startTime = new Date(`${today.toDateString()} ${event.startTime || event.date.toTimeString().slice(0, 5)}`);
       const endTime = new Date(`${today.toDateString()} ${event.endTime || event.date.toTimeString().slice(0, 5)}`);
-
-      startTime.setHours(startTime.getHours() + hourOffset);
-      endTime.setHours(endTime.getHours() + hourOffset);
 
       if (now >= startTime && now < endTime || now < startTime) {
         return { name: event.name, englishName: event.englishName, start: startTime, end: endTime, location: event.location };
@@ -192,6 +197,7 @@ function getNextEvent() {
   // Function to get today's events for the modal
   function getTodayEvents() {
     const now = new Date();
+    now.setHours(now.getHours() + hourOffset);
     const currentEventName = getNextEvent()?.name;
     const events = getTodaysEvents();
 
@@ -209,8 +215,6 @@ function getNextEvent() {
     return Object.values(groupedEvents).map(event => {
       const startTime = new Date(`${now.toDateString()} ${event.startTime}`);
       const endTime = new Date(`${now.toDateString()} ${event.endTime}`);
-      startTime.setHours(startTime.getHours() + hourOffset);
-      endTime.setHours(endTime.getHours() + hourOffset);
 
       return {
         time: startTime.toTimeString().slice(0, 5),
@@ -267,7 +271,10 @@ function getNextEvent() {
   }
 
   // Load the last used event file by default
-  loadJSON(lastUsedEventFile);
+  loadJSON(lastUsedEventFile).then(() => {
+    // Update the URL with the most recent event file
+    updateURLWithEventFile(currentEventFile.url);
+  });
 
   // Initial update of events
   updateTodayEvents();
