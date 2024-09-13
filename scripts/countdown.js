@@ -1,25 +1,18 @@
 function updateCountdown() {
-    if (!events.length) {
-        setTimeout(updateCountdown, 1000);
-        return;
-    }
-
     const currentDate = new Date();
+    const events = getTodaysEvents();
     const nextEvent = isSpecialDate(currentDate)
         ? getSpecialDate(currentDate)
         : getNextEvent();
 
     if (!nextEvent) {
-        return displayNoEventsMessage();
+        displayNoEventsMessage();
+    } else {
+        displayEvent(nextEvent, currentDate);
     }
 
-    const { name, englishName, location, start, end } = nextEvent;
-    displayEvent(name, englishName, location, start, end, currentDate, currentDate < start);
-    
-    if (getTodaysEvents().length > 0 && !document.hasEventListener) {
-        document.addEventListener("keydown", handleKeyDown);
-        document.hasEventListener = true;
-    }
+    updateEventListener(events);
+    setTimeout(updateCountdown, 1000);
 }
 
 function displayNoEventsMessage() {
@@ -29,22 +22,21 @@ function displayNoEventsMessage() {
 }
 
 function resetEventDetails() {
-    currentEventName = "";
-    currentEventEnglishName = "";
-    currentEventStart = null;
-    currentEventLocation = "";
+    currentEvent = null;
+    currentEventSentNotification = false;
 }
 
 function updateUIForNoEvents() {
     const countdownText = document.getElementById("countdown-text");
-    countdownText.textContent = isSwedish ? "Inga fler händelser idag." : "No more events today.";
-
     const locationElement = document.getElementById("location");
-    locationElement.textContent = "";
-
     const countdownNumber = document.getElementById("countdown-number");
+
+    countdownText.textContent = isSwedish ? "Inga fler händelser idag." : "No more events today.";
+    locationElement.textContent = "";
     countdownNumber.textContent = isSwedish ? "Hejdå!" : "Goodbye!";
     countdownNumber.innerHTML = '';
+
+    document.title = isSwedish ? "Inga fler händelser" : "No more events";
 }
 
 function updateProgressBarForNextEvent() {
@@ -60,73 +52,72 @@ function updateProgressBarForNextEvent() {
     }
 }
 
-function displayEvent(name, englishName, location, start, end, currentDate, isUpcoming) {
+function displayEvent(event, currentDate) {
+    const { name, englishName, location, start, end } = event;
+    const isUpcoming = currentDate < start;
     const timeString = formatSeconds((isUpcoming ? start - currentDate : end - currentDate) / 1000);
-    const detailsChanged = hasEventDetailsChanged(name, englishName, location, start);
 
-    if (detailsChanged) {
-        updateEventDetails(name, englishName, location, start);
-        updateUIForEvent(name, englishName, location, isUpcoming, timeString);
-        handleNotification(name, englishName, location, isUpcoming, timeString);
+    if (hasEventDetailsChanged(event)) {
+        updateEventDetails(event);
+        updateUIForEvent(event, isUpcoming);
+        handleNotification(event, isUpcoming, timeString);
     }
 
     updateCountdownNumber(timeString);
-    updateDocumentTitle(name, englishName, isUpcoming, timeString);
+    updateDocumentTitle(event, isUpcoming, timeString);
     updateProgressBarForEvent(start, end, currentDate, isUpcoming);
 }
 
-function hasEventDetailsChanged(name, englishName, location, start) {
-    return currentEventName !== name ||
-        currentEventEnglishName !== englishName ||
-        currentEventStart !== start ||
-        currentEventLocation !== location;
+function hasEventDetailsChanged(event) {
+    return !currentEvent || 
+           currentEvent.name !== event.name ||
+           currentEvent.englishName !== event.englishName ||
+           currentEvent.start.getTime() !== event.start.getTime() ||
+           currentEvent.location !== event.location;
 }
 
-function updateUIForEvent(name, englishName, location, isUpcoming, timeString) {
+function updateUIForEvent(event, isUpcoming) {
+    const { name, englishName, location } = event;
     const countdownText = document.getElementById("countdown-text");
+    const locationElement = document.getElementById("location");
+    const progressBar = document.getElementById("progress-bar");
+
     countdownText.textContent = isUpcoming
         ? `${isSwedish ? name : englishName} ${isSwedish ? "börjar om" : "starts in"}:`
         : `${isSwedish ? "Tid kvar för" : "Time left for"} ${isSwedish ? name : englishName}:`;
 
-    const locationElement = document.getElementById("location");
-    locationElement.textContent = `${isSwedish ? "Plats" : "Location"}: ${currentEventLocation}`;
-
-    const progressBar = document.getElementById("progress-bar");
+    locationElement.textContent = `${isSwedish ? "Plats" : "Location"}: ${location}`;
     progressBar.style.display = "block";
 }
 
-function handleNotification(name, englishName, location, isUpcoming, timeString) {
-    if (!sentNotifications.includes(name)) {
+function handleNotification(event, isUpcoming, timeString) {
+    if (!currentEventSentNotification) {
         sendNotification(
-            name,
-            englishName,
-            location,
+            event.name,
+            event.englishName,
+            event.location,
             isUpcoming ? timeString : isSwedish ? "Pågår just nu" : "Ongoing"
         );
-        sentNotifications.push(name);
         currentEventSentNotification = true;
     }
 }
 
-function updateDocumentTitle(name, englishName, isUpcoming, timeString) {
+function updateDocumentTitle(event, isUpcoming, timeString) {
+    const { name, englishName } = event;
     document.title = `${timeString} ${isUpcoming ? (isSwedish ? "tills" : "until") : isSwedish ? "kvar" : "left"} | ${isSwedish ? name : englishName}`;
 }
 
 function updateProgressBarForEvent(start, end, currentDate, isUpcoming) {
-    const progress = Math.max(
-        0,
-        isUpcoming
-            ? (start - currentDate) / 1000 / (start - (start - 60000)) * 100
-            : ((currentDate - start) / 1000 / ((end - start) / 1000)) * 100
-    );
+    const totalDuration = end - start;
+    const elapsedTime = currentDate - start;
+    const progress = isUpcoming
+        ? Math.max(0, 100 - (start - currentDate) / 60000)  // Show progress in last minute before event starts
+        : Math.min(100, (elapsedTime / totalDuration) * 100);
     updateProgressBar(progress);
 }
 
-function updateEventDetails(name, englishName, location, start) {
-    currentEventName = name;
-    currentEventEnglishName = englishName;
-    currentEventStart = start;
-    currentEventLocation = location;
+function updateEventDetails(event) {
+    currentEvent = event;
     currentEventSentNotification = false;
 }
 
@@ -150,9 +141,11 @@ function updateCountdownNumber(timeString) {
 }
 
 function sendNotification(name, englishName, location, message) {
-    new Notification(isSwedish ? name : englishName, {
-        body: `${message} ${isSwedish ? "vid" : "at"} ${location}`,
-    });
+    if (Notification.permission === "granted") {
+        new Notification(isSwedish ? name : englishName, {
+            body: `${message} ${isSwedish ? "vid" : "at"} ${location}`,
+        });
+    }
 }
 
 let lastProgress = 0;
@@ -179,6 +172,13 @@ function updateProgressBar(targetProgress) {
     }
 
     animate();
+}
+
+function updateEventListener(events) {
+    if (events.length > 0 && !document.hasEventListener) {
+        document.addEventListener("keydown", handleKeyDown);
+        document.hasEventListener = true;
+    }
 }
 
 function handleKeyDown(event) {
