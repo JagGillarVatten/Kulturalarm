@@ -1,324 +1,161 @@
 [
     {
-      "name": "Slagverk INDAMLA2a",
+      "name": "Matematik", 
       "startDay": 1,
-      "startTime": "09:40",
-      "endTime": "10:20",
-      "location": "317",
-      "teacher": "Mikael Delin"
+      "startTime": "08:45",
+      "endTime": "10:00",
+      "location": "516"
     },
     {
-      "name": "Slagverk INDAMLA2a",
+      "name": "Engelska",
       "startDay": 1,
-      "startTime": "10:20",
-      "endTime": "11:00",
-      "location": "317",
-      "teacher": "Mikael Delin"
-    },
-    {
-      "name": "Mentorsgrupp AMLAMP2a, Mentorsgrupp AMLAMP2b",
-      "startDay": 1,
-      "startTime": "11:00",
-      "endTime": "12:00",
-      "location": "705",
-      "teacher": "Anna Bergman, Jörgen Åhman"
+      "startTime": "10:05",
+      "endTime": "11:20",
+      "location": "516"
     },
     {
       "name": "Lunch",
       "startDay": 1,
-      "startTime": "12:00",
-      "endTime": "12:40",
-      "location": "Matsal Plan 2",
-      "groups": ["AM2", "LA2", "MP2"]
+      "startTime": "11:45",
+      "endTime": "12:15"
     },
     {
-      "name": "Svenska 2 AMLAMP2",
+      "name": "Fysik",
       "startDay": 1,
-      "startTime": "12:50",
-      "endTime": "14:05",
-      "location": "705",
-      "teacher": "Gabriel Granbacka"
+      "startTime": "12:30",
+      "endTime": "13:45",
+      "location": "516"
     },
     {
-      "name": "Ensemble med körsång AMLAMP2a",
+      "name": "Kemi",
       "startDay": 1,
-      "startTime": "14:20",
-      "endTime": "15:35",
-      "location": "320",
-      "teacher": "Göran Flood"
+      "startTime": "14:00",
+      "endTime": "15:15",
+      "location": "516"
     },
     {
-      "name": "Ensemble med körsång AMLAMP2b",
+      "name": "Engelska",
       "startDay": 1,
-      "startTime": "14:20",
-      "endTime": "15:35",
-      "location": "316",
-      "teacher": "Peter Hallgren"
+      "startTime": "08:45",
+      "endTime": "10:00",
+      "location": "516"
     },
     {
-      "name": "Ensemble med körsång AMLAMP2c",
+      "name": "Matematik",
       "startDay": 1,
-      "startTime": "14:20",
-      "endTime": "15:35",
-      "location": "319",
-      "teacher": "Fredrik Moberg"
-    },
-    {
-      "name": "Ensemble med körsång AMLAMP2d",
-      "startDay": 1,
-      "startTime": "14:20",
-      "endTime": "15:35",
-      "location": "315",
-      "teacher": "Peter Kristoffer Csiffary"
-    },
-    {
-      "name": "Naturkunskap 1b AMLAMP2",
-      "startDay": 1,
-      "startTime": "15:45",
-      "endTime": "17:00",
-      "location": "705",
-      "teacher": "Mattias Forsgren"
-    },
-    {
-      "name": "Musikproduktion 1 AMLA2",
-      "startDay": 2,
-      "startTime": "09:15",
-      "endTime": "10:30",
-      "location": ["304", "304a", "304b"],
-      "teacher": "Fredrik Moberg"
-    },
-    {
-      "name": "Musikproduktion 1 AMLA2",
-      "startDay": 2,
-      "startTime": "09:15",
-      "endTime": "10:30",
-      "location": ["304", "304a", "304b", "305", "305a", "305b", "305c"],
-      "teacher": "Jörgen Åhman"
+      "startTime": "10:05",
+      "endTime": "11:20",
+      "location": "516"
     },
     {
       "name": "Lunch",
-      "startDay": 2,
-      "startTime": "12:15",
-      "endTime": "12:55",
-      "location": "Matsal Plan 2",
-      "groups": ["AM2", "LA2", "MP2"]
+      "startDay": 1,
+      "startTime": "11:45",
+      "endTime": "12:15"
     },
     {
-      "name": "Entreprenörsskap IND23",
-      "startDay": 2,
-      "startTime": "12:55",
-      "endTime": "14:10",
-      "location": "616",
-      "teacher": "Jörgen Åhman"
+      "name": "Fysik",
+      "startDay": 1,
+      "startTime": "12:30",
+      "endTime": "13:45",
+      "location": "516"
     },
     {
-      "name": "Matematik 2b IND23a",
+      "name": "Historia",
       "startDay": 2,
-      "startTime": "12:55",
-      "endTime": "14:10",
-      "location": "723",
-      "teacher": "Gustav Furberg"
+      "startTime": "14:00",
+      "endTime": "15:15",
+      "location": "516"
     },
     {
-      "name": "Psykologi 1 IND23",
-      "startDay": 2,
-      "startTime": "12:55",
-      "endTime": "14:10",
-      "location": "617",
-      "teacher": "Maria Jirle"
-    },
-    {
-      "name": "Fotografisk bild 1 IND23",
-      "startDay": 2,
-      "startTime": "13:10",
-      "endTime": "15:40",
-      "location": "135",
-      "teacher": "John Håkansson"
-    },
-    {
-      "name": "Matematik 2b IND23b",
-      "startDay": 2,
-      "startTime": "14:25",
-      "endTime": "15:40",
-      "location": "617",
-      "teacher": "Tony Björklind"
-    },
-    {
-      "name": "Idrott & Hälsa 2 IND23",
-      "startDay": 2,
-      "startTime": "14:30",
-      "endTime": "16:30",
-      "location": "Sjöstadshallen",
-      "teacher": "John Norberg"
-    },
-    {
-      "name": "Scenisk gestaltning 1 IND23",
-      "startDay": 2,
-      "startTime": "14:30",
-      "endTime": "17:00",
-      "location": "513",
-      "teacher": "Jesper Tydén"
-    },
-    {
-      "name": "Naturkunskap 1b AMLAMP2",
+      "name": "Matematik",
       "startDay": 3,
-      "startTime": "09:35",
-      "endTime": "10:45",
-      "location": "705",
-      "teacher": "Mattias Forsgren"
+      "startTime": "08:45",
+      "endTime": "10:00",
+      "location": "516"
     },
     {
-      "name": "Gehörs- och musiklära 1 AM2a",
+      "name": "Naturkunskap",
       "startDay": 3,
-      "startTime": "10:55",
-      "endTime": "12:10",
-      "location": "405",
-      "teacher": "Peter Kristoffer Csiffary"
+      "startTime": "10:05",
+      "endTime": "11:20",
+      "location": "516"
     },
     {
       "name": "Lunch",
       "startDay": 3,
-      "startTime": "12:10",
-      "endTime": "12:50",
-      "location": "Matsal Plan 2",
-      "groups": ["AM2", "LA2", "MP2"]
+      "startTime": "11:45",
+      "endTime": "12:15"
     },
     {
-      "name": "Svenska 2 AMLAMP2",
+      "name": "Estetisk kommunikation",
       "startDay": 3,
-      "startTime": "12:55",
-      "endTime": "14:10",
-      "location": "705",
-      "teacher": "Gabriel Granbacka"
+      "startTime": "12:30",
+      "endTime": "13:45",
+      "location": "308"
+      
     },
     {
-      "name": "Historia 2b AMLAMP2",
+      "name": "Gehörs- och musiklära",
       "startDay": 3,
-      "startTime": "14:20",
-      "endTime": "15:35",
-      "location": "705",
-      "teacher": "Hugo Simion Wihk"
+      "startTime": "14:00",
+      "endTime": "15:15",
+      "location": [
+        "405",
+        "414"
+      ]
     },
     {
-      "name": "Gehörs- och musiklära 1 AM2b",
-      "startDay": 3,
-      "startTime": "15:45",
-      "endTime": "17:00",
-      "location": "416",
-      "teacher": "Maria Wihk"
-    },
-    {
-      "name": "Engelska 6 AMLAMP2",
-      "startDay": 4,
-      "startTime": "09:25",
-      "endTime": "10:40",
-      "location": "705",
-      "teacher": "Eoghan Shortall"
-    },
-    {
-      "name": "Körsång 2 AM2a",
-      "startDay": 4,
-      "startTime": "10:45",
-      "endTime": "12:00",
-      "location": "403",
-      "teacher": "Maria Wihk"
-    },
-    {
-      "name": "Musikimprovisation AM2a",
-      "startDay": 4,
-      "startTime": "10:45",
-      "endTime": "12:00",
-      "location": "320",
-      "teacher": "Ann Blom"
-    },
-    {
-      "name": "Musikimprovisation AM2b",
-      "startDay": 4,
-      "startTime": "10:45",
-      "endTime": "12:00",
-      "location": "319",
-      "teacher": "Peter Hallgren"
-    },
-    {
-      "name": "Musikimprovisation AM2c",
-      "startDay": 4,
-      "startTime": "10:50",
-      "endTime": "12:05",
-      "location": "314",
-      "teacher": "Petter Lindblom"
-    },
-    {
-      "name": "Lunch",
-      "startDay": 4,
-      "startTime": "12:05",
-      "endTime": "12:45",
-      "location": "Matsal Plan 2",
-      "groups": ["AM2", "LA2", "MP2"]
-    },
-    {
-      "name": "Historia 2b AMLAMP2",
+      "name": "Historia",
       "startDay": 4,
       "startTime": "13:00",
       "endTime": "14:15",
-      "location": "705",
-      "teacher": "Hugo Simion Wihk"
+      "location": "705"
     },
     {
-      "name": "Estetisk kommunikation 1 AMLAMP2",
+      "name": "Engelska",
       "startDay": 4,
       "startTime": "14:25",
       "endTime": "15:40",
-      "location": ["308", "309", "310", "313", "315", "316", "403"],
-      "teacher": "Jörgen Åhman"
+      "location": "709"
     },
     {
       "name": "Stuga",
       "startDay": 4,
-      "startTime": "15:50",
+      "startTime": "15:45",
       "endTime": "17:00",
-      "teacher": ["Anna Sandberg", "Anni Gustafson", "Carl-Mikael Rösberg", "Christian Carlsson", "Elias Åkesson", "Eoghan Shortall", "Gabriel Granbacka", "Hugo Simion Wihk", "John Norberg", "Karl  Gåsste", "Kersti Wrangsjö", "Marcus Arborelius", "Maria Jirle", "Mathilda  Hallberg", "Max Sjöblom", "Ola Svenson", "Sanne Näsling", "Sofia Månsson", "Spiridoula Vassiliou", "Vakant GEM 2"],
-      "groups": ["AM1", "AM2", "DS1", "DS2", "FM1", "FM2", "FO1", "FO2", "KD1ab", "KD1cd", "KD2ab", "KD2cd", "KS1", "KS2", "LA1", "LA2", "ML1", "ML2", "MP1", "MP2", "NABL1", "NABL2", "NADS1", "NADS2", "NAMU1", "NAMU2", "TR1", "TR2"]
+      "location": [
+        "405",
+        "414",
+        "606",
+        "610",
+        "611",
+        "616",
+        "617",
+        "705",
+        "709",
+        "715",
+        "716",
+        "723",
+        "724"
+      ]
     },
     {
-      "name": "Engelska 6 AMLAMP2",
+      "name": "Musikproduktion",
       "startDay": 5,
-      "startTime": "08:35",
-      "endTime": "09:50",
-      "location": "705",
-      "teacher": "Eoghan Shortall"
-    },
-    {
-      "name": "Ensemble med körsång AMLAMP2a",
-      "startDay": 5,
-      "startTime": "10:40",
-      "endTime": "11:55",
-      "location": "320",
-      "teacher": "Peter Kristoffer Csiffary",
-      "groups": ["AM2", "LA2", "MP2"]
-    },
-    {
-      "name": "Ensemble med körsång AMLAMP2b",
-      "startDay": 5,
-      "startTime": "10:40",
-      "endTime": "11:55",
-      "location": "319",
-      "teacher": "Kitte Ström",
-      "groups": ["AM2", "LA2", "MP2"]
-    },
-    {
-      "name": "Ensemble med körsång AMLAMP2c",
-      "startDay": 5,
-      "startTime": "10:40",
-      "endTime": "11:55",
-      "location": "315",
-      "teacher": "Kerstin Margareta Gabrielsson"
-    },
-    {
-      "name": "Ensemble med körsång AMLAMP2d",
-      "startDay": 5,
-      "startTime": "10:40",
-      "endTime": "11:55",
-      "location": "313",
-      "teacher": "Birgit Mathea Hustad"
+      "startTime": "08:45",
+      "endTime": "10:00",
+      "location": "614",
+      "rooms": [
+        "304",
+        "304a",
+        "304b",
+        "305",
+        "305a",
+        "305b",
+        "305c",
+        "306"
+      ]
     }
+
 ]

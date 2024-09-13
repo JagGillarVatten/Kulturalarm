@@ -1,60 +1,50 @@
 // Toggle dropdown
 function toggleDropdown() {
-    const dropdownContent = document.querySelector(".dropdown-content");
-    const animationDuration = 0.5;
-    const isShowing = dropdownContent.classList.toggle("show");
-    dropdownContent.style.animation = `fade${isShowing ? 'In' : 'Out'} ${animationDuration}s`;
+const dropdownContent = document.querySelector(".dropdown-content");
+const animationDuration = 0.5;
+
+dropdownContent.classList.toggle("show");
+dropdownContent.style.animation = dropdownContent.classList.contains("show") ? `fadeIn ${animationDuration}s` : `fadeOut ${animationDuration}s`;
 }
 
 // Adjust timezone
 function adjustTimezone(date) {
-    const offset = (userTimeZoneOffset + ukTimeZoneOffset + (hourOffset || 0)) * 60 * 60 * 1000;
-    return new Date(date.getTime() + offset);
+return new Date(date.getTime() + (userTimeZoneOffset + ukTimeZoneOffset + (hourOffset || 0)) * 60 * 60 * 1000);
 }
 
 // Check if special date
 function isSpecialDate(date) {
-    const dateString = date.toISOString().split("T")[0];
-    return specialDates.some(entry => entry.date === dateString);
+return specialDates.some(entry => entry.date === date.toISOString().split("T")[0]);
 }
 
 // Get special date
 function getSpecialDate(date) {
-    const dateString = date.toISOString().split("T")[0];
-    return specialDates.find(entry => entry.date === dateString);
+return specialDates.find(entry => entry.date === date.toISOString().split("T")[0]);
 }
 
 // Check if snowfall period
 function isSnowfallPeriod() {
-    const currentDate = new Date();
-    const currentYear = currentDate.getFullYear();
-    const startDate = new Date(currentYear, 10, 23); // November 23rd
-    const endDate = new Date(currentYear, 11, 31); // December 31st
-    return currentDate >= startDate && currentDate <= endDate;
+    const startDate = new Date(new Date().getFullYear(), 10, 23);
+    const endDate = new Date(new Date().getFullYear(), 11, 31);  // Changed from 12 to 11 (December is 11 in JavaScript)
+    return new Date() >= startDate && new Date() <= endDate;
 }
 
 // Create snowflake
 function createSnowflake() {
     const snowflake = document.createElement("div");
     snowflake.className = "snowflake";
-    snowflake.style.cssText = `
-        position: fixed;
-        left: ${Math.random() * window.innerWidth}px;
-        top: -10px;
-        font-size: 20px;
-        color: white;
-        opacity: 0.7;
-        user-select: none;
-        z-index: 1000;
-    `;
-    snowflake.textContent = "❄";
+    snowflake.style.left = `${Math.random() * window.innerWidth}px`;
+    snowflake.style.position = "fixed";
+    snowflake.style.top = "-10px";
+    snowflake.style.fontSize = "20px";
+    snowflake.style.color = "white";
+    snowflake.style.opacity = "0.7";  // Changed from "4030" to "0.7"
+    snowflake.style.userSelect = "none";
+    snowflake.style.zIndex = "1000";
+    snowflake.innerHTML = "❄";
     document.body.appendChild(snowflake);
 
-    animateSnowflake(snowflake);
-}
-
-// Animate snowflake
-function animateSnowflake(snowflake) {
+    // Animate snowflake
     const animationDuration = 5 + Math.random() * 5; // 5-10 seconds
     const horizontalMovement = -20 + Math.random() * 40; // -20px to 20px
 
@@ -65,7 +55,7 @@ function animateSnowflake(snowflake) {
         duration: animationDuration * 1000,
         easing: 'linear'
     }).onfinish = () => {
-        snowflake.remove();
+        document.body.removeChild(snowflake);
     };
 }
 
@@ -77,45 +67,34 @@ function startSnowfall() {
     }
 }
 
-// Function to update the background color
+// Call startSnowfall when the page loads
+window.addEventListener('load', startSnowfall);
+
+// Function to update the background color every second
 function updateBackground() {
     const currentHour = new Date().getHours();
-    let timeOfDay;
 
     if (currentHour >= 6 && currentHour < 12) {
-        timeOfDay = 'morning';
+        document.body.style.backgroundColor = 'var(--morning-bg-color)';
     } else if (currentHour >= 12 && currentHour < 18) {
-        timeOfDay = 'afternoon';
+        document.body.style.backgroundColor = 'var(--afternoon-bg-color)';
     } else if (currentHour >= 18 && currentHour < 22) {
-        timeOfDay = 'evening';
+        document.body.style.backgroundColor = 'var(--evening-bg-color)';
     } else {
-        timeOfDay = 'night';
+        document.body.style.backgroundColor = 'var(--night-bg-color)';
     }
-
-    document.body.style.backgroundColor = `var(--${timeOfDay}-bg-color)`;
 }
 
-// Initialize page
-function initializePage() {
-    startSnowfall();
-    setInterval(updateBackground, 60000); // Update background every minute
-    setInterval(updateCountdown, 50);
-    updateBackground(); // Initial background update
-}
+// Set interval for updating background
+setInterval(updateBackground, 1000);
+
+// Set interval for updating countdown
+setInterval(updateCountdown, 50);
 
 // Parallax scrolling
-function handleParallax() {
-    const scrollY = window.scrollY;
-    document.body.style.backgroundPosition = `center ${scrollY * 0.3}px`;
-    const parallaxElements = [".name", "#countdown", ".progress-bar"];
-    parallaxElements.forEach(selector => {
-        const element = document.querySelector(selector);
-        if (element) {
-            element.style.transform = `translateY(${scrollY * 0.2}px)`;
-        }
-    });
-}
-
-// Event listeners
-window.addEventListener('load', initializePage);
-window.addEventListener("scroll", handleParallax);
+window.addEventListener("scroll", () => {
+    document.body.style.backgroundPosition = `center ${window.scrollY * 0.3}px`;
+    document.querySelector(".name").style.transform = `translateY(${window.scrollY * 0.2}px)`;
+    document.querySelector("#countdown").style.transform = `translateY(${window.scrollY * 0.2}px)`;
+    document.querySelector(".progress-bar").style.transform = `translateY(${window.scrollY * 0.2}px)`;
+});
