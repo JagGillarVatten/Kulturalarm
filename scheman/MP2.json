@@ -188,8 +188,8 @@
         "name": "Engelska",
         "englishName": "English",
         "startDay": 5,
-        "startTime": "09:00",
-        "endTime": "10:15",
+        "startTime": "08:35",
+        "endTime": "09:50",
         "location": "705"
     },
     {
@@ -198,31 +198,7 @@
         "startDay": 5,
         "startTime": "10:40",
         "endTime": "11:55",
-        "location": "320"
-    },
-    {
-        "name": "Ensemble med körsång",
-        "englishName": "Ensemble with Choir Singing",
-        "startDay": 5,
-        "startTime": "10:40",
-        "endTime": "11:55",
         "location": "319"
-    },
-    {
-        "name": "Ensemble med körsång",
-        "englishName": "Ensemble with Choir Singing",
-        "startDay": 5,
-        "startTime": "10:40",
-        "endTime": "11:55",
-        "location": "315"
-    },
-    {
-        "name": "Ensemble med körsång",
-        "englishName": "Ensemble with Choir Singing",
-        "startDay": 5,
-        "startTime": "10:40",
-        "endTime": "11:55",
-        "location": "313"
     },
     {
         "name": "Lunch",

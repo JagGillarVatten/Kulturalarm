@@ -1,32 +1,4 @@
-/**
- * This module defines global variables and functions related to managing events and notifications.
- *
- * The module loads event data from various JSON and ICS files, and provides functions to retrieve the current and upcoming events.
- * It also includes a function to handle key press events, allowing the user to adjust the time offset.
- *
- * The global variables are:
- * - events: An array of objects containing information about events, such as name, start time, end time, and location.
- * - sentNotifications: An array of strings containing the names of events that have already been sent as notifications.
- * - specialDates: An array of objects containing information about special dates, such as holidays or other events.
- * - currentEventName: A string containing the name of the current event.
- * - currentEventEnglishName: A string containing the English name of the current event.
- * - currentEventStart: A Date object containing the start time of the current event.
- * - currentEventLocation: A string containing the location of the current event.
- * - currentEventSentNotification: A boolean indicating whether a notification has already been sent for the current event.
- * - hourOffset: An integer indicating the number of hours to offset the start time of events.
- *
- * The functions are:
- * - loadJSON(fileUrl): Loads event data from a given file URL.
- * - parseICSFile(icsData): Parses an ICS file and converts it to a JSON array of events.
- * - getEnglishName(name): Takes a Swedish name and returns the English name.
- * - showSnackbar(message): Shows a snackbar with a given message.
- * - getTodaysEvents(): Returns an array of events for the current day.
- * - getNextEvent(): Returns the next event for the current day.
- * - handleKeyPress(event): Handles key press events, allowing the user to adjust the time offset.
- * - getTodayEvents(): Returns an array of events for today with time and name.
- */
 
-// Define global variables with appropriate initialization
 let events = [];
 let sentNotifications = [];
 let specialDates = [];

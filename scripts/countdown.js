@@ -249,12 +249,14 @@ async function loadEventFile(filename) {
         console.error("Error loading event file:", error);
     }
 }
-
 const languageSwitcher = document.getElementById("language-switcher");
+const dropdown = document.getElementById("dropdown-button button");
 let isSwedish = true;
 
 languageSwitcher.addEventListener("click", () => {
     isSwedish = !isSwedish;
-    languageSwitcher.textContent = isSwedish ? "Svenska" : "English";
+    languageSwitcher.innerHTML = isSwedish ? '<i class="fas fa-globe"></i> Svenska' : '<i class="fas fa-globe"></i> English';
+    language.innerHTML = isSwedish ? 'Byt schema' : 'Change schedule';
+  
     updateCountdown();
 });
