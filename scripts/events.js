@@ -1,30 +1,30 @@
 /**
- * This module defines global variables and functions related to managing events and notifications.
- *
- * The module loads event data from various JSON and ICS files, and provides functions to retrieve the current and upcoming events.
- * It also includes a function to handle key press events, allowing the user to adjust the time offset.
- *
- * The global variables are:
- * - events: An array of objects containing information about events, such as name, start time, end time, and location.
- * - sentNotifications: An array of strings containing the names of events that have already been sent as notifications.
- * - specialDates: An array of objects containing information about special dates, such as holidays or other events.
- * - currentEventName: A string containing the name of the current event.
- * - currentEventEnglishName: A string containing the English name of the current event.
- * - currentEventStart: A Date object containing the start time of the current event.
- * - currentEventLocation: A string containing the location of the current event.
- * - currentEventSentNotification: A boolean indicating whether a notification has already been sent for the current event.
- * - hourOffset: An integer indicating the number of hours to offset the start time of events.
- *
- * The functions are:
- * - loadJSON(fileUrl): Loads event data from a given file URL.
- * - parseICSFile(icsData): Parses an ICS file and converts it to a JSON array of events.
- * - getEnglishName(name): Takes a Swedish name and returns the English name.
- * - showSnackbar(message): Shows a snackbar with a given message.
- * - getTodaysEvents(): Returns an array of events for the current day.
- * - getNextEvent(): Returns the next event for the current day.
- * - handleKeyPress(event): Handles key press events, allowing the user to adjust the time offset.
- * - getTodayEvents(): Returns an array of events for today with time and name.
- */
+   * This module defines global variables and functions related to managing events and notifications.
+   *
+   * The module loads event data from various JSON and ICS files, and provides functions to retrieve the current and upcoming events.
+   * It also includes a function to handle key press events, allowing the user to adjust the time offset.
+   *
+   * The global variables are:
+   * - events: An array of objects containing information about events, such as name, start time, end time, and location.
+   * - sentNotifications: An array of strings containing the names of events that have already been sent as notifications.
+   * - specialDates: An array of objects containing information about special dates, such as holidays or other events.
+   * - currentEventName: A string containing the name of the current event.
+   * - currentEventEnglishName: A string containing the English name of the current event.
+   * - currentEventStart: A Date object containing the start time of the current event.
+   * - currentEventLocation: A string containing the location of the current event.
+   * - currentEventSentNotification: A boolean indicating whether a notification has already been sent for the current event.
+   * - hourOffset: An integer indicating the number of hours to offset the start time of events.
+   *
+   * The functions are:
+   * - loadJSON(fileUrl): Loads event data from a given file URL.
+   * - parseICSFile(icsData): Parses an ICS file and converts it to a JSON array of events.
+   * - getEnglishName(name): Takes a Swedish name and returns the English name.
+   * - showSnackbar(message): Shows a snackbar with a given message.
+   * - getTodaysEvents(): Returns an array of events for the current day.
+   * - getNextEvent(): Returns the next event for the current day.
+   * - handleKeyPress(event): Handles key press events, allowing the user to adjust the time offset.
+   * - getTodayEvents(): Returns an array of events for today with time and name.
+   */
 
 // Define global variables with appropriate initialization
 let events = [];
@@ -39,242 +39,219 @@ let hourOffset = 0;
 
 // Define event files with names and URLs
 const eventFiles = [
-    { name: "MP1", url: "MP1.json" },
-    { name: "AM1", url: "AM1.json" },
-    { name: "MP2", url: "MP2.json" },
-    { name: "AM2", url: "AM2.json" } 
+      { name: "MP1", url: "MP1.json" },
+      { name: "AM1", url: "AM1.json" },
+      { name: "MP2", url: "MP2.json" },
+      { name: "AM2", url: "AM2.json" } 
 ];
 
-// Get the last used event file from URL parameter or use the first event file as default
-const urlParams = new URLSearchParams(window.location.search);
-const lastUsedEventFile = urlParams.get('lastUsedEventFile') || eventFiles[0].url;
-
-// Find the index of the last used event file in the eventFiles array
-const lastUsedEventIndex = eventFiles.findIndex(file => file.url === lastUsedEventFile);
-
-// Use the found index if valid, otherwise default to 0
-const currentEventFileIndex = lastUsedEventIndex !== -1 ? lastUsedEventIndex : 0;
-
-// Set the current event file
-const currentEventFile = eventFiles[currentEventFileIndex];
-
-// Update the URL with the current event file
-function updateURLWithEventFile(fileUrl) {
-    const newUrl = new URL(window.location.href);
-    newUrl.searchParams.set('lastUsedEventFile', fileUrl);
-    window.history.pushState({}, '', newUrl);
-}
+// Set the current event file to the first one in the list
+const currentEventFile = eventFiles[0];
 
 // Use currentEventFile.url for loading the events
 loadJSON(currentEventFile.url).then(data => {
-    events = data;
-    // Additional logic for handling the loaded events
+      events = data;
+      // Additional logic for handling the loaded events
 });
 
 // Function to load JSON data from a given file URL
 async function loadJSON(fileUrl) {
-    console.log(`Loading JSON data from ${fileUrl}`);
-    const previousFileName = eventFiles.find(file => file.url === lastUsedEventFile)?.name || 'Unknown';
-    const currentFileName = eventFiles.find(file => file.url === fileUrl)?.name || 'Unknown';
-    updateURLWithEventFile(fileUrl);
-    
-    const response = await fetch(fileUrl);
-    if (!response.ok) throw new Error(`Error fetching event file: ${fileUrl}. Status: ${response.status}`);
-    const data = await response.text();
-    return fileUrl.endsWith(".ics") ? parseICSFile(data) : JSON.parse(data);
+      console.log(`Loading JSON data from ${fileUrl}`);
+      const response = await fetch(fileUrl);
+      if (!response.ok) throw new Error(`Error fetching event file: ${fileUrl}. Status: ${response.status}`);
+      const data = await response.text();
+      return fileUrl.endsWith(".ics") ? parseICSFile(data) : JSON.parse(data);
 }
 
 // Function to parse ICS file and convert to JSON
 function parseICSFile(icsData) {
-    try {
-        console.log(`Parsing ICS file: ${icsData.length} bytes`);
-        const cal = icalendar.Calendar.from_ical(icsData);
-        return cal.walk('VEVENT').map(event => ({
-            name: event.get('SUMMARY'),
-            englishName: getEnglishName(event.get('SUMMARY')),
-            startDay: event.get('DTSTART').dt.getDay() + 1,
-            startTime: event.get('DTSTART').dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            endTime: event.get('DTEND').dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            location: event.get('LOCATION', ''),
-            date: event.get('DTSTART').dt.date()
-        }));
-    } catch (error) {
-        console.error(`Error parsing ICS file: ${error.message}`);
-        return [];
-    }
+      try {
+          console.log(`Parsing ICS file: ${icsData.length} bytes`);
+          const cal = icalendar.Calendar.from_ical(icsData);
+          return cal.walk('VEVENT').map(event => ({
+              name: event.get('SUMMARY'),
+              englishName: getEnglishName(event.get('SUMMARY')),
+              startDay: event.get('DTSTART').dt.getDay() + 1,
+              startTime: event.get('DTSTART').dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+              endTime: event.get('DTEND').dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+              location: event.get('LOCATION', ''),
+              date: event.get('DTSTART').dt.date()
+          }));
+      } catch (error) {
+          console.error(`Error parsing ICS file: ${error.message}`);
+          return [];
+      }
 }
 
 // Function to get English name for a Swedish name
 const englishNames = {
-    'Programmering': 'Programming',
-    'Matematik': 'Mathematics',
-    'Ensemble med körsång': 'Ensemble with Choir Singing',
-    'Historia': 'History',
-    'Svenska': 'Swedish',
-    'Engelska': 'English',
-    'Musikproduktion': 'Music Production',
-    'Media Produktion': 'Media Production',
+      'Programmering': 'Programming',
+      'Matematik': 'Mathematics',
+      'Ensemble med körsång': 'Ensemble with Choir Singing',
+      'Historia': 'History',
+      'Svenska': 'Swedish',
+      'Engelska': 'English',
+      'Musikproduktion': 'Music Production',
+      'Media Produktion': 'Media Production',
 };
 
 function getEnglishName(name) {
-    for (const [swedishName, englishName] of Object.entries(englishNames)) {
-        if (name.includes(swedishName)) {
-            console.log(`Found English name for ${swedishName}: ${englishName}`);
-            return englishName;
-        }
-    }
-    console.log(`No English name found for ${name}`);
-    return '';
+      for (const [swedishName, englishName] of Object.entries(englishNames)) {
+          if (name.includes(swedishName)) {
+              console.log(`Found English name for ${swedishName}: ${englishName}`);
+              return englishName;
+          }
+      }
+      console.log(`No English name found for ${name}`);
+      return '';
 }
 
 // Function to show a snackbar
 function showSnackbar(message) {
-    let snackbar = document.getElementById("snackbar");
-    if (!snackbar) {
-        snackbar = document.createElement('div');
-        snackbar.id = "snackbar";
-        document.body.appendChild(snackbar);
-    }
-    snackbar.textContent = message;
-    snackbar.className = "show";
-    setTimeout(() => snackbar.className = snackbar.className.replace("show", ""), 3000);
+      let snackbar = document.getElementById("snackbar");
+      if (!snackbar) {
+          snackbar = document.createElement('div');
+          snackbar.id = "snackbar";
+          document.body.appendChild(snackbar);
+      }
+      snackbar.textContent = message;
+      snackbar.className = "show";
+      setTimeout(() => snackbar.className = snackbar.className.replace("show", ""), 3000);
 }
 
 // Function to get today's events
 function getTodaysEvents() {
-    const today = new Date();
-    today.setHours(today.getHours() + hourOffset);
-    const dayOfWeek = today.getDay();
-    const todaysSpecialEvents = specialDates.filter(event => event.date.toDateString() === today.toDateString());
-    return todaysSpecialEvents.length > 0 ? todaysSpecialEvents : events.filter(event => event.startDay === dayOfWeek);
+      const today = new Date();
+      today.setHours(today.getHours() + hourOffset);
+      const dayOfWeek = today.getDay();
+      const todaysSpecialEvents = specialDates.filter(event => event.date.toDateString() === today.toDateString());
+      return todaysSpecialEvents.length > 0 ? todaysSpecialEvents : events.filter(event => event.startDay === dayOfWeek);
 }
 function getNextEvent() {
-    const now = new Date();
-    now.setHours(now.getHours() + hourOffset);
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const todaysEvents = getTodaysEvents();
+      const now = new Date();
+      now.setHours(now.getHours() + hourOffset);
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const todaysEvents = getTodaysEvents();
 
-    for (const event of todaysEvents) {
-      const startTime = new Date(`${today.toDateString()} ${event.startTime || event.date.toTimeString().slice(0, 5)}`);
-      const endTime = new Date(`${today.toDateString()} ${event.endTime || event.date.toTimeString().slice(0, 5)}`);
+      for (const event of todaysEvents) {
+        const startTime = new Date(`${today.toDateString()} ${event.startTime || event.date.toTimeString().slice(0, 5)}`);
+        const endTime = new Date(`${today.toDateString()} ${event.endTime || event.date.toTimeString().slice(0, 5)}`);
 
-      if (now >= startTime && now < endTime || now < startTime) {
-        return { name: event.name, englishName: event.englishName, start: startTime, end: endTime, location: event.location };
+        if (now >= startTime && now < endTime || now < startTime) {
+          return { name: event.name, englishName: event.englishName, start: startTime, end: endTime, location: event.location };
+        }
       }
+
+      return null;
     }
-
-    return null;
-  }
-  // Function to handle key press events
-  function handleKeyPress(event) {
-    try {
-      switch (event.key) {
-        case '.':
-          hourOffset++;
-          break;
-        case ',':
-          hourOffset--;
-          break;
-        case 'r':
-          hourOffset = 0;
-          break;
-        default:
-          console.log(`Unhandled key press: ${event.key}`);
-          return;
-      }
-      console.log(`You are now offsetted to UTC+${hourOffset + 2}${hourOffset === 0 ? ' (Sweden)' : ''}`);
-      showSnackbar(`You are now offsetted to UTC+${hourOffset + 2}${hourOffset === 0 ? ' (Sweden)' : ''}`);
-      updateTodayEvents();
-    } catch (error) {
+    // Function to handle key press events
+    function handleKeyPress(event) {
+      try {
+        switch (event.key) {
+          case '.':
+            hourOffset++;
+            break;
+          case ',':
+            hourOffset--;
+            break;
+          case 'r':
+            hourOffset = 0;
+            break;
+          default:
+            console.log(`Unhandled key press: ${event.key}`);
+            return;
+        }
+        console.log(`You are now offsetted to UTC+${hourOffset + 2}${hourOffset === 0 ? ' (Sweden)' : ''}`);
+        showSnackbar(`You are now offsetted to UTC+${hourOffset + 2}${hourOffset === 0 ? ' (Sweden)' : ''}`);
+        updateTodayEvents();
+      } catch (error) {
         
-      console.error(`Error handling key press: ${error.message}`);
-    }
-  }
-
-  // Add event listener for key press events
-  document.addEventListener('keydown', handleKeyPress);
-
-  // Function to get today's events for the modal
-  function getTodayEvents() {
-    const now = new Date();
-    now.setHours(now.getHours() + hourOffset);
-    const currentEventName = getNextEvent()?.name;
-    const events = getTodaysEvents();
-
-    // Group events by time and name
-    const groupedEvents = events.reduce((acc, event) => {
-      const key = `${event.startTime}-${event.endTime}-${event.name}`;
-      if (!acc[key]) {
-        acc[key] = { ...event, count: 1 };
-      } else {
-        acc[key].count++;
+        console.error(`Error handling key press: ${error.message}`);
       }
-      return acc;
-    }, {});
-
-    return Object.values(groupedEvents).map(event => {
-      const startTime = new Date(`${now.toDateString()} ${event.startTime}`);
-      const endTime = new Date(`${now.toDateString()} ${event.endTime}`);
-
-      return {
-        time: startTime.toTimeString().slice(0, 5),
-        endTime: endTime.toTimeString().slice(0, 5),
-        name: event.count > 1 ? `${event.name} (x${event.count})` : event.name,
-        isCurrent: currentEventName === event.name ? '➤ ' : '',
-        isCompleted: now > endTime ? '✓ ' : ''
-      };
-    });
-  }
-
-  function updateTodayEvents() {
-    var eventsList = document.getElementById("events-list");
-
-    // Clear previous events
-    eventsList.innerHTML = "";
-
-    // Get today's events
-    var todayEvents = getTodayEvents();
-
-    // Populate the events list
-    todayEvents.forEach(function(event) {
-      var eventItem = document.createElement("p");
-      eventItem.textContent = `${event.isCurrent}${event.isCompleted}${event.time} - ${event.endTime} ${event.name}`;
-      eventsList.appendChild(eventItem);
-    });
-  }
-
-  function showTodayEvents() {
-    var modal = document.getElementById("events-modal");
-    var span = document.getElementsByClassName("close")[0];
-
-    updateTodayEvents();
-
-    modal.style.display = "block";
-
-    span.onclick = function() {
-      modal.style.display = "none";
     }
 
-    window.onclick = function(event) {
-      if (event.target == modal) {
+    // Add event listener for key press events
+    document.addEventListener('keydown', handleKeyPress);
+
+    // Function to get today's events for the modal
+    function getTodayEvents() {
+      const now = new Date();
+      now.setHours(now.getHours() + hourOffset);
+      const currentEventName = getNextEvent()?.name;
+      const events = getTodaysEvents();
+
+      // Group events by time and name
+      const groupedEvents = events.reduce((acc, event) => {
+        const key = `${event.startTime}-${event.endTime}-${event.name}`;
+        if (!acc[key]) {
+          acc[key] = { ...event, count: 1 };
+        } else {
+          acc[key].count++;
+        }
+        return acc;
+      }, {});
+
+      return Object.values(groupedEvents).map(event => {
+        const startTime = new Date(`${now.toDateString()} ${event.startTime}`);
+        const endTime = new Date(`${now.toDateString()} ${event.endTime}`);
+
+        return {
+          time: startTime.toTimeString().slice(0, 5),
+          endTime: endTime.toTimeString().slice(0, 5),
+          name: event.count > 1 ? `${event.name} (x${event.count})` : event.name,
+          isCurrent: currentEventName === event.name ? '➤ ' : '',
+          isCompleted: now > endTime ? '✓ ' : ''
+        };
+      });
+    }
+
+    function updateTodayEvents() {
+      var eventsList = document.getElementById("events-list");
+
+      // Clear previous events
+      eventsList.innerHTML = "";
+
+      // Get today's events
+      var todayEvents = getTodayEvents();
+
+      // Populate the events list
+      todayEvents.forEach(function(event) {
+        var eventItem = document.createElement("p");
+        eventItem.textContent = `${event.isCurrent}${event.isCompleted}${event.time} - ${event.endTime} ${event.name}`;
+        eventsList.appendChild(eventItem);
+      });
+    }
+
+    function showTodayEvents() {
+      var modal = document.getElementById("events-modal");
+      var span = document.getElementsByClassName("close")[0];
+
+      updateTodayEvents();
+
+      modal.style.display = "block";
+
+      span.onclick = function() {
         modal.style.display = "none";
       }
+
+      window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+
+      // Set up interval to update events every minute
+      const updateInterval = setInterval(updateTodayEvents, 60000);
+
+      // Clear interval when modal is closed
+      modal.addEventListener('hidden.bs.modal', function () {
+        clearInterval(updateInterval);
+      });
     }
 
-    // Set up interval to update events every minute
-    const updateInterval = setInterval(updateTodayEvents, 60000);
+    // Load the first event file by default
+    loadJSON(currentEventFile.url);
 
-    // Clear interval when modal is closed
-    modal.addEventListener('hidden.bs.modal', function () {
-      clearInterval(updateInterval);
-    });
-  }
+    // Initial update of events
+    updateTodayEvents();
 
-  // Load the last used event file by default
-  loadJSON(lastUsedEventFile).then(() => {
-    // Update the URL with the most recent event file
-    updateURLWithEventFile(currentEventFile.url);
-  });
-
-  // Initial update of events
-  updateTodayEvents();
