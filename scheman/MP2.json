@@ -30,177 +30,154 @@
         "startTime": "14:20",
         "endTime": "15:35",
         "location": "320"
-    },
-    {
+    }, {
         "name": "Ensemble med körsång",
         "englishName": "Ensemble with Choir Singing",
         "startDay": 1,
         "startTime": "14:20",
         "endTime": "15:35",
         "location": "316"
-    },
-    {
+    }, {
         "name": "Ensemble med körsång",
         "englishName": "Ensemble with Choir Singing",
         "startDay": 1,
         "startTime": "14:20",
         "endTime": "15:35",
         "location": "319"
-    },
-    {
+    }, {
         "name": "Ensemble med körsång",
         "englishName": "Ensemble with Choir Singing",
         "startDay": 1,
         "startTime": "14:20",
         "endTime": "15:35",
         "location": "315"
-    },
-    {
+    }, {
         "name": "Ensemble med körsång",
         "englishName": "Ensemble with Choir Singing",
         "startDay": 1,
         "startTime": "14:20",
         "endTime": "15:35",
         "location": "313"
-    },
-    {
+    }, {
         "name": "Naturkunskap",
         "englishName": "Natural Science",
         "startDay": 1,
         "startTime": "15:45",
         "endTime": "17:00",
         "location": "705"
-    },
-    {
+    }, {
         "name": "Musikproduktion",
         "englishName": "Music Production",
         "startDay": 2,
         "startTime": "08:20",
         "endTime": "09:20",
         "location": "306"
-    },
-    {
+    }, {
         "name": "Lunch",
         "englishName": "Lunch",
         "startDay": 2,
         "startTime": "12:05",
         "endTime": "12:55",
         "location": "Matsal plan 2"
-    },
-    {
+    }, {
         "name": "Gehörs- och musiklära",
         "englishName": "Ear Training and Music Theory",
         "startDay": 2,
         "startTime": "11:00",
         "endTime": "12:15",
         "location": "415"
-    },
-
-    {
+    }, {
         "name": "Naturkunskap",
         "englishName": "Natural Science",
         "startDay": 3,
         "startTime": "09:35",
         "endTime": "10:45",
         "location": "705"
-    },
-    {
+    }, {
         "name": "Medieproduktion",
         "englishName": "Media Production",
         "startDay": 3,
         "startTime": "10:55",
         "endTime": "12:10",
         "location": "323"
-    },
-    {
+    }, {
         "name": "Lunch",
         "englishName": "Lunch",
         "startDay": 3,
         "startTime": "12:10",
         "endTime": "12:50",
         "location": "Matsal plan 2"
-    },
-    {
+    }, {
         "name": "Svenska",
         "englishName": "Swedish",
         "startDay": 3,
         "startTime": "12:55",
         "endTime": "14:10",
         "location": "705"
-    },
-    {
+    }, {
         "name": "Historia",
         "englishName": "History",
         "startDay": 3,
         "startTime": "14:20",
         "endTime": "15:35",
         "location": "705"
-    },
-    {
+    }, {
         "name": "Musikproduktion",
         "englishName": "Music Production",
         "startDay": 3,
         "startTime": "15:45",
         "endTime": "17:00",
         "location": "306"
-    },
-    {
+    }, {
         "name": "Engelska",
         "englishName": "English",
         "startDay": 4,
         "startTime": "09:25",
         "endTime": "10:40",
         "location": "705"
-    },
-    {
+    }, {
         "name": "Lunch",
         "englishName": "Lunch",
         "startDay": 4,
         "startTime": "12:05",
         "endTime": "12:45",
         "location": "Matsal plan 2"
-    },
-    {
+    }, {
         "name": "Historia",
         "englishName": "History",
         "startDay": 4,
         "startTime": "13:00",
         "endTime": "14:15",
         "location": "705"
-    },
-    {
+    }, {
         "name": "Estetisk kommunikation",
         "englishName": "Aesthetic Communication",
         "startDay": 4,
         "startTime": "14:25",
         "endTime": "15:40",
         "location": "308"
-    },
-    {
+    }, {
         "name": "Stuga",
         "englishName": "Study Hall",
         "startDay": 4,
         "startTime": "15:50",
         "endTime": "17:00",
         "location": " "
-    },
-    {
+    }, {
         "name": "Engelska",
         "englishName": "English",
         "startDay": 5,
         "startTime": "08:35",
         "endTime": "09:50",
         "location": "705"
-    },
-    {
+    }, {
         "name": "Ensemble med körsång",
         "englishName": "Ensemble with Choir Singing",
         "startDay": 5,
         "startTime": "10:40",
         "endTime": "11:55",
         "location": "319"
-    },
-    {
+    }, {
         "name": "Lunch",
         "englishName": "Lunch",
         "startDay": 5,
