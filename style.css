@@ -25,7 +25,7 @@ body {
 	background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0;
 	color: var(--text-color);
 	margin: 0;
-	font-family: Arial, sans-serif;
+	font-family: 'Fredoka One', cursive, Arial, sans-serif;
 	font-size: clamp(1rem, 2.5vw, 2.2rem);
 	transition: background-color 0.5s ease;
 	display: flex;
@@ -325,3 +325,18 @@ button:active {
 #github-button:hover {
 	opacity: 1;
 }
+/* Add this CSS for confetti effect */
+.confetti {
+	position: fixed;
+	top: 0;
+	width: 10px;
+	height: 10px;
+	background-color: var(--highlight-color);
+	animation: fall linear infinite;
+  }
+  
+  @keyframes fall {
+	to {
+	  transform: translateY(100vh) rotate(360deg);
+	}
+  }

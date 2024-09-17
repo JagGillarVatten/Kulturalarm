@@ -72,7 +72,9 @@ function parseICSFile(icsData) {
       startTime: event.get('DTSTART').dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       endTime: event.get('DTEND').dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       location: event.get('LOCATION', ''),
-      date: event.get('DTSTART').dt.date()
+      date: event.get('DTSTART').dt.date(),
+      image: event.get('X-ALT-DESC', '').match(/image:([^;]+)/)?.[1] || '',
+      color: event.get('X-ALT-DESC', '').match(/color:([^;]+)/)?.[1] || ''
     }));
   } catch (error) {
     console.error(`Error parsing ICS file: ${error.message}`);
@@ -136,7 +138,7 @@ function getNextEvent() {
     const endTime = new Date(`${today.toDateString()} ${event.endTime || event.date.toTimeString().slice(0, 5)}`);
 
     if (now >= startTime && now < endTime || now < startTime) {
-      return { name: event.name, englishName: event.englishName, start: startTime, end: endTime, location: event.location };
+      return { name: event.name, englishName: event.englishName, start: startTime, end: endTime, location: event.location, image: event.image, color: event.color };
     }
   }
 
@@ -146,6 +148,10 @@ function getNextEvent() {
 // Function to handle key press events
 function handleKeyPress(event) {
   try {
+    const oldDate = new Date();
+    oldDate.setHours(oldDate.getHours() + hourOffset);
+    const oldDay = oldDate.getDate();
+
     switch (event.key) {
       case '.':
         hourOffset++;
@@ -160,6 +166,15 @@ function handleKeyPress(event) {
         console.log(`Unhandled key press: ${event.key}`);
         return;
     }
+
+    const newDate = new Date();
+    newDate.setHours(newDate.getHours() + hourOffset);
+    const newDay = newDate.getDate();
+
+    if (oldDay !== newDay) {
+      console.log(`Day changed from ${oldDay} to ${newDay}`);
+    }
+
     console.log(`You are now offsetted to UTC+${hourOffset + 2}${hourOffset === 0 ? ' (Sweden)' : ''}`);
     showSnackbar(`You are now offsetted to UTC+${hourOffset + 2}${hourOffset === 0 ? ' (Sweden)' : ''}`);
     updateTodayEvents();
@@ -198,7 +213,9 @@ function getTodayEvents() {
       endTime: endTime.toTimeString().slice(0, 5),
       name: event.count > 1 ? `${event.name} (x${event.count})` : event.name,
       isCurrent: currentEventName === event.name ? '➤ ' : '',
-      isCompleted: now > endTime ? '✓ ' : ''
+      isCompleted: now > endTime ? '✓ ' : '',
+      image: event.image,
+      color: event.color
     };
   });
 }
@@ -216,6 +233,18 @@ function updateTodayEvents() {
   todayEvents.forEach(function (event) {
     var eventItem = document.createElement("p");
     eventItem.textContent = `${event.isCurrent}${event.isCompleted}${event.time} - ${event.endTime} ${event.name}`;
+    if (event.image) {
+      var icon = document.createElement("img");
+      icon.src = event.image;
+      icon.alt = event.name;
+      icon.style.width = "20px";
+      icon.style.height = "20px";
+      icon.style.marginRight = "5px";
+      eventItem.prepend(icon);
+    }
+    if (event.color) {
+      eventItem.style.color = event.color;
+    }
     eventsList.appendChild(eventItem);
   });
 }
