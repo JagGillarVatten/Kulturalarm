@@ -1,8 +1,3 @@
-/**
- * Updates the countdown display by checking for the next event in the list
- * of events. If no events are found, it displays a message indicating that
- * there are no more events for the day.
- */
 function updateCountdown() {
     console.log("Updating countdown...");
 
@@ -37,9 +32,6 @@ function updateCountdown() {
     }
 }
 
-/**
- * Displays a message indicating that there are no more events for the day.
- */
 function displayNoEventsMessage() {
     console.log("Displaying no events message...");
     resetEventDetails();
@@ -47,9 +39,6 @@ function displayNoEventsMessage() {
     updateProgressBarForNextEvent();
 }
 
-/**
- * Resets the current event details.
- */
 function resetEventDetails() {
     currentEventName = "";
     currentEventEnglishName = "";
@@ -57,10 +46,6 @@ function resetEventDetails() {
     currentEventLocation = "";
 }
 
-/**
- * Updates the UI to display a message indicating that there are no more events
- * for the day.
- */
 function updateUIForNoEvents() {
     const countdownText = document.getElementById("countdown-text");
     countdownText.textContent = isSwedish ? "Inga fler händelser idag." : "No more events today.";
@@ -73,9 +58,6 @@ function updateUIForNoEvents() {
     countdownNumber.innerHTML = '';
 }
 
-/**
- * Updates the progress bar for the next event.
- */
 function updateProgressBarForNextEvent() {
     const progressBar = document.getElementById("progress-bar");
     const nextEvent = getNextEvent();
@@ -89,17 +71,6 @@ function updateProgressBarForNextEvent() {
     }
 }
 
-/**
- * Displays the event with the given details.
- *
- * @param {string} name - The name of the event.
- * @param {string} englishName - The English name of the event.
- * @param {string} location - The location of the event.
- * @param {Date} start - The start time of the event.
- * @param {Date} end - The end time of the event.
- * @param {Date} currentDate - The current date.
- * @param {boolean} isUpcoming - Whether the event is upcoming or not.
- */
 function displayEvent(name, englishName, location, start, end, currentDate, isUpcoming) {
     const timeString = formatSeconds((isUpcoming ? start - currentDate : end - currentDate) / 1000);
     const detailsChanged = hasEventDetailsChanged(name, englishName, location, start);
@@ -115,28 +86,10 @@ function displayEvent(name, englishName, location, start, end, currentDate, isUp
     updateProgressBarForEvent(start, end, currentDate, isUpcoming);
 }
 
-/**
- * Checks if the event details have changed.
- *
- * @param {string} name - The name of the event.
- * @param {string} englishName - The English name of the event.
- * @param {string} location - The location of the event.
- * @param {Date} start - The start time of the event.
- * @returns {boolean} Whether the event details have changed.
- */
 function hasEventDetailsChanged(name, englishName, location, start) {
     return currentEventName !== name || currentEventEnglishName !== englishName || currentEventStart !== start || currentEventLocation !== location;
 }
 
-/**
- * Updates the UI to display the event with the given details.
- *
- * @param {string} name - The name of the event.
- * @param {string} englishName - The English name of the event.
- * @param {string} location - The location of the event.
- * @param {boolean} isUpcoming - Whether the event is upcoming or not.
- * @param {string} timeString - The time string for the event.
- */
 function updateUIForEvent(name, englishName, location, isUpcoming, timeString) {
     const countdownText = document.getElementById("countdown-text");
     countdownText.textContent = isUpcoming ? `${
@@ -162,15 +115,6 @@ function updateUIForEvent(name, englishName, location, isUpcoming, timeString) {
     dropdownButton.title = isSwedish ? 'Byt schema' : 'Change schedule';
 }
 
-/**
- * Handles the notification for the given event.
- *
- * @param {string} name - The name of the event.
- * @param {string} englishName - The English name of the event.
- * @param {string} location - The location of the event.
- * @param {boolean} isUpcoming - Whether the event is upcoming or not.
- * @param {string} timeString - The time string for the event.
- */
 function handleNotification(name, englishName, location, isUpcoming, timeString) {
     if (!sentNotifications.includes(name)) {
         sendNotification(name, englishName, location, isUpcoming ? timeString : isSwedish ? "Pågår just nu" : "Ongoing");
@@ -179,14 +123,6 @@ function handleNotification(name, englishName, location, isUpcoming, timeString)
     }
 }
 
-/**
- * Updates the document title.
- *
- * @param {string} name - The name of the event.
- * @param {string} englishName - The English name of the event.
- * @param {boolean} isUpcoming - Whether the event is upcoming or not.
- * @param {string} timeString - The time string for the event.
- */
 function updateDocumentTitle(name, englishName, isUpcoming, timeString) {
     document.title = `${timeString} ${
         isUpcoming ? (isSwedish ? "tills" : "until") : isSwedish ? "kvar" : "left"
@@ -195,27 +131,11 @@ function updateDocumentTitle(name, englishName, isUpcoming, timeString) {
     }`;
 }
 
-/**
- * Updates the progress bar for the given event.
- *
- * @param {Date} start - The start time of the event.
- * @param {Date} end - The end time of the event.
- * @param {Date} currentDate - The current date.
- * @param {boolean} isUpcoming - Whether the event is upcoming or not.
- */
 function updateProgressBarForEvent(start, end, currentDate, isUpcoming) {
     const progress = Math.max(0, isUpcoming ? (start - currentDate) / 1000 / (start - (start - 60000)) * 100 : ((currentDate - start) / 1000 / ((end - start) / 1000)) * 100);
     updateProgressBar(progress);
 }
 
-/**
- * Updates the event details.
- *
- * @param {string} name - The name of the event.
- * @param {string} englishName - The English name of the event.
- * @param {string} location - The location of the event.
- * @param {Date} start - The start time of the event.
- */
 function updateEventDetails(name, englishName, location, start) {
     currentEventName = name;
     currentEventEnglishName = englishName;
@@ -224,11 +144,6 @@ function updateEventDetails(name, englishName, location, start) {
     currentEventSentNotification = false;
 }
 
-/**
- * Updates the countdown number.
- *
- * @param {string} timeString - The time string for the event.
- */
 function updateCountdownNumber(timeString) {
     const countdownNumber = document.getElementById("countdown-number");
     countdownNumber.innerHTML = '';

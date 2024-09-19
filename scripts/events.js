@@ -1,3 +1,9 @@
+// Cache DOM elements
+const snackbar = document.getElementById("snackbar") || createSnackbar();
+const eventsList = document.getElementById("events-list");
+const eventsModal = document.getElementById("events-modal");
+const closeButton = document.getElementsByClassName("close")[0];
+
 let events = [];
 let sentNotifications = [];
 let specialDates = [];
@@ -83,19 +89,19 @@ function parseICSFile(icsData) {
 }
 
 // Function to get English name for a Swedish name
-const englishNames = {
-  'Programmering': 'Programming',
-  'Matematik': 'Mathematics',
-  'Ensemble med körsång': 'Ensemble with Choir Singing',
-  'Historia': 'History',
-  'Svenska': 'Swedish',
-  'Engelska': 'English',
-  'Musikproduktion': 'Music Production',
-  'Media Produktion': 'Media Production',
-};
+const englishNames = new Map([
+  ['Programmering', 'Programming'],
+  ['Matematik', 'Mathematics'],
+  ['Ensemble med körsång', 'Ensemble with Choir Singing'],
+  ['Historia', 'History'],
+  ['Svenska', 'Swedish'],
+  ['Engelska', 'English'],
+  ['Musikproduktion', 'Music Production'],
+  ['Media Produktion', 'Media Production'],
+]);
 
 function getEnglishName(name) {
-  for (const [swedishName, englishName] of Object.entries(englishNames)) {
+  for (const [swedishName, englishName] of englishNames) {
     if (name.includes(swedishName)) {
       console.log(`Found English name for ${swedishName}: ${englishName}`);
       return englishName;
@@ -107,12 +113,6 @@ function getEnglishName(name) {
 
 // Function to show a snackbar
 function showSnackbar(message) {
-  let snackbar = document.getElementById("snackbar");
-  if (!snackbar) {
-    snackbar = document.createElement('div');
-    snackbar.id = "snackbar";
-    document.body.appendChild(snackbar);
-  }
   snackbar.textContent = message;
   snackbar.className = "show";
   setTimeout(() => snackbar.className = snackbar.className.replace("show", ""), 3000);
@@ -123,22 +123,23 @@ function getTodaysEvents() {
   const today = new Date();
   today.setHours(today.getHours() + hourOffset);
   const dayOfWeek = today.getDay();
-  const todaysSpecialEvents = specialDates.filter(event => event.date.toDateString() === today.toDateString());
+  const todayString = today.toDateString();
+  const todaysSpecialEvents = specialDates.filter(event => event.date.toDateString() === todayString);
   return todaysSpecialEvents.length > 0 ? todaysSpecialEvents : events.filter(event => event.startDay === dayOfWeek);
 }
 
 function getNextEvent() {
   const now = new Date();
   now.setHours(now.getHours() + hourOffset);
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const todaysEvents = getTodaysEvents();
+  const todayEvents = getTodaysEvents();
+  const currentTime = now.getTime();
 
-  for (const event of todaysEvents) {
-    const startTime = new Date(`${today.toDateString()} ${event.startTime || event.date.toTimeString().slice(0, 5)}`);
-    const endTime = new Date(`${today.toDateString()} ${event.endTime || event.date.toTimeString().slice(0, 5)}`);
+  for (const event of todayEvents) {
+    const startTime = new Date(now.toDateString() + ' ' + (event.startTime || event.date.toTimeString().slice(0, 5))).getTime();
+    const endTime = new Date(now.toDateString() + ' ' + (event.endTime || event.date.toTimeString().slice(0, 5))).getTime();
 
-    if (now >= startTime && now < endTime || now < startTime) {
-      return { name: event.name, englishName: event.englishName, start: startTime, end: endTime, location: event.location, image: event.image, color: event.color };
+    if (currentTime >= startTime && currentTime < endTime || currentTime < startTime) {
+      return { name: event.name, englishName: event.englishName, start: new Date(startTime), end: new Date(endTime), location: event.location, image: event.image, color: event.color };
     }
   }
 
@@ -153,18 +154,10 @@ function handleKeyPress(event) {
     const oldDay = oldDate.getDate();
 
     switch (event.key) {
-      case '.':
-        hourOffset++;
-        break;
-      case ',':
-        hourOffset--;
-        break;
-      case 'r':
-        hourOffset = 0;
-        break;
-      default:
-        console.log(`Unhandled key press: ${event.key}`);
-        return;
+      case '.': hourOffset++; break;
+      case ',': hourOffset--; break;
+      case 'r': hourOffset = 0; break;
+      default: return;
     }
 
     const newDate = new Date();
@@ -175,8 +168,9 @@ function handleKeyPress(event) {
       console.log(`Day changed from ${oldDay} to ${newDay}`);
     }
 
-    console.log(`You are now offsetted to UTC+${hourOffset + 2}${hourOffset === 0 ? ' (Sweden)' : ''}`);
-    showSnackbar(`You are now offsetted to UTC+${hourOffset + 2}${hourOffset === 0 ? ' (Sweden)' : ''}`);
+    const message = `You are now offsetted to UTC+${hourOffset + 2}${hourOffset === 0 ? ' (Sweden)' : ''}`;
+    console.log(message);
+    showSnackbar(message);
     updateTodayEvents();
   } catch (error) {
     console.error(`Error handling key press: ${error.message}`);
@@ -193,18 +187,17 @@ function getTodayEvents() {
   const currentEventName = getNextEvent()?.name;
   const events = getTodaysEvents();
 
-  // Group events by time and name
-  const groupedEvents = events.reduce((acc, event) => {
+  const groupedEvents = new Map();
+  events.forEach(event => {
     const key = `${event.startTime}-${event.endTime}-${event.name}`;
-    if (!acc[key]) {
-      acc[key] = { ...event, count: 1 };
+    if (!groupedEvents.has(key)) {
+      groupedEvents.set(key, { ...event, count: 1 });
     } else {
-      acc[key].count++;
+      groupedEvents.get(key).count++;
     }
-    return acc;
-  }, {});
+  });
 
-  return Object.values(groupedEvents).map(event => {
+  return Array.from(groupedEvents.values()).map(event => {
     const startTime = new Date(`${now.toDateString()} ${event.startTime}`);
     const endTime = new Date(`${now.toDateString()} ${event.endTime}`);
 
@@ -221,49 +214,41 @@ function getTodayEvents() {
 }
 
 function updateTodayEvents() {
-  var eventsList = document.getElementById("events-list");
+  const fragment = document.createDocumentFragment();
+  const todayEvents = getTodayEvents();
 
-  // Clear previous events
-  eventsList.innerHTML = "";
-
-  // Get today's events
-  var todayEvents = getTodayEvents();
-
-  // Populate the events list
-  todayEvents.forEach(function (event) {
-    var eventItem = document.createElement("p");
+  todayEvents.forEach(event => {
+    const eventItem = document.createElement("p");
     eventItem.textContent = `${event.isCurrent}${event.isCompleted}${event.time} - ${event.endTime} ${event.name}`;
     if (event.image) {
-      var icon = document.createElement("img");
+      const icon = document.createElement("img");
       icon.src = event.image;
       icon.alt = event.name;
-      icon.style.width = "20px";
-      icon.style.height = "20px";
-      icon.style.marginRight = "5px";
+      icon.style.cssText = "width: 20px; height: 20px; margin-right: 5px;";
       eventItem.prepend(icon);
     }
     if (event.color) {
       eventItem.style.color = event.color;
     }
-    eventsList.appendChild(eventItem);
+    fragment.appendChild(eventItem);
   });
+
+  eventsList.innerHTML = "";
+  eventsList.appendChild(fragment);
 }
 
 function showTodayEvents() {
-  var modal = document.getElementById("events-modal");
-  var span = document.getElementsByClassName("close")[0];
-
   updateTodayEvents();
 
-  modal.style.display = "block";
+  eventsModal.style.display = "block";
 
-  span.onclick = function () {
-    modal.style.display = "none";
+  closeButton.onclick = function () {
+    eventsModal.style.display = "none";
   }
 
   window.onclick = function (event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
+    if (event.target == eventsModal) {
+      eventsModal.style.display = "none";
     }
   }
 
@@ -271,7 +256,7 @@ function showTodayEvents() {
   const updateInterval = setInterval(updateTodayEvents, 60000);
 
   // Clear interval when modal is closed
-  modal.addEventListener('hidden.bs.modal', function () {
+  eventsModal.addEventListener('hidden.bs.modal', function () {
     clearInterval(updateInterval);
   });
 }
