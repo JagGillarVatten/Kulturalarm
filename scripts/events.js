@@ -20,6 +20,7 @@ const eventFiles = [
   { name: "AM1", url: "AM1.json" },
   { name: "MP2", url: "MP2.json" },
   { name: "AM2", url: "AM2.json" }
+//  { name: "test", url: "schedule.json" }//
 ];
 
 // Get the last used event file from URL parameter or use the first event file as default

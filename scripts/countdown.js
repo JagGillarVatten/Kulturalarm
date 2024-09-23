@@ -168,7 +168,7 @@ function sendNotification(name, englishName, location, message) {
             body: `${message} ${
             isSwedish ? "vid" : "at"
         } ${location}`
-    });
+    });  
 }
 
 let lastProgress = 0;
